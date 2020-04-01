@@ -19,8 +19,7 @@ var widgetOption = ''
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-style.href =
-  'https://res.cloudinary.com/dxhaja5tz/raw/upload/v1585670397/style_whcomm.css'
+style.href = 'https://cdn.jsdelivr.net/gh/mahmudulshuvo/plugin_script/style.css'
 // style.href = 'style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
