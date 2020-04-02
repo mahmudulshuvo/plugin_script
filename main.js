@@ -1,4 +1,5 @@
 // version 1.0
+// change logo link
 
 var randExtension = Math.floor(Math.random() * 1000);
 randExtension = randExtension.toString();
@@ -706,7 +707,7 @@ function designWidget(option) {
       };
     } else {
       whydonateLogo.onclick = () => {
-        window.location.href = "https://www.whydonate.en/";
+        window.location.href = "https://www.whydonate.eu/";
       };
     }
     poweredByDiv.appendChild(whydonateLogo);
@@ -1259,7 +1260,7 @@ function designWidget(option) {
       };
     } else {
       whydonateLogo.onclick = () => {
-        window.location.href = "https://www.whydonate.en/";
+        window.location.href = "https://www.whydonate.eu/";
       };
     }
     poweredByDiv.appendChild(whydonateLogo);
@@ -2037,7 +2038,7 @@ function createModal(slug) {
     };
   } else {
     whydonateLogo.onclick = () => {
-      window.location.href = "https://www.whydonate.en/";
+      window.location.href = "https://www.whydonate.eu/";
     };
   }
   poweredByDiv.appendChild(whydonateLogo);
