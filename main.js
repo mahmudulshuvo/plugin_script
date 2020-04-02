@@ -1,4 +1,4 @@
-// updating to production link
+// Ready for production
 
 var randExtension = Math.floor(Math.random() * 1000);
 randExtension = randExtension.toString();
