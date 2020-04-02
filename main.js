@@ -2237,9 +2237,12 @@ function ValidateEmail(mail) {
 
 async function makeDonation(data, slugVal) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
+  // const donationApi =
+  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
   const donationApi =
     'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
-
+  // const proxyurl = 'http://127.0.0.1:8080/'
+  // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
 
   var donateBtnInModal = document.getElementById(
@@ -2277,9 +2280,17 @@ async function makeDonation(data, slugVal) {
 
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
+  // const url =
+  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&')[0]
   const url =
     'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
     widgetDiv.dataset.slug.split('&')[0]
+
+  // const proxyurl = 'http://127.0.0.1:8080/'
+  // const url =
+  //   'http://127.0.0.1:8000/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&')[0]
 
   console.log('options check ', widgetDiv.getAttribute('value'))
 
