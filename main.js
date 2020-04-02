@@ -184,7 +184,7 @@ function designWidget(option) {
     fundraiserImage.id = "fundraiser-image" + widgetDiv.dataset.slug;
     fundraiserImage.className = "fundraiser-image";
     fundraiserImage.src =
-      "https://res.cloudinary.com/dxhaja5tz/image/upload/v1585144315/FhHRx_e2c0zt.gif";
+      "https://res.cloudinary.com/dxhaja5tz/image/upload/v1585584744/35_gdepw8.gif";
     fundraiserImage.style.height = "150px";
     fundraiserImage.style.width = "100%";
     fundraiserImage.style.marginBottom = "10px";
