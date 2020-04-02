@@ -1,3 +1,5 @@
+// updating css link final
+
 console.log('executing javascript')
 
 var randExtension = Math.floor(Math.random() * 1000)
@@ -19,8 +21,7 @@ var widgetOption = ''
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-style.href = 'https://cdn.jsdelivr.net/gh/mahmudulshuvo/plugin_script/style.css'
-// style.href = 'style.css'
+style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -2237,7 +2238,7 @@ function ValidateEmail(mail) {
 async function makeDonation(data, slugVal) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
   const donationApi =
-    'https://whydonate-development.appspot.com/api/v1/donation/order/'
+    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
 
   const url = proxyurl + donationApi
 
@@ -2277,7 +2278,7 @@ async function makeDonation(data, slugVal) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
   const url =
-    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
     widgetDiv.dataset.slug.split('&')[0]
 
   console.log('options check ', widgetDiv.getAttribute('value'))
