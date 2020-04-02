@@ -1,4 +1,4 @@
-// Ready for production
+// version 1.0
 
 var randExtension = Math.floor(Math.random() * 1000);
 randExtension = randExtension.toString();
