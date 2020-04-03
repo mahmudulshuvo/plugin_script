@@ -2,6 +2,7 @@
 // Update nl lang and style changes
 // Remove btn red color
 // Update Powered by text
+// Period Interval bug fix
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -1694,14 +1695,20 @@ function handlePeriodInterval(value, idValue) {
 
   if (value === 1) {
     onetimeRadio.checked = true
+    monthlyRadio.checked = false
+    yearlyRadio.checked = false
     monthlyBar.style.backgroundColor = '#72bcd4'
     yearlyBar.style.backgroundColor = '#72bcd4'
   } else if (value === 2) {
     monthlyRadio.checked = true
+    onetimeRadio.checked = false
+    yearlyRadio.checked = false
     onetimeBar.style.backgroundColor = '#72bcd4'
     yearlyBar.style.backgroundColor = '#72bcd4'
   } else {
     yearlyRadio.checked = true
+    monthlyRadio.checked = false
+    onetimeRadio.checked = false
     onetimeBar.style.backgroundColor = '#72bcd4'
     monthlyBar.style.backgroundColor = '#72bcd4'
   }
@@ -2552,7 +2559,7 @@ function directDonate(idValue) {
       lang: 'en',
       description: 'Hey there, just want to help with donation',
       bank_account: '',
-      return_url: window.location.href
+      return_url: 'https://www.google.com'
     }
 
     makeDonation(data, slugVal)
