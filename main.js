@@ -20,8 +20,8 @@ var widgetOption = ''
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-// style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
-style.href = 'https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
+style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+// style.href = 'https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
