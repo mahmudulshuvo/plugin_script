@@ -1,5 +1,5 @@
 // version 1.0
-// change logo link
+// remove amount spacing
 
 var randExtension = Math.floor(Math.random() * 1000);
 randExtension = randExtension.toString();
@@ -453,7 +453,7 @@ function designWidget(option) {
     var firstAmountLabel = document.createElement("label");
     firstAmountLabel.id = "first-amount-label+" + widgetDiv.dataset.slug;
     firstAmountLabel.className = "first-amount-label";
-    firstAmountLabel.innerText = "€ 25";
+    firstAmountLabel.innerText = "€25";
     firstAmountLabel.style.fontSize = "16px";
     firstAmountLabel.style.fontWeight = "500";
     firstAmountLabel.style.marginTop = "12px";
@@ -488,7 +488,7 @@ function designWidget(option) {
     var secondAmountLabel = document.createElement("label");
     secondAmountLabel.id = "second-amount-label+" + widgetDiv.dataset.slug;
     secondAmountLabel.className = "second-amount-label";
-    secondAmountLabel.innerText = "€ 50";
+    secondAmountLabel.innerText = "€50";
     secondAmountLabel.style.fontSize = "16px";
     secondAmountLabel.style.fontWeight = "500";
     secondAmountLabel.style.marginTop = "12px";
@@ -523,7 +523,7 @@ function designWidget(option) {
     var thirdAmountLable = document.createElement("label");
     thirdAmountLable.id = "third-amount-label+" + widgetDiv.dataset.slug;
     thirdAmountLable.className = "third-amount-label";
-    thirdAmountLable.innerText = "€ 75";
+    thirdAmountLable.innerText = "€75";
     thirdAmountLable.style.fontSize = "16px";
     thirdAmountLable.style.fontWeight = "500";
     thirdAmountLable.style.marginTop = "12px";
@@ -558,7 +558,7 @@ function designWidget(option) {
     var forthAmountLabel = document.createElement("label");
     forthAmountLabel.id = "forth-amount-label+" + widgetDiv.dataset.slug;
     forthAmountLabel.className = "forth-amount-label";
-    forthAmountLabel.innerText = "€ 100";
+    forthAmountLabel.innerText = "€100";
     forthAmountLabel.style.fontSize = "16px";
     forthAmountLabel.style.fontWeight = "500";
     forthAmountLabel.style.marginTop = "12px";
@@ -1012,7 +1012,7 @@ function designWidget(option) {
     var firstAmountLabel = document.createElement("label");
     firstAmountLabel.id = "first-amount-label+" + widgetDiv.dataset.slug;
     firstAmountLabel.className = "first-amount-label";
-    firstAmountLabel.innerText = "€ 25";
+    firstAmountLabel.innerText = "€25";
     firstAmountLabel.style.fontSize = "16px";
     firstAmountLabel.style.fontWeight = "500";
     firstAmountLabel.style.marginTop = "12px";
@@ -1047,7 +1047,7 @@ function designWidget(option) {
     var secondAmountLabel = document.createElement("label");
     secondAmountLabel.id = "second-amount-label+" + widgetDiv.dataset.slug;
     secondAmountLabel.className = "second-amount-label";
-    secondAmountLabel.innerText = "€ 50";
+    secondAmountLabel.innerText = "€50";
     secondAmountLabel.style.fontSize = "16px";
     secondAmountLabel.style.fontWeight = "500";
     secondAmountLabel.style.marginTop = "12px";
@@ -1082,7 +1082,7 @@ function designWidget(option) {
     var thirdAmountLable = document.createElement("label");
     thirdAmountLable.id = "third-amount-label+" + widgetDiv.dataset.slug;
     thirdAmountLable.className = "third-amount-label";
-    thirdAmountLable.innerText = "€ 75";
+    thirdAmountLable.innerText = "€75";
     thirdAmountLable.style.fontSize = "16px";
     thirdAmountLable.style.fontWeight = "500";
     thirdAmountLable.style.marginTop = "12px";
@@ -1117,7 +1117,7 @@ function designWidget(option) {
     var forthAmountLabel = document.createElement("label");
     forthAmountLabel.id = "forth-amount-label+" + widgetDiv.dataset.slug;
     forthAmountLabel.className = "forth-amount-label";
-    forthAmountLabel.innerText = "€ 100";
+    forthAmountLabel.innerText = "€100";
     forthAmountLabel.style.fontSize = "16px";
     forthAmountLabel.style.fontWeight = "500";
     forthAmountLabel.style.marginTop = "12px";
@@ -1796,7 +1796,7 @@ function createModal(slug) {
   var firstAmountLabel = document.createElement("label");
   firstAmountLabel.id = "first-amount-label+" + slug;
   firstAmountLabel.className = "first-amount-label";
-  firstAmountLabel.innerText = "€ 25";
+  firstAmountLabel.innerText = "€25";
   firstAmountLabel.style.fontSize = "16px";
   firstAmountLabel.style.fontWeight = "500";
   firstAmountLabel.style.marginTop = "12px";
@@ -1831,7 +1831,7 @@ function createModal(slug) {
   var secondAmountLabel = document.createElement("label");
   secondAmountLabel.id = "second-amount-label+" + slug;
   secondAmountLabel.className = "second-amount-label";
-  secondAmountLabel.innerText = "€ 50";
+  secondAmountLabel.innerText = "€50";
   secondAmountLabel.style.fontSize = "16px";
   secondAmountLabel.style.fontWeight = "500";
   secondAmountLabel.style.marginTop = "12px";
@@ -1866,7 +1866,7 @@ function createModal(slug) {
   var thirdAmountLable = document.createElement("label");
   thirdAmountLable.id = "third-amount-label+" + slug;
   thirdAmountLable.className = "third-amount-label";
-  thirdAmountLable.innerText = "€ 75";
+  thirdAmountLable.innerText = "€75";
   thirdAmountLable.style.fontSize = "16px";
   thirdAmountLable.style.fontWeight = "500";
   thirdAmountLable.style.marginTop = "12px";
@@ -1901,7 +1901,7 @@ function createModal(slug) {
   var forthAmountLabel = document.createElement("label");
   forthAmountLabel.id = "forth-amount-label+" + slug;
   forthAmountLabel.className = "forth-amount-label";
-  forthAmountLabel.innerText = "€ 100";
+  forthAmountLabel.innerText = "€100";
   forthAmountLabel.style.fontSize = "16px";
   forthAmountLabel.style.fontWeight = "500";
   forthAmountLabel.style.marginTop = "12px";
