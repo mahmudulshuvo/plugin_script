@@ -1,5 +1,5 @@
 /* Version 1.0 */
-/* Change raised bar */
+/* Update nl lang and style changes */
 
 .widget {
   background-color: lightblue;
@@ -306,7 +306,7 @@
 }
 
 .donate-btn {
-  background-color: #2828d6;
+  background: #2828d6;
   color: white;
   font-size: 16px;
   font-weight: 600;
@@ -319,7 +319,7 @@
 }
 
 .donate-btn-in-form {
-  background-color: #2828d6 !important;
+  background-color: #2828d6;
   color: white !important;
   font-size: 16px !important;
   font-weight: 600 !important;

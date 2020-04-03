@@ -1,5 +1,5 @@
 // version 1.0
-// remove amount spacing
+// Update nl lang and style changes
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -20,7 +20,8 @@ var widgetOption = ''
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+// style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+style.href = 'https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -58,15 +59,21 @@ function addFontAwesome() {
 function loadWidget() {
   widgetOption = widgetDiv.getAttribute('value')
   var slug = widgetDiv.dataset.slug
+  var lang = widgetDiv.dataset.lang
+  var option = 0
   if (widgetOption === 'show-with-image') {
+    option = 1
     designWidget(1)
     createModal(slug)
   } else if (widgetOption === 'donation-widget') {
+    option = 3
     designWidget(3)
     createModal(slug)
   } else if (widgetOption === 'donation-form+image') {
+    option = 2
     designWidget(2)
   } else if (widgetOption === 'donation-form+widget') {
+    option = 4
     designWidget(4)
   } else {
     // Do nothing
@@ -79,21 +86,21 @@ function loadWidget() {
   addFontAwesome()
 
   var url = makeUrl()
-  getFundraiserLocalValue(url, slug)
+  getFundraiserLocalValue(url, slug, lang)
 }
 
-async function getFundraiserLocalValue(url, slug) {
+async function getFundraiserLocalValue(url, slug, lang) {
   await fetch(url)
     .then(response => {
       return response.json()
     })
     .then(data => {
       console.log(data)
-      setValues(data, slug)
+      setValues(data, slug, lang)
     })
 }
 
-function setValues(result, slug) {
+function setValues(result, slug, lang) {
   fundraiserInfo = result['data']
   // fundraiserInfo.slug = fundraiserInfo.slug + '&' + randExtension
 
@@ -104,6 +111,34 @@ function setValues(result, slug) {
   if (fundraiserImageView) {
     fundraiserImageView.style.objectFit = 'cover'
     fundraiserImageView.src = result['data']['background']['image']
+  }
+
+  if (result['data']['custom_style']) {
+    var checkDonateBtn = document.getElementById('donate-btn+' + slug)
+    var checkDonateBtnInForm = document.getElementById(
+      'donate-btn-in-modal+' + slug
+    )
+    if (checkDonateBtn) {
+      console.log(
+        'checkDonateBtn primary color ',
+        String(result['data']['custom_style']['primary_color'])
+      )
+      // checkDonateBtn.style.background =
+      //   result['data']['custom_style']['primary_color']
+      checkDonateBtn.style.background = 'red'
+    }
+    if (checkDonateBtnInForm) {
+      console.log(
+        'checkDonateBtnInForm primary color ',
+        result['data']['custom_style']['primary_color']
+      )
+      // checkDonateBtnInForm.style.background =
+      //   result['data']['custom_style']['primary_color']
+      jQuery('#donate-btn-in-modal' + slug).css(
+        'background-color',
+        result['data']['custom_style']['primary_color']
+      )
+    }
   }
 
   var targetAmount = document.getElementById('target-amount' + slug)
@@ -117,7 +152,13 @@ function setValues(result, slug) {
 
     receiveAmount.innerText = '€' + result['data']['donation']['amount']
     if (result['data']['amount_target'] > 0) {
-      targetAmount.innerText = 'of €' + result['data']['amount_target']
+      if (lang === 'nl') {
+        targetAmount.innerText = 'van €' + result['data']['amount_target']
+      } else if (lang === 'es') {
+      } else if (lang === 'de') {
+      } else {
+        targetAmount.innerText = 'of €' + result['data']['amount_target']
+      }
     }
     var date1 = new Date() // current date
     var date2 = new Date(result['data']['end_date']) // mm/dd/yyyy format
@@ -133,7 +174,13 @@ function setValues(result, slug) {
     } else if (timeDiffInDays > 1000) {
       remainDaysLabel.innerText = ''
     } else {
-      remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
+      if (lang === 'nl') {
+        remainDaysLabel.innerText = timeDiffInDays + ' dag(en)'
+      } else if (lang === 'es') {
+      } else if (lang === 'de') {
+      } else {
+        remainDaysLabel.innerText = timeDiffInDays + ' day(s) left'
+      }
     }
 
     if (result['data']['amount_target'] === 0) {
@@ -158,7 +205,13 @@ function setValues(result, slug) {
       }
 
       var raisedLabel = document.getElementById('raised-label' + slug)
-      raisedLabel.innerText = progress + '% funded'
+      if (lang === 'nl') {
+        raisedLabel.innerText = progress + '% gefinancierd'
+      } else if (lang === 'de') {
+      } else if (lang === 'es') {
+      } else {
+        raisedLabel.innerText = progress + '% funded'
+      }
     }
   } else {
     var fundraiserInfoDiv = document.getElementById(
@@ -247,7 +300,13 @@ function designWidget(option) {
     donateBtnDiv.id = 'donate-btn-div+' + widgetDiv.dataset.slug
     donateButton.id = 'donate-btn+' + widgetDiv.dataset.slug
     donateButton.className = 'donate-btn'
-    donateButton.innerHTML = 'Donate'
+    if (widgetDiv.dataset.lang === 'nl') {
+      donateButton.innerHTML = '<i class="fa"></i> Doneer'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      donateButton.innerHTML = '<i class="fa"></i> Donate'
+    }
     donateButton.onclick = () => this.handleDonate(donateBtnDiv.id)
     donateBtnDiv.appendChild(donateButton)
     widgetDiv.appendChild(donateBtnDiv)
@@ -285,13 +344,26 @@ function designWidget(option) {
     var label1 = document.createElement('label')
     label1.id = 'label1' + widgetDiv.dataset.slug
     label1.className = 'label1'
-    label1.innerText = 'Secured Online Donation'
+    if (widgetDiv.dataset.lang === 'nl') {
+      label1.innerText = 'Veilig online doneren'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      label1.innerText = 'Secured Online Donation'
+    }
+
     labelDiv.appendChild(label1)
 
     var label2 = document.createElement('label')
     label2.id = 'label2' + widgetDiv.dataset.slug
     label2.className = 'label2'
-    label2.innerText = 'Enter your donation'
+    if (widgetDiv.dataset.lang === 'nl') {
+      label2.innerText = 'Voer je donatie in'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      label2.innerText = 'Enter your donation'
+    }
     labelDiv.appendChild(label2)
 
     // ----------- period inervals -------------------
@@ -306,7 +378,13 @@ function designWidget(option) {
     periodOnetimeDiv.className = 'period-intervals-onetime'
 
     var oneTimeLabel = document.createElement('label')
-    oneTimeLabel.innerText = 'One time'
+    if (widgetDiv.dataset.lang === 'nl') {
+      oneTimeLabel.innerText = 'Eenmalig'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      oneTimeLabel.innerText = 'One time'
+    }
     oneTimeLabel.fontSize = '14px'
     oneTimeLabel.style.display = 'block'
     oneTimeLabel.onclick = () =>
@@ -330,7 +408,13 @@ function designWidget(option) {
     periodMonthlyDiv.className = 'period-intervals-monthly'
 
     var monthlyLabel = document.createElement('label')
-    monthlyLabel.innerText = 'Monthly'
+    if (widgetDiv.dataset.lang === 'nl') {
+      monthlyLabel.innerText = 'Maandelijks'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      monthlyLabel.innerText = 'Monthly'
+    }
     monthlyLabel.fontSize = '14px'
     monthlyLabel.style.display = 'block'
     monthlyLabel.onclick = () =>
@@ -353,7 +437,13 @@ function designWidget(option) {
     periodYearlyDiv.className = 'period-intervals-yearly'
 
     var yearlyLabel = document.createElement('label')
-    yearlyLabel.innerText = 'Yearly'
+    if (widgetDiv.dataset.lang === 'nl') {
+      yearlyLabel.innerText = 'Jaarlijks'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      yearlyLabel.innerText = 'Yearly'
+    }
     yearlyLabel.fontSize = '14px'
     yearlyLabel.style.display = 'block'
     yearlyLabel.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
@@ -410,7 +500,13 @@ function designWidget(option) {
     var selectAmountlabel = document.createElement('label')
     selectAmountlabel.id = 'select-amount-label' + widgetDiv.dataset.slug
     selectAmountlabel.className = 'select-amount-label'
-    selectAmountlabel.innerText = 'Select Amount'
+    if (widgetDiv.dataset.lang === 'nl') {
+      selectAmountlabel.innerText = 'Bedrag'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      selectAmountlabel.innerText = 'Amount'
+    }
     selectAmountlabel.style.fontSize = '14px'
     selectAmountlabel.fontWeight = '500'
     selectAmountLabelDiv.appendChild(selectAmountlabel)
@@ -591,7 +687,13 @@ function designWidget(option) {
     var otherAmountLabel = document.createElement('label')
     otherAmountLabel.id = 'other-amount-label+' + widgetDiv.dataset.slug
     otherAmountLabel.className = 'other-amount-label'
-    otherAmountLabel.innerText = 'Other'
+    if (widgetDiv.dataset.lang === 'nl') {
+      otherAmountLabel.innerText = 'Bedrag'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      otherAmountLabel.innerText = 'Other'
+    }
     otherAmountLabel.style.fontSize = '16px'
     otherAmountLabel.style.fontWeight = '500'
     otherAmountLabel.style.marginTop = '12px'
@@ -617,7 +719,13 @@ function designWidget(option) {
     var missingAmountMsg = document.createElement('p')
     missingAmountMsg.id = 'missing-error-msg-amount' + widgetDiv.dataset.slug
     missingAmountMsg.className = 'missing-error-msg'
-    missingAmountMsg.innerText = 'Amount should be minimum €4'
+    if (widgetDiv.dataset.lang === 'nl') {
+      missingAmountMsg.innerText = 'Minimaal €4,-'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      missingAmountMsg.innerText = 'Minimum €4,-'
+    }
     donationForm.appendChild(missingAmountMsg)
 
     var donorInfoDiv = document.createElement('div')
@@ -627,7 +735,13 @@ function designWidget(option) {
 
     var firstNameInput = document.createElement('input')
     firstNameInput.setAttribute('type', 'text')
-    firstNameInput.placeholder = 'First name'
+    if (widgetDiv.dataset.lang === 'nl') {
+      firstNameInput.placeholder = 'Voornaam'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      firstNameInput.placeholder = 'First name'
+    }
     firstNameInput.id = 'first-name-field' + widgetDiv.dataset.slug
     firstNameInput.className = 'first-name-field'
     donorInfoDiv.appendChild(firstNameInput)
@@ -636,12 +750,24 @@ function designWidget(option) {
     missingFirstNametMsg.id =
       'missing-error-msg-first-name' + widgetDiv.dataset.slug
     missingFirstNametMsg.className = 'missing-error-msg'
-    missingFirstNametMsg.innerText = 'Please enter your first name'
+    if (widgetDiv.dataset.lang === 'nl') {
+      missingFirstNametMsg.innerText = 'Moet tussen de 1 en 30 tekens zijn.'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      missingFirstNametMsg.innerText = 'Must be between 1 and 30 characters.'
+    }
     donorInfoDiv.appendChild(missingFirstNametMsg)
 
     var lastNameInput = document.createElement('input')
     lastNameInput.setAttribute('type', 'text')
-    lastNameInput.placeholder = 'Last name'
+    if (widgetDiv.dataset.lang === 'nl') {
+      lastNameInput.placeholder = 'Achternaam'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      lastNameInput.placeholder = 'Last name'
+    }
     lastNameInput.id = 'last-name-field' + widgetDiv.dataset.slug
     lastNameInput.className = 'last-name-field'
     donorInfoDiv.appendChild(lastNameInput)
@@ -650,12 +776,24 @@ function designWidget(option) {
     missingLastNameMsg.id =
       'missing-error-msg-last-name' + widgetDiv.dataset.slug
     missingLastNameMsg.className = 'missing-error-msg'
-    missingLastNameMsg.innerText = 'Please enter your last name'
+    if (widgetDiv.dataset.lang === 'nl') {
+      missingLastNameMsg.innerText = 'Moet tussen de 1 en 30 tekens zijn.'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      missingLastNameMsg.innerText = 'Must be between 1 and 30 characters.'
+    }
     donorInfoDiv.appendChild(missingLastNameMsg)
 
     var emailInput = document.createElement('input')
     emailInput.setAttribute('type', 'text')
-    emailInput.placeholder = 'Email'
+    if (widgetDiv.dataset.lang === 'nl') {
+      emailInput.placeholder = 'Emailadres'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      emailInput.placeholder = 'Email'
+    }
     emailInput.id = 'email-field' + widgetDiv.dataset.slug
     emailInput.className = 'email-field'
     donorInfoDiv.appendChild(emailInput)
@@ -663,7 +801,13 @@ function designWidget(option) {
     var missingEmailMsg = document.createElement('p')
     missingEmailMsg.id = 'missing-error-msg-email' + widgetDiv.dataset.slug
     missingEmailMsg.className = 'missing-error-msg'
-    missingEmailMsg.innerText = 'Please enter your email address'
+    if (widgetDiv.dataset.lang === 'nl') {
+      missingEmailMsg.innerText = 'Onjuist emailadres.'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      missingEmailMsg.innerText = 'Incorrect email address.'
+    }
     donorInfoDiv.appendChild(missingEmailMsg)
 
     // ----------- copied from here -----------------------
@@ -678,7 +822,13 @@ function designWidget(option) {
     donateBtnDiv.id = 'donate-btn-in-form-div+' + widgetDiv.dataset.slug
     donateButton.id = 'donate-btn-in-form+' + widgetDiv.dataset.slug
     donateButton.className = 'donate-btn-in-form'
-    donateButton.innerHTML = '<i class="fa"></i> Donate'
+    if (widgetDiv.dataset.lang === 'nl') {
+      donateButton.innerHTML = '<i class="fa"></i> Doneer'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      donateButton.innerHTML = '<i class="fa"></i> Donate'
+    }
     donateButton.onclick = () => this.directDonate(donateBtnDiv.id)
     donateBtnDiv.appendChild(donateButton)
     donationForm.appendChild(donateBtnDiv)
@@ -844,13 +994,25 @@ function designWidget(option) {
     var label1 = document.createElement('label')
     label1.id = 'label1' + widgetDiv.dataset.slug
     label1.className = 'label1'
-    label1.innerText = 'Secured Online Donation'
+    if (widgetDiv.dataset.lang === 'nl') {
+      label1.innerText = 'Veilig online doneren'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      label1.innerText = 'Secured Online Donation'
+    }
     labelDiv.appendChild(label1)
 
     var label2 = document.createElement('label')
     label2.id = 'label2' + widgetDiv.dataset.slug
     label2.className = 'label2'
-    label2.innerText = 'Enter your donation'
+    if (widgetDiv.dataset.lang === 'nl') {
+      label2.innerText = 'Voer je donatie in'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      label2.innerText = 'Enter your donation'
+    }
     labelDiv.appendChild(label2)
 
     // ------------------ period intervals --------------------
@@ -865,7 +1027,13 @@ function designWidget(option) {
     periodOnetimeDiv.className = 'period-intervals-onetime'
 
     var oneTimeLabel = document.createElement('label')
-    oneTimeLabel.innerText = 'One time'
+    if (widgetDiv.dataset.lang === 'nl') {
+      oneTimeLabel.innerText = 'Eenmalig'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      oneTimeLabel.innerText = 'One time'
+    }
     oneTimeLabel.fontSize = '14px'
     oneTimeLabel.style.display = 'block'
     oneTimeLabel.onclick = () =>
@@ -889,7 +1057,13 @@ function designWidget(option) {
     periodMonthlyDiv.className = 'period-intervals-monthly'
 
     var monthlyLabel = document.createElement('label')
-    monthlyLabel.innerText = 'Monthly'
+    if (widgetDiv.dataset.lang === 'nl') {
+      monthlyLabel.innerText = 'Maandelijks'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      monthlyLabel.innerText = 'Monthly'
+    }
     monthlyLabel.fontSize = '14px'
     monthlyLabel.style.display = 'block'
     monthlyLabel.onclick = () =>
@@ -912,7 +1086,13 @@ function designWidget(option) {
     periodYearlyDiv.className = 'period-intervals-yearly'
 
     var yearlyLabel = document.createElement('label')
-    yearlyLabel.innerText = 'Yearly'
+    if (widgetDiv.dataset.lang === 'nl') {
+      yearlyLabel.innerText = 'Jaarlijks'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      yearlyLabel.innerText = 'Yearly'
+    }
     yearlyLabel.fontSize = '14px'
     yearlyLabel.style.display = 'block'
     yearlyLabel.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
@@ -969,7 +1149,13 @@ function designWidget(option) {
     var selectAmountlabel = document.createElement('label')
     selectAmountlabel.id = 'select-amount-label' + widgetDiv.dataset.slug
     selectAmountlabel.className = 'select-amount-label'
-    selectAmountlabel.innerText = 'Select Amount'
+    if (widgetDiv.dataset.lang === 'nl') {
+      selectAmountlabel.innerText = 'Bedrag'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      selectAmountlabel.innerText = 'Amount'
+    }
     selectAmountlabel.style.fontSize = '14px'
     selectAmountlabel.fontWeight = '500'
     selectAmountLabelDiv.appendChild(selectAmountlabel)
@@ -1148,7 +1334,13 @@ function designWidget(option) {
     var otherAmountLabel = document.createElement('label')
     otherAmountLabel.id = 'other-amount-label+' + widgetDiv.dataset.slug
     otherAmountLabel.className = 'other-amount-label'
-    otherAmountLabel.innerText = 'Other'
+    if (widgetDiv.dataset.lang === 'nl') {
+      otherAmountLabel.innerText = 'Bedrag'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      otherAmountLabel.innerText = 'Other'
+    }
     otherAmountLabel.style.fontSize = '16px'
     otherAmountLabel.style.fontWeight = '500'
     otherAmountLabel.style.marginTop = '12px'
@@ -1174,7 +1366,13 @@ function designWidget(option) {
     var missingAmountMsg = document.createElement('p')
     missingAmountMsg.id = 'missing-error-msg-amount' + widgetDiv.dataset.slug
     missingAmountMsg.className = 'missing-error-msg'
-    missingAmountMsg.innerText = 'Amount should be minimum €4'
+    if (widgetDiv.dataset.lang === 'nl') {
+      missingAmountMsg.innerText = 'Minimaal €4,-'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      missingAmountMsg.innerText = 'Minimum €4,-'
+    }
     donationForm.appendChild(missingAmountMsg)
 
     var donorInfoDiv = document.createElement('div')
@@ -1184,7 +1382,13 @@ function designWidget(option) {
 
     var firstNameInput = document.createElement('input')
     firstNameInput.setAttribute('type', 'text')
-    firstNameInput.placeholder = 'First name'
+    if (widgetDiv.dataset.lang === 'nl') {
+      firstNameInput.placeholder = 'Voornaam'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      firstNameInput.placeholder = 'First name'
+    }
     firstNameInput.id = 'first-name-field' + widgetDiv.dataset.slug
     firstNameInput.className = 'first-name-field'
     donorInfoDiv.appendChild(firstNameInput)
@@ -1193,12 +1397,24 @@ function designWidget(option) {
     missingFirstNameMsg.id =
       'missing-error-msg-first-name' + widgetDiv.dataset.slug
     missingFirstNameMsg.className = 'missing-error-msg'
-    missingFirstNameMsg.innerText = 'Please enter your first name'
+    if (widgetDiv.dataset.lang === 'nl') {
+      missingFirstNameMsg.innerText = 'Moet tussen de 1 en 30 tekens zijn.'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      missingFirstNameMsg.innerText = 'Must be between 1 and 30 characters.'
+    }
     donorInfoDiv.appendChild(missingFirstNameMsg)
 
     var lastNameInput = document.createElement('input')
     lastNameInput.setAttribute('type', 'text')
-    lastNameInput.placeholder = 'Last name'
+    if (widgetDiv.dataset.lang === 'nl') {
+      lastNameInput.placeholder = 'Achternaam'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      lastNameInput.placeholder = 'Last name'
+    }
     lastNameInput.id = 'last-name-field' + widgetDiv.dataset.slug
     lastNameInput.className = 'last-name-field'
     donorInfoDiv.appendChild(lastNameInput)
@@ -1207,12 +1423,24 @@ function designWidget(option) {
     missingLastNameMsg.id =
       'missing-error-msg-last-name' + widgetDiv.dataset.slug
     missingLastNameMsg.className = 'missing-error-msg'
-    missingLastNameMsg.innerText = 'Please enter your last name'
+    if (widgetDiv.dataset.lang === 'nl') {
+      missingLastNameMsg.innerText = 'Moet tussen de 1 en 30 tekens zijn.'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      missingLastNameMsg.innerText = 'Must be between 1 and 30 characters.'
+    }
     donorInfoDiv.appendChild(missingLastNameMsg)
 
     var emailInput = document.createElement('input')
     emailInput.setAttribute('type', 'text')
-    emailInput.placeholder = 'Email'
+    if (widgetDiv.dataset.lang === 'nl') {
+      emailInput.placeholder = 'Emailadres'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      emailInput.placeholder = 'Email'
+    }
     emailInput.id = 'email-field' + widgetDiv.dataset.slug
     emailInput.className = 'email-field'
     donorInfoDiv.appendChild(emailInput)
@@ -1220,7 +1448,13 @@ function designWidget(option) {
     var missingEmailMsg = document.createElement('p')
     missingEmailMsg.id = 'missing-error-msg-email' + widgetDiv.dataset.slug
     missingEmailMsg.className = 'missing-error-msg'
-    missingEmailMsg.innerText = 'Please enter your email address'
+    if (widgetDiv.dataset.lang === 'nl') {
+      missingEmailMsg.innerText = 'Onjuist emailadres.'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      missingEmailMsg.innerText = 'Incorrect email address.'
+    }
     donorInfoDiv.appendChild(missingEmailMsg)
 
     // ----------- copied from here -----------------------
@@ -1229,7 +1463,13 @@ function designWidget(option) {
     donateBtnDiv.id = 'donate-btn-in-form-div+' + widgetDiv.dataset.slug
     donateButton.id = 'donate-btn-in-form+' + widgetDiv.dataset.slug
     donateButton.className = 'donate-btn-in-form'
-    donateButton.innerHTML = '<i class="fa"></i> Donate'
+    if (widgetDiv.dataset.lang === 'nl') {
+      donateButton.innerHTML = '<i class="fa"></i> Doneer'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      donateButton.innerHTML = '<i class="fa"></i> Donate'
+    }
     donateButton.onclick = () => this.directDonate(donateBtnDiv.id)
     donateBtnDiv.appendChild(donateButton)
     donationForm.appendChild(donateBtnDiv)
@@ -1399,7 +1639,13 @@ function designWidget(option) {
     donateBtnDiv.id = 'donate-btn-div+' + widgetDiv.dataset.slug
     donateButton.id = 'donate-btn+' + widgetDiv.dataset.slug
     donateButton.className = 'donate-btn'
-    donateButton.innerHTML = 'Donate'
+    if (widgetDiv.dataset.lang === 'nl') {
+      donateButton.innerHTML = '<i class="fa"></i> Doneer'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      donateButton.innerHTML = '<i class="fa"></i> Donate'
+    }
     donateButton.onclick = () => this.handleDonate(donateBtnDiv.id)
     donateBtnDiv.appendChild(donateButton)
     widgetDiv.appendChild(donateBtnDiv)
@@ -1628,13 +1874,25 @@ function createModal(slug) {
   var label1 = document.createElement('label')
   label1.id = 'label1' + slug
   label1.className = 'label1'
-  label1.innerText = 'Secured Online Donation'
+  if (widgetDiv.dataset.lang === 'nl') {
+    label1.innerText = 'Veilig online doneren'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    label1.innerText = 'Secured Online Donation'
+  }
   labelDiv.appendChild(label1)
 
   var label2 = document.createElement('label')
   label2.id = 'label2' + slug
   label2.className = 'label2'
-  label2.innerText = 'Enter your donation'
+  if (widgetDiv.dataset.lang === 'nl') {
+    label2.innerText = 'Voer je donatie in'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    label2.innerText = 'Enter your donation'
+  }
   labelDiv.appendChild(label2)
 
   var periodDiv = document.createElement('div')
@@ -1647,7 +1905,13 @@ function createModal(slug) {
   periodOnetimeDiv.className = 'period-intervals-onetime'
 
   var oneTimeLabel = document.createElement('label')
-  oneTimeLabel.innerText = 'One time'
+  if (widgetDiv.dataset.lang === 'nl') {
+    oneTimeLabel.innerText = 'Eenmalig'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    oneTimeLabel.innerText = 'One time'
+  }
   oneTimeLabel.fontSize = '14px'
   oneTimeLabel.style.display = 'block'
   oneTimeLabel.onclick = () => this.handlePeriodInterval(1, periodOnetimeDiv.id)
@@ -1669,7 +1933,13 @@ function createModal(slug) {
   periodMonthlyDiv.className = 'period-intervals-monthly'
 
   var monthlyLabel = document.createElement('label')
-  monthlyLabel.innerText = 'Monthly'
+  if (widgetDiv.dataset.lang === 'nl') {
+    monthlyLabel.innerText = 'Maandelijks'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    monthlyLabel.innerText = 'Monthly'
+  }
   monthlyLabel.fontSize = '14px'
   monthlyLabel.style.display = 'block'
   monthlyLabel.onclick = () => this.handlePeriodInterval(2, periodMonthlyDiv.id)
@@ -1690,7 +1960,13 @@ function createModal(slug) {
   periodYearlyDiv.className = 'period-intervals-yearly'
 
   var yearlyLabel = document.createElement('label')
-  yearlyLabel.innerText = 'Yearly'
+  if (widgetDiv.dataset.lang === 'nl') {
+    yearlyLabel.innerText = 'Jaarlijks'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    yearlyLabel.innerText = 'Yearly'
+  }
   yearlyLabel.fontSize = '14px'
   yearlyLabel.style.display = 'block'
   yearlyLabel.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
@@ -1746,7 +2022,13 @@ function createModal(slug) {
   var selectAmountlabel = document.createElement('label')
   selectAmountlabel.id = 'select-amount-label' + slug
   selectAmountlabel.className = 'select-amount-label'
-  selectAmountlabel.innerText = 'Select Amount'
+  if (widgetDiv.dataset.lang === 'nl') {
+    selectAmountlabel.innerText = 'Bedrag'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    selectAmountlabel.innerText = 'Amount'
+  }
   selectAmountlabel.style.fontSize = '14px'
   selectAmountlabel.fontWeight = '500'
   selectAmountLabelDiv.appendChild(selectAmountlabel)
@@ -1924,7 +2206,13 @@ function createModal(slug) {
   var otherAmountLabel = document.createElement('label')
   otherAmountLabel.id = 'other-amount-label+' + slug
   otherAmountLabel.className = 'other-amount-label'
-  otherAmountLabel.innerText = 'Other'
+  if (widgetDiv.dataset.lang === 'nl') {
+    otherAmountLabel.innerText = 'Bedrag'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    otherAmountLabel.innerText = 'Other'
+  }
   otherAmountLabel.style.fontSize = '16px'
   otherAmountLabel.style.fontWeight = '500'
   otherAmountLabel.style.marginTop = '12px'
@@ -1950,7 +2238,13 @@ function createModal(slug) {
   var missingAmountMsg = document.createElement('p')
   missingAmountMsg.id = 'missing-error-msg-amount' + slug
   missingAmountMsg.className = 'missing-error-msg'
-  missingAmountMsg.innerText = 'Amount should be minimum €4'
+  if (widgetDiv.dataset.lang === 'nl') {
+    missingAmountMsg.innerText = 'Minimaal €4,-'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    missingAmountMsg.innerText = 'Minimum €4,-'
+  }
   donationFormDiv.appendChild(missingAmountMsg)
 
   var donorInfoDiv = document.createElement('div')
@@ -1960,7 +2254,13 @@ function createModal(slug) {
 
   var firstNameInput = document.createElement('input')
   firstNameInput.setAttribute('type', 'text')
-  firstNameInput.placeholder = 'First name'
+  if (widgetDiv.dataset.lang === 'nl') {
+    firstNameInput.placeholder = 'Voornaam'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    firstNameInput.placeholder = 'First name'
+  }
   firstNameInput.id = 'first-name-field' + slug
   firstNameInput.className = 'first-name-field'
   donorInfoDiv.appendChild(firstNameInput)
@@ -1968,12 +2268,24 @@ function createModal(slug) {
   var missingFirstnameMsg = document.createElement('p')
   missingFirstnameMsg.id = 'missing-error-msg-first-name' + slug
   missingFirstnameMsg.className = 'missing-error-msg'
-  missingFirstnameMsg.innerText = 'Please enter your first name'
+  if (widgetDiv.dataset.lang === 'nl') {
+    missingFirstnameMsg.innerText = 'Moet tussen de 1 en 30 tekens zijn.'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    missingFirstnameMsg.innerText = 'Must be between 1 and 30 characters.'
+  }
   donorInfoDiv.appendChild(missingFirstnameMsg)
 
   var lastNameInput = document.createElement('input')
   lastNameInput.setAttribute('type', 'text')
-  lastNameInput.placeholder = 'Last name'
+  if (widgetDiv.dataset.lang === 'nl') {
+    lastNameInput.placeholder = 'Achternaam'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    lastNameInput.placeholder = 'Last name'
+  }
   lastNameInput.id = 'last-name-field' + slug
   lastNameInput.className = 'last-name-field'
   donorInfoDiv.appendChild(lastNameInput)
@@ -1981,12 +2293,24 @@ function createModal(slug) {
   var missingLastnameMsg = document.createElement('p')
   missingLastnameMsg.id = 'missing-error-msg-last-name' + slug
   missingLastnameMsg.className = 'missing-error-msg'
-  missingLastnameMsg.innerText = 'Please enter your last name'
+  if (widgetDiv.dataset.lang === 'nl') {
+    missingLastnameMsg.innerText = 'Moet tussen de 1 en 30 tekens zijn.'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    missingLastnameMsg.innerText = 'Must be between 1 and 30 characters.'
+  }
   donorInfoDiv.appendChild(missingLastnameMsg)
 
   var emailInput = document.createElement('input')
   emailInput.setAttribute('type', 'text')
-  emailInput.placeholder = 'Email'
+  if (widgetDiv.dataset.lang === 'nl') {
+    emailInput.placeholder = 'Emailadres'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    emailInput.placeholder = 'Email'
+  }
   emailInput.id = 'email-field' + slug
   emailInput.className = 'email-field'
   donorInfoDiv.appendChild(emailInput)
@@ -1994,13 +2318,25 @@ function createModal(slug) {
   var missingEmailMsg = document.createElement('p')
   missingEmailMsg.id = 'missing-error-msg-email' + slug
   missingEmailMsg.className = 'missing-error-msg'
-  missingEmailMsg.innerText = 'Please enter your email address'
+  if (widgetDiv.dataset.lang === 'nl') {
+    missingEmailMsg.innerText = 'Onjuist emailadres.'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    missingEmailMsg.innerText = 'Incorrect email address.'
+  }
   donorInfoDiv.appendChild(missingEmailMsg)
 
   var modalDonateButton = document.createElement('button')
   modalDonateButton.id = 'donate-btn-in-modal+' + slug
   modalDonateButton.className = 'donate-btn-in-form'
-  modalDonateButton.innerHTML = '<i class="fa"></i> Donate'
+  if (widgetDiv.dataset.lang === 'nl') {
+    modalDonateButton.innerHTML = '<i class="fa"></i> Doneer'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    modalDonateButton.innerHTML = '<i class="fa"></i> Donate'
+  }
   modalDonateButton.onclick = () => this.directDonate(modalDonateButton.id)
   donationFormDiv.appendChild(modalDonateButton)
 
@@ -2102,7 +2438,7 @@ function directDonate(idValue) {
   firstNameErrMsg.style.display = 'none'
   lastNameErrMsg.style.display = 'none'
   emailErrMsg.style.display = 'none'
-  amountErrMsg.innerText = 'Amount should be minimum €4'
+  // amountErrMsg.innerText = 'Amount should be minimum €4'
 
   fundrasier_id = document
     .getElementById('fundraiser-id-label' + slugVal)
@@ -2137,7 +2473,7 @@ function directDonate(idValue) {
     )
 
     if (isNaN(selectedAmount)) {
-      amountErrMsg.innerText = 'Amount should be a number'
+      // amountErrMsg.innerText = 'Amount should be a number'
     }
   }
 
