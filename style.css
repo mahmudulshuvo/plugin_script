@@ -1,5 +1,6 @@
 /* Version 1.0 */
 /* Update nl lang and style changes */
+/* Change position for other */
 
 .widget {
   background-color: lightblue;
@@ -152,10 +153,14 @@
 .first-amount-div label,
 .second-amount-div label,
 .third-amount-div label,
-.forth-amount-div label,
-.other-amount-div label {
+.forth-amount-div label {
   cursor: pointer;
   margin-left: -2px;
+}
+
+.other-amount-div label {
+  cursor: pointer;
+  margin-left: -7px;
 }
 
 .select-amount-div label {

@@ -1,7 +1,7 @@
 // version 1.0
 // Update nl lang and style changes
 // Remove btn red color
-// Update some text to nl
+// Update Powered by text
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -850,7 +850,7 @@ function designWidget(option) {
     poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
     poweredByLabel.className = 'powered-by-label'
     if (widgetDiv.dataset.lang === 'nl') {
-      poweredByLabel.textContent = 'Ander bedrag '
+      poweredByLabel.textContent = 'Ondersteund door '
     } else if (widgetDiv.dataset.lang === 'de') {
     } else if (widgetDiv.dataset.lang === 'es') {
     } else {
@@ -1503,7 +1503,7 @@ function designWidget(option) {
     poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
     poweredByLabel.className = 'powered-by-label'
     if (widgetDiv.dataset.lang === 'nl') {
-      poweredByLabel.textContent = 'Ander bedrag '
+      poweredByLabel.textContent = 'Ondersteund door '
     } else if (widgetDiv.dataset.lang === 'de') {
     } else if (widgetDiv.dataset.lang === 'es') {
     } else {
@@ -2381,7 +2381,7 @@ function createModal(slug) {
   poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
   poweredByLabel.className = 'powered-by-label'
   if (widgetDiv.dataset.lang === 'nl') {
-    poweredByLabel.textContent = 'Ander bedrag '
+    poweredByLabel.textContent = 'Ondersteund door '
   } else if (widgetDiv.dataset.lang === 'de') {
   } else if (widgetDiv.dataset.lang === 'es') {
   } else {
