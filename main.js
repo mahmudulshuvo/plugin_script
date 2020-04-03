@@ -1,5 +1,7 @@
 // version 1.0
 // Update nl lang and style changes
+// Remove btn red color
+// Update some text to nl
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -113,33 +115,33 @@ function setValues(result, slug, lang) {
     fundraiserImageView.src = result['data']['background']['image']
   }
 
-  if (result['data']['custom_style']) {
-    var checkDonateBtn = document.getElementById('donate-btn+' + slug)
-    var checkDonateBtnInForm = document.getElementById(
-      'donate-btn-in-modal+' + slug
-    )
-    if (checkDonateBtn) {
-      console.log(
-        'checkDonateBtn primary color ',
-        String(result['data']['custom_style']['primary_color'])
-      )
-      // checkDonateBtn.style.background =
-      //   result['data']['custom_style']['primary_color']
-      checkDonateBtn.style.background = 'red'
-    }
-    if (checkDonateBtnInForm) {
-      console.log(
-        'checkDonateBtnInForm primary color ',
-        result['data']['custom_style']['primary_color']
-      )
-      // checkDonateBtnInForm.style.background =
-      //   result['data']['custom_style']['primary_color']
-      jQuery('#donate-btn-in-modal' + slug).css(
-        'background-color',
-        result['data']['custom_style']['primary_color']
-      )
-    }
-  }
+  // if (result['data']['custom_style']) {
+  //   var checkDonateBtn = document.getElementById('donate-btn+' + slug)
+  //   var checkDonateBtnInForm = document.getElementById(
+  //     'donate-btn-in-modal+' + slug
+  //   )
+  //   if (checkDonateBtn) {
+  //     console.log(
+  //       'checkDonateBtn primary color ',
+  //       String(result['data']['custom_style']['primary_color'])
+  //     )
+  //     // checkDonateBtn.style.background =
+  //     //   result['data']['custom_style']['primary_color']
+  //     // checkDonateBtn.style.background = 'red'
+  //   }
+  //   if (checkDonateBtnInForm) {
+  //     console.log(
+  //       'checkDonateBtnInForm primary color ',
+  //       result['data']['custom_style']['primary_color']
+  //     )
+  //     // checkDonateBtnInForm.style.background =
+  //     //   result['data']['custom_style']['primary_color']
+  //     jQuery('#donate-btn-in-modal' + slug).css(
+  //       'background-color',
+  //       result['data']['custom_style']['primary_color']
+  //     )
+  //   }
+  // }
 
   var targetAmount = document.getElementById('target-amount' + slug)
   var receiveAmount = document.getElementById('receive-amount' + slug)
@@ -711,7 +713,13 @@ function designWidget(option) {
 
     var otherAmountInput = document.createElement('input')
     otherAmount.setAttribute('type', 'number')
-    otherAmountInput.placeholder = 'Input your amount'
+    if (widgetDiv.dataset.lang === 'nl') {
+      otherAmountInput.placeholder = 'Ander bedrag'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      otherAmountInput.placeholder = 'Other amount'
+    }
     otherAmountInput.id = 'other-amount-input' + widgetDiv.dataset.slug
     otherAmountInputDiv.appendChild(otherAmountInput)
     donationForm.appendChild(otherAmountInputDiv)
@@ -841,7 +849,13 @@ function designWidget(option) {
     var poweredByLabel = document.createElement('label')
     poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
     poweredByLabel.className = 'powered-by-label'
-    poweredByLabel.textContent = 'Powered by '
+    if (widgetDiv.dataset.lang === 'nl') {
+      poweredByLabel.textContent = 'Ander bedrag '
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      poweredByLabel.textContent = 'Powered by '
+    }
     poweredByDiv.appendChild(poweredByLabel)
 
     var whydonateLogo = document.createElement('img')
@@ -1358,7 +1372,13 @@ function designWidget(option) {
 
     var otherAmountInput = document.createElement('input')
     otherAmount.setAttribute('type', 'number')
-    otherAmountInput.placeholder = 'Input your amount'
+    if (widgetDiv.dataset.lang === 'nl') {
+      otherAmountInput.placeholder = 'Ander bedrag'
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      otherAmountInput.placeholder = 'Other amount'
+    }
     otherAmountInput.id = 'other-amount-input' + widgetDiv.dataset.slug
     otherAmountInputDiv.appendChild(otherAmountInput)
     donationForm.appendChild(otherAmountInputDiv)
@@ -1482,7 +1502,13 @@ function designWidget(option) {
     var poweredByLabel = document.createElement('label')
     poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
     poweredByLabel.className = 'powered-by-label'
-    poweredByLabel.textContent = 'Powered by '
+    if (widgetDiv.dataset.lang === 'nl') {
+      poweredByLabel.textContent = 'Ander bedrag '
+    } else if (widgetDiv.dataset.lang === 'de') {
+    } else if (widgetDiv.dataset.lang === 'es') {
+    } else {
+      poweredByLabel.textContent = 'Powered by '
+    }
     poweredByDiv.appendChild(poweredByLabel)
 
     var whydonateLogo = document.createElement('img')
@@ -2230,7 +2256,13 @@ function createModal(slug) {
 
   var otherAmountInput = document.createElement('input')
   otherAmount.setAttribute('type', 'number')
-  otherAmountInput.placeholder = 'Input your amount'
+  if (widgetDiv.dataset.lang === 'nl') {
+    otherAmountInput.placeholder = 'Ander bedrag'
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    otherAmountInput.placeholder = 'Other amount'
+  }
   otherAmountInput.id = 'other-amount-input' + slug
   otherAmountInputDiv.appendChild(otherAmountInput)
   donationFormDiv.appendChild(otherAmountInputDiv)
@@ -2348,7 +2380,13 @@ function createModal(slug) {
   var poweredByLabel = document.createElement('label')
   poweredByLabel.id = 'powered-by-label+' + widgetDiv.dataset.slug
   poweredByLabel.className = 'powered-by-label'
-  poweredByLabel.textContent = 'Powered by '
+  if (widgetDiv.dataset.lang === 'nl') {
+    poweredByLabel.textContent = 'Ander bedrag '
+  } else if (widgetDiv.dataset.lang === 'de') {
+  } else if (widgetDiv.dataset.lang === 'es') {
+  } else {
+    poweredByLabel.textContent = 'Powered by '
+  }
   poweredByDiv.appendChild(poweredByLabel)
 
   var whydonateLogo = document.createElement('img')
