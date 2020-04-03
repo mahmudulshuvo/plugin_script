@@ -2559,7 +2559,7 @@ function directDonate(idValue) {
       lang: 'en',
       description: 'Hey there, just want to help with donation',
       bank_account: '',
-      return_url: 'https://www.google.com'
+      return_url: window.location.href
     }
 
     makeDonation(data, slugVal)
