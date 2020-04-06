@@ -4,6 +4,7 @@
 // Period Interval bug fix
 // Update language for nl, de, es
 // Donate button text change after making donation
+// Remove all logs
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
