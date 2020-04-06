@@ -3,6 +3,7 @@
 // Update Powered by text
 // Period Interval bug fix
 // Update language for nl, de, es
+// Donate button text change after making donation
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -2761,9 +2762,25 @@ async function makeDonation(data, slugVal, lang) {
     })
     .then(function (result) {
       if (donateBtn) {
-        donateBtn.innerHTML = '<i class="fa"></i> Donate'
+        if (lang === 'nl') {
+          donateBtn.innerHTML = '<i class="fa"></i> Doneer'
+        } else if (lang === 'de') {
+          donateBtn.innerHTML = '<i class="fa"></i> Spenden'
+        } else if (lang === 'es') {
+          donateBtn.innerHTML = '<i class="fa"></i> Donar'
+        } else {
+          donateBtn.innerHTML = '<i class="fa"></i> Donate'
+        }
       } else {
-        donateBtnInModal.innerHTML = '<i class="fa"></i> Donate'
+        if (lang === 'nl') {
+          donateBtnInModal.innerHTML = '<i class="fa"></i> Doneer'
+        } else if (lang === 'de') {
+          donateBtnInModal.innerHTML = '<i class="fa"></i> Spenden'
+        } else if (lang === 'es') {
+          donateBtnInModal.innerHTML = '<i class="fa"></i> Donar'
+        } else {
+          donateBtnInModal.innerHTML = '<i class="fa"></i> Donate'
+        }
       }
       window.location.replace(result['data']['url'])
     })
