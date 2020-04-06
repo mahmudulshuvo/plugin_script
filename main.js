@@ -1,8 +1,8 @@
 // version 1.0
-// Update nl lang and style changes
 // Remove btn red color
 // Update Powered by text
 // Period Interval bug fix
+// Update language for nl, de, es
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -2707,10 +2707,10 @@ function ValidateEmail(mail) {
 
 async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  const donationApi =
-    'https://whydonate-development.appspot.com/api/v1/donation/order/'
   // const donationApi =
-  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  const donationApi =
+    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -2771,12 +2771,12 @@ async function makeDonation(data, slugVal, lang) {
 
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  const url =
-    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&')[0]
   // const url =
-  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
   //   widgetDiv.dataset.slug.split('&')[0]
+  const url =
+    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
