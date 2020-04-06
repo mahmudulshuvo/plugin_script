@@ -795,6 +795,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       firstNameInput.placeholder = 'Voornaam'
     } else if (widgetDiv.dataset.lang === 'es') {
+      firstNameInput.placeholder = 'Nombre'
     } else {
       firstNameInput.placeholder = 'First name'
     }
@@ -812,6 +813,7 @@ function designWidget(option) {
       missingFirstNametMsg.innerText =
         'Muss zwischen 1 und 30 Zeichen lang sein.'
     } else if (widgetDiv.dataset.lang === 'es') {
+      missingFirstNametMsg.innerText = 'Debe tener entre 1 a 30 caracteres.'
     } else {
       missingFirstNametMsg.innerText = 'Must be between 1 and 30 characters.'
     }
@@ -824,6 +826,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       lastNameInput.placeholder = 'Nachname'
     } else if (widgetDiv.dataset.lang === 'es') {
+      lastNameInput.placeholder = 'Apellido'
     } else {
       lastNameInput.placeholder = 'Last name'
     }
@@ -840,6 +843,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       missingLastNameMsg.innerText = 'Muss zwischen 1 und 30 Zeichen lang sein.'
     } else if (widgetDiv.dataset.lang === 'es') {
+      missingLastNameMsg.innerText = 'Debe tener entre 1 a 30 caracteres.'
     } else {
       missingLastNameMsg.innerText = 'Must be between 1 and 30 characters.'
     }
@@ -852,6 +856,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       emailInput.placeholder = 'E-Mail-Adresse'
     } else if (widgetDiv.dataset.lang === 'es') {
+      emailInput.placeholder = 'Dirección de email'
     } else {
       emailInput.placeholder = 'Email'
     }
@@ -867,6 +872,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       missingEmailMsg.innerText = 'Falsche E-Mail-Adresse.'
     } else if (widgetDiv.dataset.lang === 'es') {
+      missingEmailMsg.innerText = 'Dirección de E-Mail incorrecta.'
     } else {
       missingEmailMsg.innerText = 'Incorrect email address.'
     }
@@ -893,7 +899,8 @@ function designWidget(option) {
     } else {
       donateButton.innerHTML = '<i class="fa"></i> Donate'
     }
-    donateButton.onclick = () => this.directDonate(donateBtnDiv.id)
+    donateButton.onclick = () =>
+      this.directDonate(donateBtnDiv.id, widgetDiv.dataset.lang)
     donateBtnDiv.appendChild(donateButton)
     donationForm.appendChild(donateBtnDiv)
 
@@ -1481,6 +1488,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       firstNameInput.placeholder = 'Voornaam'
     } else if (widgetDiv.dataset.lang === 'es') {
+      firstNameInput.placeholder = 'Nombre'
     } else {
       firstNameInput.placeholder = 'First name'
     }
@@ -1498,6 +1506,7 @@ function designWidget(option) {
       missingFirstNameMsg.innerText =
         'Muss zwischen 1 und 30 Zeichen lang sein.'
     } else if (widgetDiv.dataset.lang === 'es') {
+      missingFirstNameMsg.innerText = 'Debe tener entre 1 a 30 caracteres.'
     } else {
       missingFirstNameMsg.innerText = 'Must be between 1 and 30 characters.'
     }
@@ -1510,6 +1519,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       lastNameInput.placeholder = 'Nachname'
     } else if (widgetDiv.dataset.lang === 'es') {
+      lastNameInput.placeholder = 'Apellido'
     } else {
       lastNameInput.placeholder = 'Last name'
     }
@@ -1526,6 +1536,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       missingLastNameMsg.innerText = 'Muss zwischen 1 und 30 Zeichen lang sein.'
     } else if (widgetDiv.dataset.lang === 'es') {
+      missingLastNameMsg.innerText = 'Debe tener entre 1 a 30 caracteres.'
     } else {
       missingLastNameMsg.innerText = 'Must be between 1 and 30 characters.'
     }
@@ -1538,6 +1549,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       emailInput.placeholder = 'E-Mail-Adresse'
     } else if (widgetDiv.dataset.lang === 'es') {
+      emailInput.placeholder = 'Dirección de email'
     } else {
       emailInput.placeholder = 'Email'
     }
@@ -1553,6 +1565,7 @@ function designWidget(option) {
     } else if (widgetDiv.dataset.lang === 'de') {
       missingEmailMsg.innerText = 'Falsche E-Mail-Adresse.'
     } else if (widgetDiv.dataset.lang === 'es') {
+      missingEmailMsg.innerText = 'Dirección de E-Mail incorrecta.'
     } else {
       missingEmailMsg.innerText = 'Incorrect email address.'
     }
@@ -1573,7 +1586,8 @@ function designWidget(option) {
     } else {
       donateButton.innerHTML = '<i class="fa"></i> Donate'
     }
-    donateButton.onclick = () => this.directDonate(donateBtnDiv.id)
+    donateButton.onclick = () =>
+      this.directDonate(donateBtnDiv.id, widgetDiv.dataset.lang)
     donateBtnDiv.appendChild(donateButton)
     donationForm.appendChild(donateBtnDiv)
 
@@ -2400,6 +2414,7 @@ function createModal(slug) {
   } else if (widgetDiv.dataset.lang === 'de') {
     firstNameInput.placeholder = 'Voornaam'
   } else if (widgetDiv.dataset.lang === 'es') {
+    firstNameInput.placeholder = 'Nombre'
   } else {
     firstNameInput.placeholder = 'First name'
   }
@@ -2415,6 +2430,7 @@ function createModal(slug) {
   } else if (widgetDiv.dataset.lang === 'de') {
     missingFirstnameMsg.innerText = 'Muss zwischen 1 und 30 Zeichen lang sein.'
   } else if (widgetDiv.dataset.lang === 'es') {
+    missingFirstnameMsg.innerText = 'Debe tener entre 1 a 30 caracteres.'
   } else {
     missingFirstnameMsg.innerText = 'Must be between 1 and 30 characters.'
   }
@@ -2427,6 +2443,7 @@ function createModal(slug) {
   } else if (widgetDiv.dataset.lang === 'de') {
     lastNameInput.placeholder = 'Nachname'
   } else if (widgetDiv.dataset.lang === 'es') {
+    lastNameInput.placeholder = 'Apellido'
   } else {
     lastNameInput.placeholder = 'Last name'
   }
@@ -2442,6 +2459,7 @@ function createModal(slug) {
   } else if (widgetDiv.dataset.lang === 'de') {
     missingLastnameMsg.innerText = 'Muss zwischen 1 und 30 Zeichen lang sein.'
   } else if (widgetDiv.dataset.lang === 'es') {
+    missingLastnameMsg.innerText = 'Debe tener entre 1 a 30 caracteres.'
   } else {
     missingLastnameMsg.innerText = 'Must be between 1 and 30 characters.'
   }
@@ -2454,6 +2472,7 @@ function createModal(slug) {
   } else if (widgetDiv.dataset.lang === 'de') {
     emailInput.placeholder = 'E-Mail-Adresse'
   } else if (widgetDiv.dataset.lang === 'es') {
+    emailInput.placeholder = 'Dirección de email'
   } else {
     emailInput.placeholder = 'Email'
   }
@@ -2469,6 +2488,7 @@ function createModal(slug) {
   } else if (widgetDiv.dataset.lang === 'de') {
     missingEmailMsg.innerText = 'Falsche E-Mail-Adresse.'
   } else if (widgetDiv.dataset.lang === 'es') {
+    missingEmailMsg.innerText = 'Dirección de E-Mail incorrecta.'
   } else {
     missingEmailMsg.innerText = 'Incorrect email address.'
   }
@@ -2486,7 +2506,8 @@ function createModal(slug) {
   } else {
     modalDonateButton.innerHTML = '<i class="fa"></i> Donate'
   }
-  modalDonateButton.onclick = () => this.directDonate(modalDonateButton.id)
+  modalDonateButton.onclick = () =>
+    this.directDonate(modalDonateButton.id, widgetDiv.dataset.lang)
   donationFormDiv.appendChild(modalDonateButton)
 
   var poweredByDiv = document.createElement('div')
@@ -2568,7 +2589,7 @@ function handleDonate(idValue) {
   // }
 }
 
-function directDonate(idValue) {
+function directDonate(idValue, lang) {
   var slugVal = idValue.split('+')[1]
 
   var fundrasier_id = ''
@@ -2673,7 +2694,7 @@ function directDonate(idValue) {
       return_url: window.location.href,
     }
 
-    makeDonation(data, slugVal)
+    makeDonation(data, slugVal, lang)
   }
 }
 
@@ -2684,7 +2705,7 @@ function ValidateEmail(mail) {
   return false
 }
 
-async function makeDonation(data, slugVal) {
+async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
   const donationApi =
     'https://whydonate-development.appspot.com/api/v1/donation/order/'
@@ -2700,10 +2721,32 @@ async function makeDonation(data, slugVal) {
   var donateBtn = document.getElementById('donate-btn-in-form+' + slugVal)
 
   if (donateBtn) {
-    donateBtn.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> Donate'
+    if (lang === 'nl') {
+      donateBtn.innerHTML =
+        '<i class="fa fa-circle-o-notch fa-spin"></i> Doneer'
+    } else if (lang === 'de') {
+      donateBtn.innerHTML =
+        '<i class="fa fa-circle-o-notch fa-spin"></i> Spenden'
+    } else if (lang === 'es') {
+      donateBtn.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> Donar'
+    } else {
+      donateBtn.innerHTML =
+        '<i class="fa fa-circle-o-notch fa-spin"></i> Donate'
+    }
   } else {
-    donateBtnInModal.innerHTML =
-      '<i class="fa fa-circle-o-notch fa-spin"></i> Donate'
+    if (lang === 'nl') {
+      donateBtnInModal.innerHTML =
+        '<i class="fa fa-circle-o-notch fa-spin"></i> Doneer'
+    } else if (lang === 'de') {
+      donateBtnInModal.innerHTML =
+        '<i class="fa fa-circle-o-notch fa-spin"></i> Spenden'
+    } else if (lang === 'es') {
+      donateBtnInModal.innerHTML =
+        '<i class="fa fa-circle-o-notch fa-spin"></i> Donar'
+    } else {
+      donateBtnInModal.innerHTML =
+        '<i class="fa fa-circle-o-notch fa-spin"></i> Donate'
+    }
   }
   await fetch(url, {
     method: 'post',
