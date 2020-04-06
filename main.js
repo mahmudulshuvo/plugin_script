@@ -68,7 +68,7 @@ function loadWidget() {
   if (widgetDiv.dataset.card) {
     card = widgetDiv.dataset.card
   }
-  console.log('card option ', card)
+  // console.log('card option ', card)
   var option = 0
   if (widgetOption === 'show-with-image') {
     option = 1
@@ -104,7 +104,7 @@ async function getFundraiserLocalValue(url, slug, lang, option, card) {
       return response.json()
     })
     .then((data) => {
-      console.log(data)
+      // console.log(data)
       setValues(data, slug, lang, option, card)
     })
 }
@@ -2829,7 +2829,7 @@ function resize() {
 
     if (widgetWithFormList) {
       for (var i = 0; i < widgetWithFormList.length; i++) {
-        console.log(widgetWithFormList[i].style.width)
+        // console.log(widgetWithFormList[i].style.width)
         if (widgetWithFormList[i].style.width === '800px') {
           var donationFormPart = widgetWithFormList[i].firstChild
           var fundraiserInfoPart = widgetWithFormList[i].lastChild
