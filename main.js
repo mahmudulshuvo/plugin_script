@@ -112,7 +112,7 @@ function setValues(result, slug, lang, option, card) {
   fundraiserInfo = result['data']
   // fundraiserInfo.slug = fundraiserInfo.slug + '&' + randExtension
 
-  if (option === 3 && card === 'show') {
+  if (option === 3 && card === 'hide') {
     var widgetContentDiv = document.getElementById(slug)
     widgetContentDiv.style.background = 'transparent'
     widgetContentDiv.style.boxShadow = 'none'
