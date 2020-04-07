@@ -5,6 +5,7 @@
 // Update language for nl, de, es
 // Donate button text change after making donation
 // Remove all logs
+// Set success and fail url
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -16,8 +17,8 @@ if (classArray.length > 1) {
   var widgetDiv = classArray[0]
 }
 
-widgetDiv.id = widgetDiv.dataset.slug + '&' + randExtension
-widgetDiv.dataset.slug = widgetDiv.dataset.slug + '&' + randExtension
+widgetDiv.id = widgetDiv.dataset.slug + '&&&' + randExtension
+widgetDiv.dataset.slug = widgetDiv.dataset.slug + '&&&' + randExtension
 
 var donateButton = document.createElement('BUTTON')
 var fundraiserInfo = {}
@@ -2716,6 +2717,7 @@ async function makeDonation(data, slugVal, lang) {
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
+  localStorage.setItem('latest_fundraiser', slugVal)
 
   var donateBtnInModal = document.getElementById(
     'donate-btn-in-modal+' + slugVal
@@ -2789,9 +2791,11 @@ async function makeDonation(data, slugVal, lang) {
 
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
+
   // const url =
   //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&')[0]
+  //   widgetDiv.dataset.slug.split('&&&')[0]
+
   const url =
     'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
     widgetDiv.dataset.slug.split('&')[0]
@@ -2813,9 +2817,92 @@ function addJquery() {
       jQuery(window).resize(resize)
       resize()
       var urlAddress = window.location.href
-      if (urlAddress.includes('d_id')) {
+      if (urlAddress.includes('&o_id=')) {
+        let urlAddressArr = urlAddress.split('&o_id=')
+        console.log('order id ', urlAddressArr[1])
         var actualUrlArr = urlAddress.split('?d_id=')
         window.history.replaceState({}, document.title, actualUrlArr[0])
+
+        // Making api request to check
+        var latestFundraiser = localStorage
+          .getItem('latest_fundraiser')
+          .split('&&&')[0]
+        var widgetArrayList = document.getElementsByClassName('widget')
+
+        if (widgetArrayList.length > 1) {
+          for (var i = 0; i < widgetArrayList.length; i++) {
+            if (
+              widgetArrayList[i].dataset.slug.split('&&&')[0] ===
+              latestFundraiser
+            ) {
+              var widgetElement = widgetArrayList[i]
+              break
+            }
+          }
+        } else {
+          var widgetElement = widgetArrayList[0]
+        }
+
+        localStorage.setItem('latest_fundraiser', '')
+        var success_url = ''
+        var fail_url = ''
+        if (widgetElement) {
+          success_url = widgetElement.dataset.success_url
+          fail_url = widgetElement.dataset.fail_url
+        }
+
+        var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
+        // var api =
+        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   urlAddressArr[1]
+        var api =
+          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          urlAddressArr[1]
+        var url = proxyurl + api
+
+        jQuery.ajax({
+          url: url,
+          type: 'GET',
+          beforeSend: function () {},
+          success: function (res) {
+            console.log('order status response ', res)
+            if (res['data']['status'] === 'paid') {
+              window.location.replace(success_url)
+            } else if (res['data']['status'] === 'canceled') {
+              window.location.replace(fail_url)
+            } else {
+              // do nothing
+            }
+          },
+          error: function (xhr) {
+            console.log('error occured')
+          },
+          complete: function () {
+            // hide loader here
+          },
+        })
+
+        // var orderStatus = getOrderStatus(url)
+
+        // if (orderStatus['data']['status'] === 'canceled') {
+        //   if (fail_url) {
+        //     window.location.replace(fail_url)
+        //   }
+        // } else if (orderStatus['data']['status'] === 'paid') {
+        //   if (success_url) {
+        //     window.location.replace(success_url)
+        //   }
+        // } else {
+        //   // Do nothing
+        // }
+
+        // try {
+        //   const fetchResponse= await fetch('https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id='+urlAddressArr[0]);
+        //   const data=await fetchResponse.json();
+        //   return data;
+        // } catch (e) {
+        //   return e;
+        // }
       }
     })
   }
