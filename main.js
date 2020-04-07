@@ -6,6 +6,7 @@
 // Donate button text change after making donation
 // Remove all logs
 // Set success and fail url
+// Check before redirect to success and fail url
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -2867,9 +2868,13 @@ function addJquery() {
           success: function (res) {
             console.log('order status response ', res)
             if (res['data']['status'] === 'paid') {
-              window.location.replace(success_url)
+              if (typeof success_url !== 'undefined') {
+                window.location.replace(success_url)
+              }
             } else if (res['data']['status'] === 'canceled') {
-              window.location.replace(fail_url)
+              if (typeof fail_url !== 'undefined') {
+                window.location.replace(fail_url)
+              }
             } else {
               // do nothing
             }
