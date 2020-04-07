@@ -6,6 +6,7 @@
 // Donate button text change after making donation
 // Remove all logs
 // Set success and fail url
+// Check if widget-with-form available
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -2819,7 +2820,7 @@ function addJquery() {
       var urlAddress = window.location.href
       if (urlAddress.includes('&o_id=')) {
         let urlAddressArr = urlAddress.split('&o_id=')
-        console.log('order id ', urlAddressArr[1])
+        // console.log('order id ', urlAddressArr[1])
         var actualUrlArr = urlAddress.split('?d_id=')
         window.history.replaceState({}, document.title, actualUrlArr[0])
 
@@ -2828,6 +2829,15 @@ function addJquery() {
           .getItem('latest_fundraiser')
           .split('&&&')[0]
         var widgetArrayList = document.getElementsByClassName('widget')
+        var widgetWithFormArrayList = document.getElementsByClassName(
+          'widget-with-form'
+        )
+
+        if (widgetWithFormArrayList.length > 0) {
+          for (var j = 0; j < widgetWithFormArrayList.length; j++) {
+            widgetArrayList.push(widgetWithFormArrayList[j])
+          }
+        }
 
         if (widgetArrayList.length > 1) {
           for (var i = 0; i < widgetArrayList.length; i++) {
@@ -2865,7 +2875,7 @@ function addJquery() {
           type: 'GET',
           beforeSend: function () {},
           success: function (res) {
-            console.log('order status response ', res)
+            // console.log('order status response ', res)
             if (res['data']['status'] === 'paid') {
               window.location.replace(success_url)
             } else if (res['data']['status'] === 'canceled') {
@@ -2875,7 +2885,7 @@ function addJquery() {
             }
           },
           error: function (xhr) {
-            console.log('error occured')
+            // console.log('error occured')
           },
           complete: function () {
             // hide loader here
