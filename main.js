@@ -8,6 +8,7 @@
 // Set success and fail url
 // Check before redirect to success and fail url
 // Check if widget-with-form available
+// Change preset to 15%
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -3098,8 +3099,8 @@ function renderOptionsForPercentile(slug) {
   var selectedValue = getSelectedValue(slug)
 
   var option0 = document.createElement('option')
-  option0.text = '10%' + ' (' + (selectedValue * 0.1).toFixed(2) + ') '
-  option0.value = (selectedValue * 0.1).toFixed(2)
+  option0.text = '15%' + ' (' + (selectedValue * 0.15).toFixed(2) + ') '
+  option0.value = (selectedValue * 0.15).toFixed(2)
   selectList.appendChild(option0)
 
   var option1 = document.createElement('option')
