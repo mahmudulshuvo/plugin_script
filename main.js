@@ -11,6 +11,7 @@
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
+var tipBoxSlugList = { current: '' }
 
 var classArray = document.getElementsByClassName('widget')
 if (classArray.length > 1) {
@@ -26,13 +27,16 @@ var donateButton = document.createElement('BUTTON')
 var fundraiserInfo = {}
 var widgetOption = ''
 
+//*********** style added snnipet */
+
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
-// style.href = 'https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
+// style.href = 'style.css'
+style.href = 'https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
+
 // var getFundraiserLocalValue = async (url, slug) => {
 //   const res = await fetch(url)
 //   const json = await res.json()
@@ -117,6 +121,17 @@ function setValues(result, slug, lang, option, card) {
   fundraiserInfo = result['data']
   // fundraiserInfo.slug = fundraiserInfo.slug + '&' + randExtension
 
+  // Decide whether to show the tip_box or not
+  // var tipBox = document.getElementById('tip-box' + slug)
+  // if (!result.data.tip_enabled) {
+  //   if (option === 2 || option === 4) {
+  //     tipBox.style.display = 'none'
+  //   } else {
+  //     document.getElementById('modal-content' + slug).style.height = '700px'
+  //     tipBox.style.display = 'none'
+  //   }
+  // }
+
   if (option === 3 && card === 'hide') {
     var widgetContentDiv = document.getElementById(slug)
     widgetContentDiv.style.background = 'transparent'
@@ -131,34 +146,6 @@ function setValues(result, slug, lang, option, card) {
     fundraiserImageView.style.objectFit = 'cover'
     fundraiserImageView.src = result['data']['background']['image']
   }
-
-  // if (result['data']['custom_style']) {
-  //   var checkDonateBtn = document.getElementById('donate-btn+' + slug)
-  //   var checkDonateBtnInForm = document.getElementById(
-  //     'donate-btn-in-modal+' + slug
-  //   )
-  //   if (checkDonateBtn) {
-  //     console.log(
-  //       'checkDonateBtn primary color ',
-  //       String(result['data']['custom_style']['primary_color'])
-  //     )
-  //     // checkDonateBtn.style.background =
-  //     //   result['data']['custom_style']['primary_color']
-  //     // checkDonateBtn.style.background = 'red'
-  //   }
-  //   if (checkDonateBtnInForm) {
-  //     console.log(
-  //       'checkDonateBtnInForm primary color ',
-  //       result['data']['custom_style']['primary_color']
-  //     )
-  //     // checkDonateBtnInForm.style.background =
-  //     //   result['data']['custom_style']['primary_color']
-  //     jQuery('#donate-btn-in-modal' + slug).css(
-  //       'background-color',
-  //       result['data']['custom_style']['primary_color']
-  //     )
-  //   }
-  // }
 
   var targetAmount = document.getElementById('target-amount' + slug)
   var receiveAmount = document.getElementById('receive-amount' + slug)
@@ -589,7 +576,7 @@ function designWidget(option) {
     firstAmountRadio.name = 'select-amount'
     firstAmountRadio.value = '25'
     firstAmountRadio.style.marginTop = '15px'
-    firstAmountRadio.style.checked = true
+    firstAmountRadio.checked = true
     // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var firstAmountLabel = document.createElement('label')
@@ -771,6 +758,9 @@ function designWidget(option) {
       otherAmountInput.placeholder = 'Other amount'
     }
     otherAmountInput.id = 'other-amount-input' + widgetDiv.dataset.slug
+    otherAmountInput.onkeyup = (e) =>
+      this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
+
     otherAmountInputDiv.appendChild(otherAmountInput)
     donationForm.appendChild(otherAmountInputDiv)
 
@@ -882,6 +872,9 @@ function designWidget(option) {
       missingEmailMsg.innerText = 'Incorrect email address.'
     }
     donorInfoDiv.appendChild(missingEmailMsg)
+
+    createTipbox(donationForm, null, widgetDiv.dataset.slug, '#2828d6')
+    calculateTotalAmount(widgetDiv.dataset.slug)
 
     // ----------- copied from here -----------------------
 
@@ -1282,7 +1275,7 @@ function designWidget(option) {
     firstAmountRadio.name = 'select-amount'
     firstAmountRadio.value = '25'
     firstAmountRadio.style.marginTop = '15px'
-    firstAmountRadio.style.checked = true
+    firstAmountRadio.checked = true
     // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var firstAmountLabel = document.createElement('label')
@@ -1464,6 +1457,8 @@ function designWidget(option) {
       otherAmountInput.placeholder = 'Other amount'
     }
     otherAmountInput.id = 'other-amount-input' + widgetDiv.dataset.slug
+    otherAmountInput.onkeyup = (e) =>
+      this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
     otherAmountInputDiv.appendChild(otherAmountInput)
     donationForm.appendChild(otherAmountInputDiv)
 
@@ -1575,6 +1570,9 @@ function designWidget(option) {
       missingEmailMsg.innerText = 'Incorrect email address.'
     }
     donorInfoDiv.appendChild(missingEmailMsg)
+
+    createTipbox(donationForm, null, widgetDiv.dataset.slug, '#2828d6')
+    calculateTotalAmount(widgetDiv.dataset.slug)
 
     // ----------- copied from here -----------------------
 
@@ -1956,12 +1954,15 @@ function handleSelectAmount(value, idValue) {
     otherAmountdiv.style.color = 'white'
     otherAmountLabel.style.color = 'white'
   }
+
+  handleTipDropdown(slug)
 }
 
 function createModal(slug) {
   var modalDiv = document.createElement('DIV')
   modalDiv.id = 'myModal' + slug
   modalDiv.className = 'modal'
+  document.body.appendChild(modalDiv)
 
   var modalContent = document.createElement('DIV')
   modalContent.id = 'modal-content' + slug
@@ -2390,6 +2391,8 @@ function createModal(slug) {
     otherAmountInput.placeholder = 'Other amount'
   }
   otherAmountInput.id = 'other-amount-input' + slug
+  otherAmountInput.onkeyup = (e) =>
+    this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
   otherAmountInputDiv.appendChild(otherAmountInput)
   donationFormDiv.appendChild(otherAmountInputDiv)
 
@@ -2498,6 +2501,9 @@ function createModal(slug) {
     missingEmailMsg.innerText = 'Incorrect email address.'
   }
   donorInfoDiv.appendChild(missingEmailMsg)
+
+  createTipbox(donationFormDiv, modalContent, slug, '#2828d6')
+  calculateTotalAmount(slug)
 
   var modalDonateButton = document.createElement('button')
   modalDonateButton.id = 'donate-btn-in-modal+' + slug
@@ -2696,7 +2702,8 @@ function directDonate(idValue, lang) {
       lang: 'en',
       description: 'Hey there, just want to help with donation',
       bank_account: '',
-      return_url: window.location.href,
+      tip_amount: calculateTotalAmount(slugVal),
+      return_url: 'https://www.google.com',
     }
 
     makeDonation(data, slugVal, lang)
@@ -2712,10 +2719,10 @@ function ValidateEmail(mail) {
 
 async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  // const donationApi =
-  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
   const donationApi =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+    'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  // const donationApi =
+  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -2794,13 +2801,13 @@ async function makeDonation(data, slugVal, lang) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  // const url =
-  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&&&')[0]
-
   const url =
-    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&')[0]
+    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&&&')[0]
+
+  // const url =
+  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -2863,12 +2870,12 @@ function addJquery() {
         }
 
         var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-        // var api =
-        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-        //   urlAddressArr[1]
         var api =
-          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
           urlAddressArr[1]
+        // var api =
+        //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   urlAddressArr[1]
         var url = proxyurl + api
 
         jQuery.ajax({
@@ -2896,28 +2903,6 @@ function addJquery() {
             // hide loader here
           },
         })
-
-        // var orderStatus = getOrderStatus(url)
-
-        // if (orderStatus['data']['status'] === 'canceled') {
-        //   if (fail_url) {
-        //     window.location.replace(fail_url)
-        //   }
-        // } else if (orderStatus['data']['status'] === 'paid') {
-        //   if (success_url) {
-        //     window.location.replace(success_url)
-        //   }
-        // } else {
-        //   // Do nothing
-        // }
-
-        // try {
-        //   const fetchResponse= await fetch('https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id='+urlAddressArr[0]);
-        //   const data=await fetchResponse.json();
-        //   return data;
-        // } catch (e) {
-        //   return e;
-        // }
       }
     })
   }
@@ -3002,3 +2987,443 @@ function resize() {
     jQuery('html').removeClass('wide')
   }
 }
+
+function createTipbox(donationFormDiv, modalContent, slug, color) {
+  if (modalContent) {
+    modalContent.style.height = '900px'
+  }
+  var tipBox = document.createElement('div')
+  tipBox.id = 'tip-box' + slug
+  tipBox.className = 'tip-box'
+  tipBox.style.width = '95%'
+  tipBox.style.height = '185px'
+  tipBox.style.margin = 'auto'
+  tipBox.style.marginTop = '30px'
+  tipBox.style.padding = '5px'
+  tipBox.style.paddingLeft = '10px'
+  tipBox.style.backgroundColor = lightenColor(color, 75)
+  console.log('lighten color ', lightenColor(color, 40))
+
+  var para1 = document.createElement('p')
+  para1.style.fontSize = '15px'
+  para1.style.fontWeight = '400'
+  para1.style.color = 'black'
+  para1.textContent =
+    'Whydonate has a 0% platform fee for organizers and relies on the generosity of donors like you to operate our service.'
+
+  tipBox.appendChild(para1)
+
+  var selectPercentileDiv = document.createElement('div')
+  selectPercentileDiv.style.display = 'flex'
+  selectPercentileDiv.style.justifyContent = 'space-around'
+
+  var para2 = document.createElement('p')
+  para2.style.fontSize = '15px'
+  para2.style.fontWeight = '400'
+  para2.style.color = 'black'
+  para2.style.marginTop = '12px'
+  para2.textContent = 'Thank you for including a tip of : '
+  selectPercentileDiv.appendChild(para2)
+
+  var dropdown = document.createElement('div')
+  dropdown.id = 'custom-select' + slug
+  dropdown.className = 'custom-select'
+  dropdown.style.width = '150px'
+  dropdown.onclick = () => this.handleTipDropdown(slug)
+
+  selectPercentileDiv.appendChild(dropdown)
+
+  var inputTipDiv = document.createElement('div')
+  inputTipDiv.id = 'input-tip-div' + slug
+  inputTipDiv.style.display = 'none'
+  inputTipDiv.style.justifyContent = 'flex-end'
+
+  //  <span class="currencyinput">$<input type="text" name="currency"></span>
+  var inputTipSpan = document.createElement('span')
+
+  var inputTipTextBox = document.createElement('input')
+  inputTipSpan.innerHTML = '€ ' + inputTipTextBox.outerHTML
+  inputTipSpan.innerHTML =
+    '€ <input type="text"' +
+    'id="input-tip' +
+    slug +
+    '"' +
+    `onkeyup = "calculateTotalAmount('${slug}')"` +
+    // slug +
+    // ')"' +
+    ' name="currency" value="1.00" style="width: 145px; height: 25px; border-radius: 3px; border-color: transparent; font-family: arial; font-size: 15px; text-align: right"></span>'
+  inputTipSpan.style.width = '165px'
+  inputTipDiv.appendChild(inputTipSpan)
+
+  tipBox.appendChild(selectPercentileDiv)
+  tipBox.appendChild(inputTipDiv)
+
+  var totalChargeDiv = document.createElement('div')
+  totalChargeDiv.style.height = '20px'
+  totalChargeDiv.style.marginTop = '10px'
+  totalChargeDiv.style.textAlign = 'right'
+
+  var totalChargeLabel = document.createElement('label')
+  totalChargeLabel.id = 'total-charge-label' + slug
+  totalChargeLabel.style.fontSize = '15px'
+  totalChargeLabel.innerHTML = 'Total Charge: € '
+  totalChargeLabel.style.color = 'black'
+  totalChargeLabel.style.marginRight = '15px'
+  totalChargeLabel.style.fontWeight = '600'
+  totalChargeLabel.style.width = '100%'
+
+  totalChargeDiv.appendChild(totalChargeLabel)
+  tipBox.appendChild(totalChargeDiv)
+
+  donationFormDiv.appendChild(tipBox)
+  // Reder different options based on selection
+
+  // Check wheather the initial selection is greater than 9
+  renderOptionsForPercentile(slug)
+
+  setDropdownFunc(tipBox, slug)
+}
+
+function renderOptionsForPercentile(slug) {
+  var customSelectDiv = document.getElementById('custom-select' + slug)
+  while (customSelectDiv.firstChild) {
+    customSelectDiv.removeChild(customSelectDiv.lastChild)
+  }
+
+  var selectList = document.createElement('select')
+  selectList.id = 'select-dropdown' + slug
+
+  // check which amount is actually selected
+  var selectedValue = getSelectedValue(slug)
+
+  var option0 = document.createElement('option')
+  option0.text = '10%' + ' (' + (selectedValue * 0.1).toFixed(2) + ') '
+  option0.value = (selectedValue * 0.1).toFixed(2)
+  selectList.appendChild(option0)
+
+  var option1 = document.createElement('option')
+  option1.text = '10%' + ' (' + (selectedValue * 0.1).toFixed(2) + ') '
+  option1.value = (selectedValue * 0.1).toFixed(2)
+  selectList.appendChild(option1)
+
+  var option2 = document.createElement('option')
+  option2.text = '15%' + ' (' + (selectedValue * 0.15).toFixed(2) + ') '
+  option2.value = (selectedValue * 0.15).toFixed(2)
+  selectList.appendChild(option2)
+
+  var option3 = document.createElement('option')
+  option3.text = '20%' + ' (' + (selectedValue * 0.2).toFixed(2) + ') '
+  option3.value = (selectedValue * 0.2).toFixed(2)
+  selectList.appendChild(option3)
+
+  var option4 = document.createElement('option')
+  option4.text = 'Other'
+  option4.value = 'Other'
+  selectList.appendChild(option4)
+
+  customSelectDiv.appendChild(selectList)
+}
+
+function getSelectedValue(slug) {
+  // check which amount is actually selected
+  var firstRadio = document.getElementById('first-amount' + slug)
+  var secondRadio = document.getElementById('second-amount' + slug)
+  var thirdRadio = document.getElementById('third-amount' + slug)
+  var forthRadio = document.getElementById('forth-amount' + slug)
+  var otherRadio = document.getElementById('other-amount' + slug)
+
+  var selectedValue = 0
+
+  if (firstRadio.checked) {
+    selectedValue = firstRadio.value
+  }
+  if (secondRadio.checked) {
+    selectedValue = secondRadio.value
+  }
+  if (thirdRadio.checked) {
+    selectedValue = thirdRadio.value
+  }
+  if (forthRadio.checked) {
+    selectedValue = forthRadio.value
+  }
+
+  if (forthRadio.checked) {
+    selectedValue = forthRadio.value
+  }
+
+  if (otherRadio.checked) {
+    var otherAmountInputBox = document.getElementById(
+      'other-amount-input' + slug
+    )
+    if (
+      otherAmountInputBox.value !== '' &&
+      typeof parseFloat(otherAmountInputBox.value) === 'number'
+    ) {
+      selectedValue = parseFloat(otherAmountInputBox.value)
+    } else {
+      selectedValue = 0.0
+    }
+  }
+
+  return selectedValue
+}
+
+function renderOptionsForAmount(slug) {
+  var customSelectDiv = document.getElementById('custom-select' + slug)
+  while (customSelectDiv.firstChild) {
+    customSelectDiv.removeChild(customSelectDiv.lastChild)
+  }
+
+  var selectList = document.createElement('select')
+  selectList.id = 'select-dropdown' + slug
+
+  var option0 = document.createElement('option')
+  option0.text = '€1'
+  option0.value = '1'
+  selectList.appendChild(option0)
+
+  var option1 = document.createElement('option')
+  option1.text = '€1'
+  option1.value = '1'
+  selectList.appendChild(option1)
+
+  var option2 = document.createElement('option')
+  option2.text = '€2'
+  option2.value = '2'
+  selectList.appendChild(option2)
+
+  var option3 = document.createElement('option')
+  option3.text = 'Other amount'
+  option3.value = '3'
+  selectList.appendChild(option3)
+
+  customSelectDiv.appendChild(selectList)
+}
+
+function handleOtherAmountInput(value, idValue) {
+  var slug = idValue.split('other-amount-input')[1]
+  console.log('Other amount input on change value ', value, slug)
+  value = parseFloat(value)
+  if (!isNaN(value)) {
+    var tipBox = document.getElementById('tip-box' + slug)
+    var tipInputDiv = document.getElementById('input-tip-div' + slug)
+    tipInputDiv.style.display = 'none'
+    if (value <= 9) {
+      renderOptionsForAmount(slug)
+      setDropdownFunc(tipBox, slug)
+    } else {
+      renderOptionsForPercentile(slug)
+      setDropdownFunc(tipBox, slug)
+    }
+    calculateTotalAmount(slug)
+  } else {
+    document.getElementById('other-amount-input' + slug).value = ''
+  }
+}
+
+function handleTipDropdown(slug) {
+  var selectedValue = document.getElementById('custom-select' + slug)
+    .children[1].innerHTML
+  console.log('Selected value ', selectedValue)
+  var tipBox = document.getElementById('tip-box' + slug)
+  if (selectedValue === 'Other') {
+    renderOptionsForAmount(slug)
+    setDropdownFunc(tipBox, slug)
+  }
+
+  if (selectedValue === 'Other amount') {
+    var inputTipDiv = document.getElementById('input-tip-div' + slug)
+    inputTipDiv.style.display = 'flex'
+    var inputTipBox = document.getElementById('input-tip' + slug)
+
+    // check which radio button actually selected
+    var firstRadio = document.getElementById('first-amount' + slug)
+    var secondRadio = document.getElementById('second-amount' + slug)
+    var thirdRadio = document.getElementById('third-amount' + slug)
+    var forthRadio = document.getElementById('forth-amount' + slug)
+    var otherRadio = document.getElementById('other-amount' + slug)
+
+    if (firstRadio.checked) {
+      inputTipBox.value = (firstRadio.value * 0.1).toFixed(2)
+    }
+    if (secondRadio.checked) {
+      inputTipBox.value = (secondRadio.value * 0.1).toFixed(2)
+    }
+    if (thirdRadio.checked) {
+      inputTipBox.value = (thirdRadio.value * 0.1).toFixed(2)
+    }
+    if (forthRadio.checked) {
+      inputTipBox.value = (forthRadio.value * 0.1).toFixed(2)
+    }
+    if (otherRadio.checked) {
+      var otherAmountInputBox = document.getElementById(
+        'other-amount-input' + slug
+      )
+      if (parseInt(otherAmountInputBox.value) > 9) {
+        inputTipBox.value = (otherAmountInputBox.value * 0.1).toFixed(2)
+      } else {
+        inputTipBox.value = 1.0
+      }
+    }
+  }
+
+  if (
+    selectedValue !== 'Other' &&
+    selectedValue !== 'Other amount' &&
+    !selectedValue.includes('€')
+  ) {
+    var selectedAmount = getSelectedValue(slug)
+    if (tipBoxSlugList.current === '') {
+      tipBoxSlugList.current = selectedAmount
+      renderOptionsForPercentile(slug)
+      setDropdownFunc(tipBox, slug)
+    } else {
+      if (tipBoxSlugList.current !== selectedAmount) {
+        tipBoxSlugList.current = selectedAmount
+        renderOptionsForPercentile(slug)
+        setDropdownFunc(tipBox, slug)
+      }
+    }
+  }
+
+  calculateTotalAmount(slug)
+}
+
+function lightenColor(color, percent) {
+  var num = parseInt(color.replace('#', ''), 16),
+    amt = Math.round(2.55 * percent),
+    R = (num >> 16) + amt,
+    B = ((num >> 8) & 0x00ff) + amt,
+    G = (num & 0x0000ff) + amt
+  return (
+    '#' +
+    (
+      0x1000000 +
+      (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+      (B < 255 ? (B < 1 ? 0 : B) : 255) * 0x100 +
+      (G < 255 ? (G < 1 ? 0 : G) : 255)
+    )
+      .toString(16)
+      .slice(1)
+  )
+}
+
+function setDropdownFunc(tipBox, slug) {
+  var x, i, j, selElmnt, a, b, c
+  /* Look for any elements with the class "custom-select": */
+  x = tipBox.getElementsByClassName('custom-select')
+  for (i = 0; i < x.length; i++) {
+    selElmnt = x[i].getElementsByTagName('select')[0]
+    /* For each element, create a new DIV that will act as the selected item: */
+    a = document.createElement('DIV')
+    a.setAttribute('class', 'select-selected')
+    a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML
+    x[i].appendChild(a)
+    // this.handleSelect(tipBox, slug, a)
+    /* For each element, create a new DIV that will contain the option list: */
+    b = document.createElement('DIV')
+    b.setAttribute('class', 'select-items select-hide')
+    for (j = 1; j < selElmnt.length; j++) {
+      /* For each option in the original select element,
+          create a new DIV that will act as an option item: */
+      c = document.createElement('DIV')
+      c.innerHTML = selElmnt.options[j].innerHTML
+      c.addEventListener('click', function (e) {
+        /* When an item is clicked, update the original select box,
+            and the selected item: */
+        var y, i, k, s, h
+        s = this.parentNode.parentNode.getElementsByTagName('select')[0]
+        h = this.parentNode.previousSibling
+        for (i = 0; i < s.length; i++) {
+          if (s.options[i].innerHTML === this.innerHTML) {
+            s.selectedIndex = i
+            h.innerHTML = this.innerHTML
+            y = this.parentNode.getElementsByClassName('same-as-selected')
+            for (k = 0; k < y.length; k++) {
+              y[k].removeAttribute('class')
+            }
+            this.setAttribute('class', 'same-as-selected')
+            break
+          }
+        }
+        h.click()
+      })
+      b.appendChild(c)
+    }
+    x[i].appendChild(b)
+    a.addEventListener('click', function (e) {
+      /* When the select box is clicked, close any other select boxes,
+          and open/close the current select box: */
+      e.stopPropagation()
+      closeAllSelect(this)
+      this.nextSibling.classList.toggle('select-hide')
+      this.classList.toggle('select-arrow-active')
+    })
+  }
+}
+
+function closeAllSelect(elmnt) {
+  /* A function that will close all select boxes in the document,
+  except the current select box: */
+  var x,
+    y,
+    i,
+    arrNo = []
+  x = document.getElementsByClassName('select-items')
+  y = document.getElementsByClassName('select-selected')
+  for (i = 0; i < y.length; i++) {
+    if (elmnt == y[i]) {
+      arrNo.push(i)
+    } else {
+      y[i].classList.remove('select-arrow-active')
+    }
+  }
+  for (i = 0; i < x.length; i++) {
+    if (arrNo.indexOf(i)) {
+      x[i].classList.add('select-hide')
+    }
+  }
+}
+
+function calculateTotalAmount(slug) {
+  var selectedAmount = getSelectedValue(slug)
+  var customSelect = document.getElementById('custom-select' + slug)
+  var selectItem = customSelect.children[1].innerHTML
+  var tipAmount = ''
+  var inputTipboxDiv = document.getElementById('input-tip-div' + slug)
+
+  if (inputTipboxDiv.style.display === 'flex') {
+    tipAmount = document.getElementById('input-tip' + slug).value
+  } else {
+    if (selectItem.includes('€')) {
+      tipAmount = selectItem.substring(1)
+    } else {
+      tipAmount = selectItem.split('(')[1].split(')')[0]
+    }
+  }
+
+  selectedAmount = Number(parseFloat(selectedAmount).toFixed(2))
+  if (tipAmount !== '') {
+    tipAmount = Number(parseFloat(tipAmount).toFixed(2))
+  } else {
+    tipAmount = 0.0
+    document.getElementById('input-tip' + slug).value = 0.0
+  }
+
+  console.log('Actual donation ', selectedAmount)
+  console.log('Tip amount ', tipAmount)
+
+  if (selectedAmount === 0) {
+    tipAmount = 0
+  }
+  var totalAmount = selectedAmount + tipAmount
+  var tipLabel = document.getElementById('total-charge-label' + slug)
+  tipLabel.innerHTML = ''
+  tipLabel.innerHTML = 'Total Charge: € ' + totalAmount
+
+  return tipAmount
+}
+
+/* If the user clicks anywhere outside the select box,
+then close all select boxes: */
+document.addEventListener('click', closeAllSelect)
