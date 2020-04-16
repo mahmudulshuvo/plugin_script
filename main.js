@@ -12,6 +12,7 @@
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
 var tipBoxSlugList = { current: '' }
+var whydonateSlugs = {}
 
 var classArray = document.getElementsByClassName('widget')
 if (classArray.length > 1) {
@@ -573,7 +574,7 @@ function designWidget(option) {
     var firstAmountRadio = document.createElement('input')
     firstAmountRadio.setAttribute('type', 'radio')
     firstAmountRadio.id = 'first-amount' + widgetDiv.dataset.slug
-    firstAmountRadio.name = 'select-amount'
+    firstAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     firstAmountRadio.value = '25'
     firstAmountRadio.style.marginTop = '15px'
     firstAmountRadio.checked = true
@@ -609,7 +610,7 @@ function designWidget(option) {
     var secondAmountRadio = document.createElement('input')
     secondAmountRadio.setAttribute('type', 'radio')
     secondAmountRadio.id = 'second-amount' + widgetDiv.dataset.slug
-    secondAmountRadio.name = 'select-amount'
+    secondAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     secondAmountRadio.value = '50'
     secondAmountRadio.style.marginTop = '15px'
     // secondAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -644,7 +645,7 @@ function designWidget(option) {
     var thirdAmountRadio = document.createElement('input')
     thirdAmountRadio.setAttribute('type', 'radio')
     thirdAmountRadio.id = 'third-amount' + widgetDiv.dataset.slug
-    thirdAmountRadio.name = 'select-amount'
+    thirdAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     thirdAmountRadio.value = '75'
     thirdAmountRadio.style.marginTop = '15px'
     // thirdAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -679,7 +680,7 @@ function designWidget(option) {
     var forthAmountRadio = document.createElement('input')
     forthAmountRadio.setAttribute('type', 'radio')
     forthAmountRadio.id = 'forth-amount' + widgetDiv.dataset.slug
-    forthAmountRadio.name = 'select-amount'
+    forthAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     forthAmountRadio.value = '100'
     forthAmountRadio.style.marginTop = '15px'
     // forthAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -714,7 +715,7 @@ function designWidget(option) {
     var otherAmountRadio = document.createElement('input')
     otherAmountRadio.setAttribute('type', 'radio')
     otherAmountRadio.id = 'other-amount' + widgetDiv.dataset.slug
-    otherAmountRadio.name = 'select-amount'
+    otherAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     otherAmountRadio.value = 'other'
     otherAmountRadio.style.marginTop = '15px'
     // otherAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -1272,7 +1273,7 @@ function designWidget(option) {
     var firstAmountRadio = document.createElement('input')
     firstAmountRadio.setAttribute('type', 'radio')
     firstAmountRadio.id = 'first-amount' + widgetDiv.dataset.slug
-    firstAmountRadio.name = 'select-amount'
+    firstAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     firstAmountRadio.value = '25'
     firstAmountRadio.style.marginTop = '15px'
     firstAmountRadio.checked = true
@@ -1308,7 +1309,7 @@ function designWidget(option) {
     var secondAmountRadio = document.createElement('input')
     secondAmountRadio.setAttribute('type', 'radio')
     secondAmountRadio.id = 'second-amount' + widgetDiv.dataset.slug
-    secondAmountRadio.name = 'select-amount'
+    secondAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     secondAmountRadio.value = '50'
     secondAmountRadio.style.marginTop = '15px'
     // secondAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -1343,7 +1344,7 @@ function designWidget(option) {
     var thirdAmountRadio = document.createElement('input')
     thirdAmountRadio.setAttribute('type', 'radio')
     thirdAmountRadio.id = 'third-amount' + widgetDiv.dataset.slug
-    thirdAmountRadio.name = 'select-amount'
+    thirdAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     thirdAmountRadio.value = '75'
     thirdAmountRadio.style.marginTop = '15px'
     // thirdAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -1378,7 +1379,7 @@ function designWidget(option) {
     var forthAmountRadio = document.createElement('input')
     forthAmountRadio.setAttribute('type', 'radio')
     forthAmountRadio.id = 'forth-amount' + widgetDiv.dataset.slug
-    forthAmountRadio.name = 'select-amount'
+    forthAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     forthAmountRadio.value = '100'
     forthAmountRadio.style.marginTop = '15px'
     // forthAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -1413,7 +1414,7 @@ function designWidget(option) {
     var otherAmountRadio = document.createElement('input')
     otherAmountRadio.setAttribute('type', 'radio')
     otherAmountRadio.id = 'other-amount' + widgetDiv.dataset.slug
-    otherAmountRadio.name = 'select-amount'
+    otherAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     otherAmountRadio.value = 'other'
     otherAmountRadio.style.marginTop = '15px'
     // otherAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -2205,7 +2206,7 @@ function createModal(slug) {
   var firstAmountRadio = document.createElement('input')
   firstAmountRadio.setAttribute('type', 'radio')
   firstAmountRadio.id = 'first-amount' + slug
-  firstAmountRadio.name = 'select-amount'
+  firstAmountRadio.name = 'select-amount' + slug
   firstAmountRadio.value = '25'
   firstAmountRadio.checked = true
   firstAmountRadio.style.marginTop = '15px'
@@ -2242,7 +2243,7 @@ function createModal(slug) {
   var secondAmountRadio = document.createElement('input')
   secondAmountRadio.setAttribute('type', 'radio')
   secondAmountRadio.id = 'second-amount' + slug
-  secondAmountRadio.name = 'select-amount'
+  secondAmountRadio.name = 'select-amount' + slug
   secondAmountRadio.value = '50'
   secondAmountRadio.style.marginTop = '15px'
   // secondAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -2277,7 +2278,7 @@ function createModal(slug) {
   var thirdAmountRadio = document.createElement('input')
   thirdAmountRadio.setAttribute('type', 'radio')
   thirdAmountRadio.id = 'third-amount' + slug
-  thirdAmountRadio.name = 'select-amount'
+  thirdAmountRadio.name = 'select-amount' + slug
   thirdAmountRadio.value = '75'
   thirdAmountRadio.style.marginTop = '15px'
   // thirdAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -2312,7 +2313,7 @@ function createModal(slug) {
   var forthAmountRadio = document.createElement('input')
   forthAmountRadio.setAttribute('type', 'radio')
   forthAmountRadio.id = 'forth-amount' + slug
-  forthAmountRadio.name = 'select-amount'
+  forthAmountRadio.name = 'select-amount' + slug
   forthAmountRadio.value = '100'
   forthAmountRadio.style.marginTop = '15px'
   // forthAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -2347,7 +2348,7 @@ function createModal(slug) {
   var otherAmountRadio = document.createElement('input')
   otherAmountRadio.setAttribute('type', 'radio')
   otherAmountRadio.id = 'other-amount' + slug
-  otherAmountRadio.name = 'select-amount'
+  otherAmountRadio.name = 'select-amount' + slug
   otherAmountRadio.value = 'other'
   otherAmountRadio.style.marginTop = '15px'
   // otherAmountRadio.onclick = () => this.handlePeriodInterval(2)
@@ -3273,13 +3274,38 @@ function handleTipDropdown(slug) {
     !selectedValue.includes('€')
   ) {
     var selectedAmount = getSelectedValue(slug)
-    if (tipBoxSlugList.current === '') {
-      tipBoxSlugList.current = selectedAmount
-      renderOptionsForPercentile(slug)
-      setDropdownFunc(tipBox, slug)
+
+    // if (tipBoxSlugList.current === '') {
+    //   tipBoxSlugList.current = selectedAmount
+    //   renderOptionsForPercentile(slug)
+    //   setDropdownFunc(tipBox, slug)
+    // } else {
+    //   if (tipBoxSlugList.current !== selectedAmount) {
+    //     tipBoxSlugList.current = selectedAmount
+    //     renderOptionsForPercentile(slug)
+    //     setDropdownFunc(tipBox, slug)
+    //   }
+    // }
+
+    // if (Object.keys(whydonateSlugs[`${slug}`]).length === 0) {
+    //   // whydonateSlugs[`${slug}`] = {}
+    //   whydonateSlugs[`${slug}`].current = selectedAmount
+    //   // renderOptionsForPercentile(slug)
+    //   // setDropdownFunc(tipBox, slug)
+    // } else {
+    //   if (whydonateSlugs[`${slug}`].current !== selectedAmount) {
+    //     whydonateSlugs[`${slug}`].current = selectedAmount
+    //     renderOptionsForPercentile(slug)
+    //     setDropdownFunc(tipBox, slug)
+    //   }
+    // }
+
+    if (!whydonateSlugs.hasOwnProperty(slug)) {
+      whydonateSlugs[`${slug}`] = {}
+      whydonateSlugs[`${slug}`].current = selectedAmount
     } else {
-      if (tipBoxSlugList.current !== selectedAmount) {
-        tipBoxSlugList.current = selectedAmount
+      if (whydonateSlugs[`${slug}`].current !== selectedAmount) {
+        whydonateSlugs[`${slug}`].current = selectedAmount
         renderOptionsForPercentile(slug)
         setDropdownFunc(tipBox, slug)
       }
