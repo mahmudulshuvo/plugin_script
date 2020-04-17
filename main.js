@@ -537,7 +537,7 @@ function designWidget(option) {
     selectAmountlabel.id = 'select-amount-label' + widgetDiv.dataset.slug
     selectAmountlabel.className = 'select-amount-label'
     if (widgetDiv.dataset.lang === 'nl') {
-      selectAmountlabel.innerText = 'Bedrag'
+      selectAmountlabel.innerText = 'Anders'
     } else if (widgetDiv.dataset.lang === 'de') {
       selectAmountlabel.innerText = 'Betrag'
     } else if (widgetDiv.dataset.lang === 'es') {
@@ -725,7 +725,7 @@ function designWidget(option) {
     otherAmountLabel.id = 'other-amount-label+' + widgetDiv.dataset.slug
     otherAmountLabel.className = 'other-amount-label'
     if (widgetDiv.dataset.lang === 'nl') {
-      otherAmountLabel.innerText = 'Bedrag'
+      otherAmountLabel.innerText = 'Anders'
     } else if (widgetDiv.dataset.lang === 'de') {
       otherAmountLabel.innerText = 'Andere'
     } else if (widgetDiv.dataset.lang === 'es') {
@@ -760,6 +760,7 @@ function designWidget(option) {
       otherAmountInput.placeholder = 'Other amount'
     }
     otherAmountInput.id = 'other-amount-input' + widgetDiv.dataset.slug
+    otherAmountInput.value = '€ '
     otherAmountInput.onkeyup = (e) =>
       this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
 
@@ -875,7 +876,13 @@ function designWidget(option) {
     }
     donorInfoDiv.appendChild(missingEmailMsg)
 
-    createTipbox(donationForm, null, widgetDiv.dataset.slug, '#2828d6')
+    createTipbox(
+      donationForm,
+      null,
+      widgetDiv.dataset.slug,
+      '#2828d6',
+      widgetDiv.dataset.lang
+    )
     calculateTotalAmount(widgetDiv.dataset.slug)
 
     // ----------- copied from here -----------------------
@@ -1238,7 +1245,7 @@ function designWidget(option) {
     selectAmountlabel.id = 'select-amount-label' + widgetDiv.dataset.slug
     selectAmountlabel.className = 'select-amount-label'
     if (widgetDiv.dataset.lang === 'nl') {
-      selectAmountlabel.innerText = 'Bedrag'
+      selectAmountlabel.innerText = 'Anders'
     } else if (widgetDiv.dataset.lang === 'de') {
       selectAmountlabel.innerText = 'Betrag'
     } else if (widgetDiv.dataset.lang === 'es') {
@@ -1424,7 +1431,7 @@ function designWidget(option) {
     otherAmountLabel.id = 'other-amount-label+' + widgetDiv.dataset.slug
     otherAmountLabel.className = 'other-amount-label'
     if (widgetDiv.dataset.lang === 'nl') {
-      otherAmountLabel.innerText = 'Bedrag'
+      otherAmountLabel.innerText = 'Anders'
     } else if (widgetDiv.dataset.lang === 'de') {
       otherAmountLabel.innerText = 'Andere'
     } else if (widgetDiv.dataset.lang === 'es') {
@@ -1459,6 +1466,7 @@ function designWidget(option) {
       otherAmountInput.placeholder = 'Other amount'
     }
     otherAmountInput.id = 'other-amount-input' + widgetDiv.dataset.slug
+    otherAmountInput.value = '€ '
     otherAmountInput.onkeyup = (e) =>
       this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
     otherAmountInputDiv.appendChild(otherAmountInput)
@@ -1573,7 +1581,13 @@ function designWidget(option) {
     }
     donorInfoDiv.appendChild(missingEmailMsg)
 
-    createTipbox(donationForm, null, widgetDiv.dataset.slug, '#2828d6')
+    createTipbox(
+      donationForm,
+      null,
+      widgetDiv.dataset.slug,
+      '#2828d6',
+      widgetDiv.dataset.lang
+    )
     calculateTotalAmount(widgetDiv.dataset.slug)
 
     // ----------- copied from here -----------------------
@@ -2393,6 +2407,7 @@ function createModal(slug) {
     otherAmountInput.placeholder = 'Other amount'
   }
   otherAmountInput.id = 'other-amount-input' + slug
+  otherAmountInput.value = '€ '
   otherAmountInput.onkeyup = (e) =>
     this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
   otherAmountInputDiv.appendChild(otherAmountInput)
@@ -2504,7 +2519,13 @@ function createModal(slug) {
   }
   donorInfoDiv.appendChild(missingEmailMsg)
 
-  createTipbox(donationFormDiv, modalContent, slug, '#2828d6')
+  createTipbox(
+    donationFormDiv,
+    modalContent,
+    slug,
+    '#2828d6',
+    widgetDiv.dataset.lang
+  )
   calculateTotalAmount(slug)
 
   var modalDonateButton = document.createElement('button')
@@ -2658,8 +2679,11 @@ function directDonate(idValue, lang) {
     selectedAmount = 100
   }
   if (document.getElementById('other-amount' + slugVal).checked) {
-    selectedAmount = parseInt(
-      document.getElementById('other-amount-input' + slugVal).value
+    selectedAmount = parseFloat(
+      document
+        .getElementById('other-amount-input' + slugVal)
+        .value.split('€ ')[1]
+        .replace(',', '.')
     )
 
     if (isNaN(selectedAmount)) {
@@ -2705,7 +2729,7 @@ function directDonate(idValue, lang) {
       description: 'Hey there, just want to help with donation',
       bank_account: '',
       tip_amount: calculateTotalAmount(slugVal),
-      return_url: window.location.href,
+      return_url: 'https://www.google.com',
     }
 
     makeDonation(data, slugVal, lang)
@@ -2990,7 +3014,7 @@ function resize() {
   }
 }
 
-function createTipbox(donationFormDiv, modalContent, slug, color) {
+function createTipbox(donationFormDiv, modalContent, slug, color, lang) {
   if (modalContent) {
     modalContent.style.height = '900px'
   }
@@ -3010,8 +3034,15 @@ function createTipbox(donationFormDiv, modalContent, slug, color) {
   para1.style.fontSize = '15px'
   para1.style.fontWeight = '400'
   para1.style.color = 'black'
-  para1.textContent =
-    'Whydonate has a 0% platform fee for organizers and relies on the generosity of donors like you to operate our service.'
+  if (lang === 'nl') {
+    para1.textContent =
+      'Whydonate heeft 0% platformkosten voor organisatoren en we rekenen op de vrijgevigheid van donateurs zoals jij om onze service te garanderen.'
+  } else if (lang === 'de') {
+  } else if (lang === 'es') {
+  } else {
+    para1.textContent =
+      'Whydonate has a 0% platform fee for organizers and relies on the generosity of donors like you to operate our service.'
+  }
 
   tipBox.appendChild(para1)
 
@@ -3024,7 +3055,14 @@ function createTipbox(donationFormDiv, modalContent, slug, color) {
   para2.style.fontWeight = '400'
   para2.style.color = 'black'
   para2.style.marginTop = '12px'
-  para2.textContent = 'Thank you for including a tip of : '
+  if (lang === 'nl') {
+    para2.textContent = 'Bedankt voor het toevoegen van een fooi van : '
+  } else if (lang === 'de') {
+  } else if (lang === 'es') {
+  } else {
+    para2.textContent = 'Thank you for including a tip of : '
+  }
+
   selectPercentileDiv.appendChild(para2)
 
   var dropdown = document.createElement('div')
@@ -3158,10 +3196,11 @@ function getSelectedValue(slug) {
       'other-amount-input' + slug
     )
     if (
-      otherAmountInputBox.value !== '' &&
-      typeof parseFloat(otherAmountInputBox.value) === 'number'
+      otherAmountInputBox.value !== '€ ' &&
+      typeof parseFloat(otherAmountInputBox.value.split('€ ')[1]) === 'number'
     ) {
-      selectedValue = parseFloat(otherAmountInputBox.value)
+      var amount = otherAmountInputBox.value.split('€ ')[1]
+      selectedValue = parseFloat(amount.replace(',', '.'))
     } else {
       selectedValue = 0.0
     }
@@ -3205,7 +3244,10 @@ function renderOptionsForAmount(slug) {
 function handleOtherAmountInput(value, idValue) {
   var slug = idValue.split('other-amount-input')[1]
   console.log('Other amount input on change value ', value, slug)
-  value = parseFloat(value)
+  if (value.includes('€')) {
+    value = value.split('€ ')[1]
+  }
+  value = parseFloat(value.replace(',', '.'))
   if (!isNaN(value)) {
     var tipBox = document.getElementById('tip-box' + slug)
     var tipInputDiv = document.getElementById('input-tip-div' + slug)
@@ -3219,7 +3261,7 @@ function handleOtherAmountInput(value, idValue) {
     }
     calculateTotalAmount(slug)
   } else {
-    document.getElementById('other-amount-input' + slug).value = ''
+    document.getElementById('other-amount-input' + slug).value = '€'
   }
 }
 
@@ -3263,8 +3305,11 @@ function handleTipDropdown(slug) {
       )
       if (parseInt(otherAmountInputBox.value) > 9) {
         inputTipBox.value = (otherAmountInputBox.value * 0.1).toFixed(2)
+        inputTipBox.value = (Math.round(inputTipBox.value * 100) / 100).toFixed(
+          2
+        )
       } else {
-        inputTipBox.value = 1.0
+        inputTipBox.value = (Math.round(1 * 100) / 100).toFixed(2)
       }
     }
   }
@@ -3305,7 +3350,10 @@ function handleTipDropdown(slug) {
       whydonateSlugs[`${slug}`] = {}
       whydonateSlugs[`${slug}`].current = selectedAmount
     } else {
-      if (whydonateSlugs[`${slug}`].current !== selectedAmount) {
+      if (
+        whydonateSlugs[`${slug}`].current !== selectedAmount &&
+        whydonateSlugs[`${slug}`].current !== 0
+      ) {
         whydonateSlugs[`${slug}`].current = selectedAmount
         renderOptionsForPercentile(slug)
         setDropdownFunc(tipBox, slug)
@@ -3431,23 +3479,23 @@ function calculateTotalAmount(slug) {
 
   selectedAmount = Number(parseFloat(selectedAmount).toFixed(2))
   if (tipAmount !== '') {
-    tipAmount = Number(parseFloat(tipAmount).toFixed(2))
+    tipAmount = Number(parseFloat(tipAmount.replace(',', '.')).toFixed(2))
   } else {
     tipAmount = 0.0
     document.getElementById('input-tip' + slug).value = 0.0
   }
 
-  console.log('Actual donation ', selectedAmount)
-  console.log('Tip amount ', tipAmount)
-
   if (selectedAmount === 0) {
-    tipAmount = 0
+    tipAmount = 0.0
   }
   var totalAmount = selectedAmount + tipAmount
   var tipLabel = document.getElementById('total-charge-label' + slug)
+  totalAmount = (Math.round(totalAmount * 100) / 100).toFixed(2)
   tipLabel.innerHTML = ''
   tipLabel.innerHTML = 'Total Charge: € ' + totalAmount
-
+  console.log('Actual donation ', selectedAmount)
+  console.log('Tip amount ', tipAmount)
+  console.log('Total amount ', totalAmount)
   return tipAmount
 }
 
