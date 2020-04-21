@@ -34,7 +34,9 @@ var widgetOption = ''
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
 // style.href = 'style.css'
-style.href = 'https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
+// style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
+style.href =
+  'https://res.cloudinary.com/dxhaja5tz/raw/upload/v1587045091/script_css_staging.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -2687,7 +2689,12 @@ function directDonate(idValue, lang) {
     )
 
     if (isNaN(selectedAmount)) {
-      // amountErrMsg.innerText = 'Amount should be a number'
+      amountErrMsg.innerText =
+        'Amount should be an number without a deciaml value'
+    }
+    if (selectedAmount % 1 !== 0) {
+      amountErrMsg.innerText =
+        'Amount should be an number without a deciaml value'
     }
   }
 
@@ -2695,7 +2702,7 @@ function directDonate(idValue, lang) {
   lastName = document.getElementById('last-name-field' + slugVal).value
   email = document.getElementById('email-field' + slugVal).value
 
-  if (selectedAmount < 5 || isNaN(selectedAmount)) {
+  if (selectedAmount < 5 || isNaN(selectedAmount) || selectedAmount % 1 !== 0) {
     amountErrMsg.style.display = 'block'
     errorCheck = true
   }
@@ -3022,7 +3029,7 @@ function createTipbox(donationFormDiv, modalContent, slug, color, lang) {
   tipBox.id = 'tip-box' + slug
   tipBox.className = 'tip-box'
   tipBox.style.width = '95%'
-  tipBox.style.height = '185px'
+  tipBox.style.height = '200px'
   tipBox.style.margin = 'auto'
   tipBox.style.marginTop = '30px'
   tipBox.style.padding = '5px'
