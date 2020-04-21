@@ -1,14 +1,4 @@
-// version 1.0
-// Remove btn red color
-// Update Powered by text
-// Period Interval bug fix
-// Update language for nl, de, es
-// Donate button text change after making donation
-// Remove all logs
-// Set success and fail url
-// Check before redirect to success and fail url
-// Check if widget-with-form available
-// Change preset to 15%
+// version 2.0 with Tipbox Production-2
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -36,7 +26,7 @@ var style = document.createElement('link')
 // style.href = 'style.css'
 // style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
 style.href =
-  'https://res.cloudinary.com/dxhaja5tz/raw/upload/v1587045091/script_css_staging.css'
+  'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -126,15 +116,15 @@ function setValues(result, slug, lang, option, card) {
   // fundraiserInfo.slug = fundraiserInfo.slug + '&' + randExtension
 
   // Decide whether to show the tip_box or not
-  // var tipBox = document.getElementById('tip-box' + slug)
-  // if (!result.data.tip_enabled) {
-  //   if (option === 2 || option === 4) {
-  //     tipBox.style.display = 'none'
-  //   } else {
-  //     document.getElementById('modal-content' + slug).style.height = '700px'
-  //     tipBox.style.display = 'none'
-  //   }
-  // }
+  var tipBox = document.getElementById('tip-box' + slug)
+  if (!result.data.tip_enabled) {
+    if (option === 2 || option === 4) {
+      tipBox.style.display = 'none'
+    } else {
+      document.getElementById('modal-content' + slug).style.height = '700px'
+      tipBox.style.display = 'none'
+    }
+  }
 
   if (option === 3 && card === 'hide') {
     var widgetContentDiv = document.getElementById(slug)
@@ -2688,13 +2678,16 @@ function directDonate(idValue, lang) {
         .replace(',', '.')
     )
 
-    if (isNaN(selectedAmount)) {
-      amountErrMsg.innerText =
-        'Amount should be an number without a deciaml value'
-    }
-    if (selectedAmount % 1 !== 0) {
-      amountErrMsg.innerText =
-        'Amount should be an number without a deciaml value'
+    if (selectedAmount % 1 !== 0 || isNaN(selectedAmount)) {
+    	if (lang === 'nl') {
+    		amountErrMsg.innerText = 'Decimalen zijn niet toegestaan.'
+    	} else if (lang === 'de') {
+    		amountErrMsg.innerText = 'Decimale waarden zijn niet toegestaan.'
+    	} else if (lang === 'es') {
+    		amountErrMsg.innerText = 'No se permiten valores decimales.'
+    	} else {
+    		amountErrMsg.innerText = 'Decimal values are not allowed.'
+    	}
     }
   }
 
@@ -2733,10 +2726,10 @@ function directDonate(idValue, lang) {
       fundraising_local_id: fundrasier_id,
       currency_code: 'eur',
       lang: 'en',
-      description: 'Hey there, just want to help with donation',
+      description: '',
       bank_account: '',
       tip_amount: calculateTotalAmount(slugVal),
-      return_url: 'https://www.google.com',
+      return_url: window.location.href,
     }
 
     makeDonation(data, slugVal, lang)
@@ -2752,10 +2745,10 @@ function ValidateEmail(mail) {
 
 async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  const donationApi =
-    'https://whydonate-development.appspot.com/api/v1/donation/order/'
   // const donationApi =
-  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  const donationApi =
+    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -2834,13 +2827,13 @@ async function makeDonation(data, slugVal, lang) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  const url =
-    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&&&')[0]
-
   // const url =
-  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&')[0]
+  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&&&')[0]
+
+  const url =
+    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -2903,12 +2896,12 @@ function addJquery() {
         }
 
         var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-        var api =
-          'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-          urlAddressArr[1]
         // var api =
-        //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
         //   urlAddressArr[1]
+        var api =
+          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          urlAddressArr[1]
         var url = proxyurl + api
 
         jQuery.ajax({
@@ -3241,7 +3234,7 @@ function renderOptionsForAmount(slug) {
   selectList.appendChild(option2)
 
   var option3 = document.createElement('option')
-  option3.text = 'Other amount'
+  option3.text = 'Amount'
   option3.value = '3'
   selectList.appendChild(option3)
 
@@ -3254,7 +3247,9 @@ function handleOtherAmountInput(value, idValue) {
   if (value.includes('€')) {
     value = value.split('€ ')[1]
   }
-  value = parseFloat(value.replace(',', '.'))
+  if (value.includes(',')) {
+  	value = parseFloat(value.replace(',', '.'))
+  }
   if (!isNaN(value)) {
     var tipBox = document.getElementById('tip-box' + slug)
     var tipInputDiv = document.getElementById('input-tip-div' + slug)
@@ -3282,7 +3277,7 @@ function handleTipDropdown(slug) {
     setDropdownFunc(tipBox, slug)
   }
 
-  if (selectedValue === 'Other amount') {
+  if (selectedValue === 'Amount') {
     var inputTipDiv = document.getElementById('input-tip-div' + slug)
     inputTipDiv.style.display = 'flex'
     var inputTipBox = document.getElementById('input-tip' + slug)
@@ -3323,7 +3318,7 @@ function handleTipDropdown(slug) {
 
   if (
     selectedValue !== 'Other' &&
-    selectedValue !== 'Other amount' &&
+    selectedValue !== 'Amount' &&
     !selectedValue.includes('€')
   ) {
     var selectedAmount = getSelectedValue(slug)
@@ -3356,6 +3351,8 @@ function handleTipDropdown(slug) {
     if (!whydonateSlugs.hasOwnProperty(slug)) {
       whydonateSlugs[`${slug}`] = {}
       whydonateSlugs[`${slug}`].current = selectedAmount
+      renderOptionsForPercentile(slug)
+      setDropdownFunc(tipBox, slug)
     } else {
       if (
         whydonateSlugs[`${slug}`].current !== selectedAmount &&
@@ -3477,11 +3474,12 @@ function calculateTotalAmount(slug) {
   if (inputTipboxDiv.style.display === 'flex') {
     tipAmount = document.getElementById('input-tip' + slug).value
   } else {
-    if (selectItem.includes('€')) {
-      tipAmount = selectItem.substring(1)
-    } else {
-      tipAmount = selectItem.split('(')[1].split(')')[0]
-    }
+  	if (selectItem.includes('€')) {
+      	tipAmount = selectItem.substring(1)
+	} 
+	else {
+	    tipAmount = selectItem.split('(')[1].split(')')[0]
+	}
   }
 
   selectedAmount = Number(parseFloat(selectedAmount).toFixed(2))
