@@ -25,8 +25,7 @@ var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
 // style.href = 'style.css'
 // style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
-style.href =
-  'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -246,6 +245,147 @@ function setValues(result, slug, lang, option, card) {
       progressDivCheck.style.visibility = 'hidden'
     }
   }
+
+  // Add custom styling
+
+  if (result['data']['custom_style']) {
+    if (option === 2 || option === 4) {
+      var donateBtnInForm = document.getElementById(
+        'donate-btn-in-form+' + slug
+      )
+      donateBtnInForm.style.background =
+        result['data']['custom_style']['secondary_color']
+    } else {
+      console.log('result is ', result['data']['custom_style']['primary_color'])
+      console.log(
+        'result is ',
+        result['data']['custom_style']['secondary_color']
+      )
+      var donateBtnInWidget = document.getElementById('donate-btn+' + slug)
+      var donateBtnInModal = document.getElementById(
+        'donate-btn-in-modal+' + slug
+      )
+      donateBtnInWidget.style.background =
+        result['data']['custom_style']['secondary_color']
+      donateBtnInModal.style.background =
+        result['data']['custom_style']['secondary_color']
+    }
+
+    // Design rest of the parts
+    if (result['data']['tip_enabled']) {
+      var tipbox = document.getElementById('tip-box' + slug)
+      tipbox.style.background = adjust(
+        result['data']['custom_style']['secondary_color'],
+        175
+      )
+    }
+
+    // For Selected Interval
+    var oneTimeLabel = document.getElementById('onetime-label' + slug)
+    var oneTimeRadio = document.getElementById('onetime' + slug)
+    oneTimeLabel.onclick = () =>
+      this.handlePeriodInterval(
+        1,
+        `perido-intervals-onetime+${slug}`,
+        result['data']['custom_style']['secondary_color']
+      )
+    oneTimeRadio.onclick = () =>
+      this.handlePeriodInterval(
+        1,
+        `perido-intervals-onetime+${slug}`,
+        result['data']['custom_style']['secondary_color']
+      )
+    //Default select Onetime
+    document.getElementById('onetime-bar' + slug).style.backgroundColor =
+      result['data']['custom_style']['secondary_color']
+
+    var monthlyLabel = document.getElementById('monthly-label' + slug)
+    var monthlyRadio = document.getElementById('monthly' + slug)
+    monthlyLabel.onclick = () =>
+      this.handlePeriodInterval(
+        2,
+        `perido-intervals-monthly+${slug}`,
+        result['data']['custom_style']['secondary_color']
+      )
+    monthlyRadio.onclick = () =>
+      this.handlePeriodInterval(
+        2,
+        `perido-intervals-monthly+${slug}`,
+        result['data']['custom_style']['secondary_color']
+      )
+
+    var yearlyLabel = document.getElementById('yearly-label' + slug)
+    var yearlyRadio = document.getElementById('yearly' + slug)
+    yearlyLabel.onclick = () =>
+      this.handlePeriodInterval(
+        3,
+        `perido-intervals-yearly+${slug}`,
+        result['data']['custom_style']['secondary_color']
+      )
+    yearlyRadio.onclick = () =>
+      this.handlePeriodInterval(
+        3,
+        `perido-intervals-yearly+${slug}`,
+        result['data']['custom_style']['secondary_color']
+      )
+
+    // For Selected Amount
+    var firstAmountLabel = document.getElementById('first-amount-label+' + slug)
+    var secondAmountLabel = document.getElementById(
+      'second-amount-label+' + slug
+    )
+    var thirdAmountLabel = document.getElementById('third-amount-label+' + slug)
+    var forthAmountLabel = document.getElementById('forth-amount-label+' + slug)
+    var otherAmountLabel = document.getElementById('other-amount-label+' + slug)
+
+    document.getElementById('first-amount-div' + slug).style.backgroundColor =
+      result['data']['custom_style']['primary_color']
+
+    firstAmountLabel.onclick = () =>
+      this.handleSelectAmount(
+        25,
+        firstAmountLabel.id,
+        result['data']['custom_style']['primary_color']
+      )
+    secondAmountLabel.onclick = () =>
+      this.handleSelectAmount(
+        50,
+        secondAmountLabel.id,
+        result['data']['custom_style']['primary_color']
+      )
+    thirdAmountLabel.onclick = () =>
+      this.handleSelectAmount(
+        75,
+        thirdAmountLabel.id,
+        result['data']['custom_style']['primary_color']
+      )
+    forthAmountLabel.onclick = () =>
+      this.handleSelectAmount(
+        100,
+        forthAmountLabel.id,
+        result['data']['custom_style']['primary_color']
+      )
+    otherAmountLabel.onclick = () =>
+      this.handleSelectAmount(
+        'other',
+        otherAmountLabel.id,
+        result['data']['custom_style']['primary_color']
+      )
+  }
+}
+
+function adjust(color, amount) {
+  return (
+    '#' +
+    color
+      .replace(/^#/, '')
+      .replace(/../g, (color) =>
+        (
+          '0' +
+          Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)
+        ).substr(-2)
+      )
+  )
 }
 
 function designWidget(option) {
@@ -409,10 +549,11 @@ function designWidget(option) {
     } else {
       oneTimeLabel.innerText = 'One time'
     }
+    oneTimeLabel.id = 'onetime-label' + widgetDiv.dataset.slug
     oneTimeLabel.fontSize = '14px'
     oneTimeLabel.style.display = 'block'
     oneTimeLabel.onclick = () =>
-      this.handlePeriodInterval(1, periodOnetimeDiv.id)
+      this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
     var oneTimeRadio = document.createElement('input')
     oneTimeRadio.setAttribute('type', 'radio')
@@ -421,7 +562,7 @@ function designWidget(option) {
     oneTimeRadio.value = '1'
     oneTimeRadio.checked = true
     oneTimeRadio.onclick = () =>
-      this.handlePeriodInterval(1, periodOnetimeDiv.id)
+      this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
     periodOnetimeDiv.appendChild(oneTimeRadio)
     periodOnetimeDiv.appendChild(oneTimeLabel)
@@ -441,10 +582,11 @@ function designWidget(option) {
     } else {
       monthlyLabel.innerText = 'Monthly'
     }
+    monthlyLabel.id = 'monthly-label' + widgetDiv.dataset.slug
     monthlyLabel.fontSize = '14px'
     monthlyLabel.style.display = 'block'
     monthlyLabel.onclick = () =>
-      this.handlePeriodInterval(2, periodMonthlyDiv.id)
+      this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
     var monthlyRadio = document.createElement('input')
     monthlyRadio.setAttribute('type', 'radio')
@@ -452,7 +594,7 @@ function designWidget(option) {
     monthlyRadio.name = 'period-intervals' + widgetDiv.dataset.slug
     monthlyRadio.value = '2'
     monthlyRadio.onclick = () =>
-      this.handlePeriodInterval(2, periodMonthlyDiv.id)
+      this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
     periodMonthlyDiv.appendChild(monthlyRadio)
     periodMonthlyDiv.appendChild(monthlyLabel)
@@ -472,16 +614,19 @@ function designWidget(option) {
     } else {
       yearlyLabel.innerText = 'Yearly'
     }
+    yearlyLabel.id = 'yearly-label' + widgetDiv.dataset.slug
     yearlyLabel.fontSize = '14px'
     yearlyLabel.style.display = 'block'
-    yearlyLabel.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
+    yearlyLabel.onclick = () =>
+      this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
     var yearlyRadio = document.createElement('input')
     yearlyRadio.setAttribute('type', 'radio')
     yearlyRadio.id = 'yearly' + widgetDiv.dataset.slug
     yearlyRadio.name = 'period-intervals' + widgetDiv.dataset.slug
     yearlyRadio.value = '3'
-    yearlyRadio.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
+    yearlyRadio.onclick = () =>
+      this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
     periodYearlyDiv.appendChild(yearlyRadio)
     periodYearlyDiv.appendChild(yearlyLabel)
@@ -571,7 +716,6 @@ function designWidget(option) {
     firstAmountRadio.value = '25'
     firstAmountRadio.style.marginTop = '15px'
     firstAmountRadio.checked = true
-    // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var firstAmountLabel = document.createElement('label')
     firstAmountLabel.id = 'first-amount-label+' + widgetDiv.dataset.slug
@@ -582,7 +726,7 @@ function designWidget(option) {
     firstAmountLabel.style.marginTop = '12px'
     firstAmountLabel.style.display = 'block'
     firstAmountLabel.onclick = () =>
-      this.handleSelectAmount(25, firstAmountLabel.id)
+      this.handleSelectAmount(25, firstAmountLabel.id, '')
 
     firstAmount.appendChild(firstAmountRadio)
     firstAmount.appendChild(firstAmountLabel)
@@ -606,7 +750,6 @@ function designWidget(option) {
     secondAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     secondAmountRadio.value = '50'
     secondAmountRadio.style.marginTop = '15px'
-    // secondAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var secondAmountLabel = document.createElement('label')
     secondAmountLabel.id = 'second-amount-label+' + widgetDiv.dataset.slug
@@ -617,7 +760,7 @@ function designWidget(option) {
     secondAmountLabel.style.marginTop = '12px'
     secondAmountLabel.style.display = 'block'
     secondAmountLabel.onclick = () =>
-      this.handleSelectAmount(50, secondAmountLabel.id)
+      this.handleSelectAmount(50, secondAmountLabel.id, '')
 
     secondAmount.appendChild(secondAmountRadio)
     secondAmount.appendChild(secondAmountLabel)
@@ -641,7 +784,6 @@ function designWidget(option) {
     thirdAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     thirdAmountRadio.value = '75'
     thirdAmountRadio.style.marginTop = '15px'
-    // thirdAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var thirdAmountLable = document.createElement('label')
     thirdAmountLable.id = 'third-amount-label+' + widgetDiv.dataset.slug
@@ -652,7 +794,7 @@ function designWidget(option) {
     thirdAmountLable.style.marginTop = '12px'
     thirdAmountLable.style.display = 'block'
     thirdAmountLable.onclick = () =>
-      this.handleSelectAmount(75, thirdAmountLable.id)
+      this.handleSelectAmount(75, thirdAmountLable.id, '')
 
     thirdAmount.appendChild(thirdAmountRadio)
     thirdAmount.appendChild(thirdAmountLable)
@@ -676,7 +818,6 @@ function designWidget(option) {
     forthAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     forthAmountRadio.value = '100'
     forthAmountRadio.style.marginTop = '15px'
-    // forthAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var forthAmountLabel = document.createElement('label')
     forthAmountLabel.id = 'forth-amount-label+' + widgetDiv.dataset.slug
@@ -687,7 +828,7 @@ function designWidget(option) {
     forthAmountLabel.style.marginTop = '12px'
     forthAmountLabel.style.display = 'block'
     forthAmountLabel.onclick = () =>
-      this.handleSelectAmount(100, forthAmountLabel.id)
+      this.handleSelectAmount(100, forthAmountLabel.id, '')
 
     forthAmount.appendChild(forthAmountRadio)
     forthAmount.appendChild(forthAmountLabel)
@@ -711,7 +852,6 @@ function designWidget(option) {
     otherAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     otherAmountRadio.value = 'other'
     otherAmountRadio.style.marginTop = '15px'
-    // otherAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var otherAmountLabel = document.createElement('label')
     otherAmountLabel.id = 'other-amount-label+' + widgetDiv.dataset.slug
@@ -730,7 +870,7 @@ function designWidget(option) {
     otherAmountLabel.style.marginTop = '12px'
     otherAmountLabel.style.display = 'block'
     otherAmountLabel.onclick = () =>
-      this.handleSelectAmount('other', otherAmountLabel.id)
+      this.handleSelectAmount('other', otherAmountLabel.id, '')
     otherAmount.appendChild(otherAmountRadio)
     otherAmount.appendChild(otherAmountLabel)
 
@@ -872,7 +1012,7 @@ function designWidget(option) {
       donationForm,
       null,
       widgetDiv.dataset.slug,
-      '#2828d6',
+      '',
       widgetDiv.dataset.lang
     )
     calculateTotalAmount(widgetDiv.dataset.slug)
@@ -1117,10 +1257,11 @@ function designWidget(option) {
     } else {
       oneTimeLabel.innerText = 'One time'
     }
+    oneTimeLabel.id = 'onetime-label' + widgetDiv.dataset.slug
     oneTimeLabel.fontSize = '14px'
     oneTimeLabel.style.display = 'block'
     oneTimeLabel.onclick = () =>
-      this.handlePeriodInterval(1, periodOnetimeDiv.id)
+      this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
     var oneTimeRadio = document.createElement('input')
     oneTimeRadio.setAttribute('type', 'radio')
@@ -1129,7 +1270,7 @@ function designWidget(option) {
     oneTimeRadio.value = '1'
     oneTimeRadio.checked = true
     oneTimeRadio.onclick = () =>
-      this.handlePeriodInterval(1, periodOnetimeDiv.id)
+      this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
     periodOnetimeDiv.appendChild(oneTimeRadio)
     periodOnetimeDiv.appendChild(oneTimeLabel)
@@ -1149,10 +1290,11 @@ function designWidget(option) {
     } else {
       monthlyLabel.innerText = 'Monthly'
     }
+    monthlyLabel.id = 'monthly-label' + widgetDiv.dataset.slug
     monthlyLabel.fontSize = '14px'
     monthlyLabel.style.display = 'block'
     monthlyLabel.onclick = () =>
-      this.handlePeriodInterval(2, periodMonthlyDiv.id)
+      this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
     var monthlyRadio = document.createElement('input')
     monthlyRadio.setAttribute('type', 'radio')
@@ -1160,7 +1302,7 @@ function designWidget(option) {
     monthlyRadio.name = 'period-intervals' + widgetDiv.dataset.slug
     monthlyRadio.value = '2'
     monthlyRadio.onclick = () =>
-      this.handlePeriodInterval(2, periodMonthlyDiv.id)
+      this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
     periodMonthlyDiv.appendChild(monthlyRadio)
     periodMonthlyDiv.appendChild(monthlyLabel)
@@ -1180,16 +1322,19 @@ function designWidget(option) {
     } else {
       yearlyLabel.innerText = 'Yearly'
     }
+    yearlyLabel.id = 'yearly-label' + widgetDiv.dataset.slug
     yearlyLabel.fontSize = '14px'
     yearlyLabel.style.display = 'block'
-    yearlyLabel.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
+    yearlyLabel.onclick = () =>
+      this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
     var yearlyRadio = document.createElement('input')
     yearlyRadio.setAttribute('type', 'radio')
     yearlyRadio.id = 'yearly' + widgetDiv.dataset.slug
     yearlyRadio.name = 'period-intervals' + widgetDiv.dataset.slug
     yearlyRadio.value = '3'
-    yearlyRadio.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
+    yearlyRadio.onclick = () =>
+      this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
     periodYearlyDiv.appendChild(yearlyRadio)
     periodYearlyDiv.appendChild(yearlyLabel)
@@ -1277,7 +1422,6 @@ function designWidget(option) {
     firstAmountRadio.value = '25'
     firstAmountRadio.style.marginTop = '15px'
     firstAmountRadio.checked = true
-    // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var firstAmountLabel = document.createElement('label')
     firstAmountLabel.id = 'first-amount-label+' + widgetDiv.dataset.slug
@@ -1288,7 +1432,7 @@ function designWidget(option) {
     firstAmountLabel.style.marginTop = '12px'
     firstAmountLabel.style.display = 'block'
     firstAmountLabel.onclick = () =>
-      this.handleSelectAmount(25, firstAmountLabel.id)
+      this.handleSelectAmount(25, firstAmountLabel.id, '')
 
     firstAmount.appendChild(firstAmountRadio)
     firstAmount.appendChild(firstAmountLabel)
@@ -1312,7 +1456,6 @@ function designWidget(option) {
     secondAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     secondAmountRadio.value = '50'
     secondAmountRadio.style.marginTop = '15px'
-    // secondAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var secondAmountLabel = document.createElement('label')
     secondAmountLabel.id = 'second-amount-label+' + widgetDiv.dataset.slug
@@ -1323,7 +1466,7 @@ function designWidget(option) {
     secondAmountLabel.style.marginTop = '12px'
     secondAmountLabel.style.display = 'block'
     secondAmountLabel.onclick = () =>
-      this.handleSelectAmount(50, secondAmountLabel.id)
+      this.handleSelectAmount(50, secondAmountLabel.id, '')
 
     secondAmount.appendChild(secondAmountRadio)
     secondAmount.appendChild(secondAmountLabel)
@@ -1347,7 +1490,6 @@ function designWidget(option) {
     thirdAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     thirdAmountRadio.value = '75'
     thirdAmountRadio.style.marginTop = '15px'
-    // thirdAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var thirdAmountLable = document.createElement('label')
     thirdAmountLable.id = 'third-amount-label+' + widgetDiv.dataset.slug
@@ -1358,7 +1500,7 @@ function designWidget(option) {
     thirdAmountLable.style.marginTop = '12px'
     thirdAmountLable.style.display = 'block'
     thirdAmountLable.onclick = () =>
-      this.handleSelectAmount(75, thirdAmountLable.id)
+      this.handleSelectAmount(75, thirdAmountLable.id, '')
 
     thirdAmount.appendChild(thirdAmountRadio)
     thirdAmount.appendChild(thirdAmountLable)
@@ -1382,7 +1524,6 @@ function designWidget(option) {
     forthAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     forthAmountRadio.value = '100'
     forthAmountRadio.style.marginTop = '15px'
-    // forthAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var forthAmountLabel = document.createElement('label')
     forthAmountLabel.id = 'forth-amount-label+' + widgetDiv.dataset.slug
@@ -1393,7 +1534,7 @@ function designWidget(option) {
     forthAmountLabel.style.marginTop = '12px'
     forthAmountLabel.style.display = 'block'
     forthAmountLabel.onclick = () =>
-      this.handleSelectAmount(100, forthAmountLabel.id)
+      this.handleSelectAmount(100, forthAmountLabel.id, '')
 
     forthAmount.appendChild(forthAmountRadio)
     forthAmount.appendChild(forthAmountLabel)
@@ -1417,7 +1558,6 @@ function designWidget(option) {
     otherAmountRadio.name = 'select-amount' + widgetDiv.dataset.slug
     otherAmountRadio.value = 'other'
     otherAmountRadio.style.marginTop = '15px'
-    // otherAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
     var otherAmountLabel = document.createElement('label')
     otherAmountLabel.id = 'other-amount-label+' + widgetDiv.dataset.slug
@@ -1436,7 +1576,7 @@ function designWidget(option) {
     otherAmountLabel.style.marginTop = '12px'
     otherAmountLabel.style.display = 'block'
     otherAmountLabel.onclick = () =>
-      this.handleSelectAmount('other', otherAmountLabel.id)
+      this.handleSelectAmount('other', otherAmountLabel.id, '')
     otherAmount.appendChild(otherAmountRadio)
     otherAmount.appendChild(otherAmountLabel)
 
@@ -1577,7 +1717,7 @@ function designWidget(option) {
       donationForm,
       null,
       widgetDiv.dataset.slug,
-      '#2828d6',
+      '',
       widgetDiv.dataset.lang
     )
     calculateTotalAmount(widgetDiv.dataset.slug)
@@ -1789,7 +1929,7 @@ function designWidget(option) {
   }
 }
 
-function handlePeriodInterval(value, idValue) {
+function handlePeriodInterval(value, idValue, color) {
   var slug = idValue.split('+')[1]
   var onetimeBar = document.getElementById('onetime-bar' + slug)
   var monthlyBar = document.getElementById('monthly-bar' + slug)
@@ -1799,9 +1939,9 @@ function handlePeriodInterval(value, idValue) {
   var monthlyRadio = document.getElementById('monthly' + slug)
   var yearlyRadio = document.getElementById('yearly' + slug)
 
-  onetimeBar.style.backgroundColor = '#112FEB'
-  monthlyBar.style.backgroundColor = '#112FEB'
-  yearlyBar.style.backgroundColor = '#112FEB'
+  onetimeBar.style.backgroundColor = color ? color : '#112FEB'
+  monthlyBar.style.backgroundColor = color ? color : '#112FEB'
+  yearlyBar.style.backgroundColor = color ? color : '#112FEB'
 
   if (value === 1) {
     onetimeRadio.checked = true
@@ -1824,7 +1964,7 @@ function handlePeriodInterval(value, idValue) {
   }
 }
 
-function handleSelectAmount(value, idValue) {
+function handleSelectAmount(value, idValue, color) {
   var slug = idValue.split('+')[1]
   var firstAmountdiv = document.getElementById('first-amount-div' + slug)
   var secondAmountdiv = document.getElementById('second-amount-div' + slug)
@@ -1846,11 +1986,12 @@ function handleSelectAmount(value, idValue) {
   var forthAmountRadio = document.getElementById('forth-amount' + slug)
   var otherAmountRadio = document.getElementById('other-amount' + slug)
 
+  console.log('color value ', color ? color : '')
   if (value === 25) {
     otherAmountDiv.style.visibility = 'hidden'
     firstAmountRadio.checked = true
 
-    firstAmountdiv.style.backgroundColor = 'green'
+    firstAmountdiv.style.backgroundColor = color ? color : 'green'
     firstAmountdiv.style.color = 'white'
     firstAmountLabel.style.color = 'white'
 
@@ -1877,7 +2018,7 @@ function handleSelectAmount(value, idValue) {
     firstAmountdiv.style.color = 'black'
     firstAmountLabel.style.color = 'black'
 
-    secondAmountdiv.style.backgroundColor = 'green'
+    secondAmountdiv.style.backgroundColor = color ? color : 'green'
     secondAmountdiv.style.color = 'white'
     secondAmountLabel.style.color = 'white'
 
@@ -1904,7 +2045,7 @@ function handleSelectAmount(value, idValue) {
     secondAmountdiv.style.color = 'black'
     secondAmountLabel.style.color = 'black'
 
-    thirdAmountdiv.style.backgroundColor = 'green'
+    thirdAmountdiv.style.backgroundColor = color ? color : 'green'
     thirdAmountdiv.style.color = 'white'
     thirdAmountLabel.style.color = 'white'
 
@@ -1931,7 +2072,7 @@ function handleSelectAmount(value, idValue) {
     thirdAmountdiv.style.color = 'black'
     thirdAmountLabel.style.color = 'black'
 
-    forthAmountdiv.style.backgroundColor = 'green'
+    forthAmountdiv.style.backgroundColor = color ? color : 'green'
     forthAmountdiv.style.color = 'white'
     forthAmountLabel.style.color = 'white'
 
@@ -1958,7 +2099,7 @@ function handleSelectAmount(value, idValue) {
     forthAmountdiv.style.color = 'black'
     forthAmountLabel.style.color = 'black'
 
-    otherAmountdiv.style.backgroundColor = 'green'
+    otherAmountdiv.style.backgroundColor = color ? color : 'green'
     otherAmountdiv.style.color = 'white'
     otherAmountLabel.style.color = 'white'
   }
@@ -2055,6 +2196,7 @@ function createModal(slug) {
   periodOnetimeDiv.className = 'period-intervals-onetime'
 
   var oneTimeLabel = document.createElement('label')
+  oneTimeLabel.id = 'onetime-label' + slug
   if (widgetDiv.dataset.lang === 'nl') {
     oneTimeLabel.innerText = 'Eenmalig'
   } else if (widgetDiv.dataset.lang === 'de') {
@@ -2064,9 +2206,11 @@ function createModal(slug) {
   } else {
     oneTimeLabel.innerText = 'One time'
   }
+  oneTimeLabel.id = 'onetime-label' + slug
   oneTimeLabel.fontSize = '14px'
   oneTimeLabel.style.display = 'block'
-  oneTimeLabel.onclick = () => this.handlePeriodInterval(1, periodOnetimeDiv.id)
+  oneTimeLabel.onclick = () =>
+    this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
   var oneTimeRadio = document.createElement('input')
   oneTimeRadio.setAttribute('type', 'radio')
@@ -2074,7 +2218,8 @@ function createModal(slug) {
   oneTimeRadio.name = 'period-intervals' + slug
   oneTimeRadio.value = '1'
   oneTimeRadio.checked = true
-  oneTimeRadio.onclick = () => this.handlePeriodInterval(1, periodOnetimeDiv.id)
+  oneTimeRadio.onclick = () =>
+    this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
   periodOnetimeDiv.appendChild(oneTimeRadio)
   periodOnetimeDiv.appendChild(oneTimeLabel)
@@ -2094,16 +2239,19 @@ function createModal(slug) {
   } else {
     monthlyLabel.innerText = 'Monthly'
   }
+  monthlyLabel.id = 'monthly-label' + slug
   monthlyLabel.fontSize = '14px'
   monthlyLabel.style.display = 'block'
-  monthlyLabel.onclick = () => this.handlePeriodInterval(2, periodMonthlyDiv.id)
+  monthlyLabel.onclick = () =>
+    this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
   var monthlyRadio = document.createElement('input')
   monthlyRadio.setAttribute('type', 'radio')
   monthlyRadio.id = 'monthly' + slug
   monthlyRadio.name = 'period-intervals'
   monthlyRadio.value = '2'
-  monthlyRadio.onclick = () => this.handlePeriodInterval(2, periodMonthlyDiv.id)
+  monthlyRadio.onclick = () =>
+    this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
   periodMonthlyDiv.appendChild(monthlyRadio)
   periodMonthlyDiv.appendChild(monthlyLabel)
@@ -2123,16 +2271,19 @@ function createModal(slug) {
   } else {
     yearlyLabel.innerText = 'Yearly'
   }
+  yearlyLabel.id = 'yearly-label' + slug
   yearlyLabel.fontSize = '14px'
   yearlyLabel.style.display = 'block'
-  yearlyLabel.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
+  yearlyLabel.onclick = () =>
+    this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
   var yearlyRadio = document.createElement('input')
   yearlyRadio.setAttribute('type', 'radio')
   yearlyRadio.id = 'yearly' + slug
   yearlyRadio.name = 'period-intervals'
   yearlyRadio.value = '3'
-  yearlyRadio.onclick = () => this.handlePeriodInterval(3, periodYearlyDiv.id)
+  yearlyRadio.onclick = () =>
+    this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
   periodYearlyDiv.appendChild(yearlyRadio)
   periodYearlyDiv.appendChild(yearlyLabel)
@@ -2218,8 +2369,6 @@ function createModal(slug) {
   firstAmountRadio.checked = true
   firstAmountRadio.style.marginTop = '15px'
 
-  // firstAmountRadio.onclick = () => this.handlePeriodInterval(2)
-
   var firstAmountLabel = document.createElement('label')
   firstAmountLabel.id = 'first-amount-label+' + slug
   firstAmountLabel.className = 'first-amount-label'
@@ -2229,7 +2378,7 @@ function createModal(slug) {
   firstAmountLabel.style.marginTop = '12px'
   firstAmountLabel.style.display = 'block'
   firstAmountLabel.onclick = () =>
-    this.handleSelectAmount(25, firstAmountLabel.id)
+    this.handleSelectAmount(25, firstAmountLabel.id, '')
 
   firstAmount.appendChild(firstAmountRadio)
   firstAmount.appendChild(firstAmountLabel)
@@ -2253,7 +2402,6 @@ function createModal(slug) {
   secondAmountRadio.name = 'select-amount' + slug
   secondAmountRadio.value = '50'
   secondAmountRadio.style.marginTop = '15px'
-  // secondAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
   var secondAmountLabel = document.createElement('label')
   secondAmountLabel.id = 'second-amount-label+' + slug
@@ -2264,7 +2412,7 @@ function createModal(slug) {
   secondAmountLabel.style.marginTop = '12px'
   secondAmountLabel.style.display = 'block'
   secondAmountLabel.onclick = () =>
-    this.handleSelectAmount(50, secondAmountLabel.id)
+    this.handleSelectAmount(50, secondAmountLabel.id, '')
 
   secondAmount.appendChild(secondAmountRadio)
   secondAmount.appendChild(secondAmountLabel)
@@ -2288,7 +2436,6 @@ function createModal(slug) {
   thirdAmountRadio.name = 'select-amount' + slug
   thirdAmountRadio.value = '75'
   thirdAmountRadio.style.marginTop = '15px'
-  // thirdAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
   var thirdAmountLable = document.createElement('label')
   thirdAmountLable.id = 'third-amount-label+' + slug
@@ -2299,7 +2446,7 @@ function createModal(slug) {
   thirdAmountLable.style.marginTop = '12px'
   thirdAmountLable.style.display = 'block'
   thirdAmountLable.onclick = () =>
-    this.handleSelectAmount(75, thirdAmountLable.id)
+    this.handleSelectAmount(75, thirdAmountLable.id, '')
 
   thirdAmount.appendChild(thirdAmountRadio)
   thirdAmount.appendChild(thirdAmountLable)
@@ -2323,7 +2470,6 @@ function createModal(slug) {
   forthAmountRadio.name = 'select-amount' + slug
   forthAmountRadio.value = '100'
   forthAmountRadio.style.marginTop = '15px'
-  // forthAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
   var forthAmountLabel = document.createElement('label')
   forthAmountLabel.id = 'forth-amount-label+' + slug
@@ -2334,7 +2480,7 @@ function createModal(slug) {
   forthAmountLabel.style.marginTop = '12px'
   forthAmountLabel.style.display = 'block'
   forthAmountLabel.onclick = () =>
-    this.handleSelectAmount(100, forthAmountLabel.id)
+    this.handleSelectAmount(100, forthAmountLabel.id, '')
 
   forthAmount.appendChild(forthAmountRadio)
   forthAmount.appendChild(forthAmountLabel)
@@ -2358,7 +2504,6 @@ function createModal(slug) {
   otherAmountRadio.name = 'select-amount' + slug
   otherAmountRadio.value = 'other'
   otherAmountRadio.style.marginTop = '15px'
-  // otherAmountRadio.onclick = () => this.handlePeriodInterval(2)
 
   var otherAmountLabel = document.createElement('label')
   otherAmountLabel.id = 'other-amount-label+' + slug
@@ -2377,7 +2522,7 @@ function createModal(slug) {
   otherAmountLabel.style.marginTop = '12px'
   otherAmountLabel.style.display = 'block'
   otherAmountLabel.onclick = () =>
-    this.handleSelectAmount('other', otherAmountLabel.id)
+    this.handleSelectAmount('other', otherAmountLabel.id, '')
   otherAmount.appendChild(otherAmountRadio)
   otherAmount.appendChild(otherAmountLabel)
 
@@ -2679,15 +2824,15 @@ function directDonate(idValue, lang) {
     )
 
     if (selectedAmount % 1 !== 0 || isNaN(selectedAmount)) {
-    	if (lang === 'nl') {
-    		amountErrMsg.innerText = 'Decimalen zijn niet toegestaan.'
-    	} else if (lang === 'de') {
-    		amountErrMsg.innerText = 'Decimale waarden zijn niet toegestaan.'
-    	} else if (lang === 'es') {
-    		amountErrMsg.innerText = 'No se permiten valores decimales.'
-    	} else {
-    		amountErrMsg.innerText = 'Decimal values are not allowed.'
-    	}
+      if (lang === 'nl') {
+        amountErrMsg.innerText = 'Decimalen zijn niet toegestaan.'
+      } else if (lang === 'de') {
+        amountErrMsg.innerText = 'Decimale waarden zijn niet toegestaan.'
+      } else if (lang === 'es') {
+        amountErrMsg.innerText = 'No se permiten valores decimales.'
+      } else {
+        amountErrMsg.innerText = 'Decimal values are not allowed.'
+      }
     }
   }
 
@@ -2745,10 +2890,10 @@ function ValidateEmail(mail) {
 
 async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  // const donationApi =
-  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
   const donationApi =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+    'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  // const donationApi =
+  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -2827,13 +2972,13 @@ async function makeDonation(data, slugVal, lang) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  // const url =
-  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&&&')[0]
-
   const url =
-    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&')[0]
+    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&&&')[0]
+
+  // const url =
+  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -2896,12 +3041,12 @@ function addJquery() {
         }
 
         var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-        // var api =
-        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-        //   urlAddressArr[1]
         var api =
-          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
           urlAddressArr[1]
+        // var api =
+        //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   urlAddressArr[1]
         var url = proxyurl + api
 
         jQuery.ajax({
@@ -3027,8 +3172,8 @@ function createTipbox(donationFormDiv, modalContent, slug, color, lang) {
   tipBox.style.marginTop = '30px'
   tipBox.style.padding = '5px'
   tipBox.style.paddingLeft = '10px'
-  tipBox.style.backgroundColor = lightenColor(color, 75)
-  console.log('lighten color ', lightenColor(color, 40))
+  // tipBox.style.backgroundColor = lightenColor(color, 75)
+  // console.log('lighten color ', lightenColor(color, 40))
 
   var para1 = document.createElement('p')
   para1.style.fontSize = '15px'
@@ -3248,7 +3393,7 @@ function handleOtherAmountInput(value, idValue) {
     value = value.split('€ ')[1]
   }
   if (value.includes(',')) {
-  	value = parseFloat(value.replace(',', '.'))
+    value = parseFloat(value.replace(',', '.'))
   }
   if (!isNaN(value)) {
     var tipBox = document.getElementById('tip-box' + slug)
@@ -3474,12 +3619,11 @@ function calculateTotalAmount(slug) {
   if (inputTipboxDiv.style.display === 'flex') {
     tipAmount = document.getElementById('input-tip' + slug).value
   } else {
-  	if (selectItem.includes('€')) {
-      	tipAmount = selectItem.substring(1)
-	} 
-	else {
-	    tipAmount = selectItem.split('(')[1].split(')')[0]
-	}
+    if (selectItem.includes('€')) {
+      tipAmount = selectItem.substring(1)
+    } else {
+      tipAmount = selectItem.split('(')[1].split(')')[0]
+    }
   }
 
   selectedAmount = Number(parseFloat(selectedAmount).toFixed(2))
