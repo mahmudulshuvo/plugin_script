@@ -102,7 +102,7 @@
 .period-intervals-yearly {
   display: flex;
   flex-grow: 1;
-  text-align: center;
+  text-align: left;
 }
 /* #period-intervals-div {
   align-items: center;
@@ -332,7 +332,7 @@
   margin: auto !important;
   margin-left: 40px !important;
   margin-top: 30px !important;
-  border-radius: 30px !important;
+  border-radius: 30px;
 }
 
 .right-side-rule {
@@ -495,7 +495,7 @@ button:focus {
 }
 
 .select-amount-div-boxes {
-  display: flex !important;
+  display: flex;
   flex-wrap: wrap !important;
   justify-content: space-around;
 }

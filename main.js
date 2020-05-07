@@ -3,7 +3,8 @@
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
 var tipBoxSlugList = { current: '' }
-var whydonateSlugs = {}
+var whydonateSlugs={}
+var fundraiserLocalInfo = {}
 
 var classArray = document.getElementsByClassName('widget')
 if (classArray.length > 1) {
@@ -24,8 +25,8 @@ var widgetOption = ''
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
 // style.href = 'style.css'
-// style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
-style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
+// style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -111,7 +112,8 @@ async function getFundraiserLocalValue(url, slug, lang, option, card) {
 }
 
 function setValues(result, slug, lang, option, card) {
-  fundraiserInfo = result['data']
+  fundraiserInfo=result['data']
+  fundraiserLocalInfo['slug'] = fundraiserInfo
   // fundraiserInfo.slug = fundraiserInfo.slug + '&' + randExtension
 
   // Decide whether to show the tip_box or not
@@ -246,7 +248,7 @@ function setValues(result, slug, lang, option, card) {
     }
   }
 
-  // Add custom styling
+  // Start of ***************************  CUSTOM STYLING ****************************
 
   if (result['data']['custom_style']) {
     if (option === 2 || option === 4) {
@@ -255,6 +257,7 @@ function setValues(result, slug, lang, option, card) {
       )
       donateBtnInForm.style.background =
         result['data']['custom_style']['secondary_color']
+      donateBtnInForm.style.borderRadius = result['data']['custom_style']['button_radius']
     } else {
       console.log('result is ', result['data']['custom_style']['primary_color'])
       console.log(
@@ -267,8 +270,10 @@ function setValues(result, slug, lang, option, card) {
       )
       donateBtnInWidget.style.background =
         result['data']['custom_style']['secondary_color']
+      donateBtnInWidget.style.borderRadius = result['data']['custom_style']['button_radius']
       donateBtnInModal.style.background =
         result['data']['custom_style']['secondary_color']
+      donateBtnInModal.style.borderRadius=result['data']['custom_style']['button_radius']
     }
 
     // Design rest of the parts
@@ -371,7 +376,15 @@ function setValues(result, slug, lang, option, card) {
         otherAmountLabel.id,
         result['data']['custom_style']['primary_color']
       )
+
   }
+
+  // END of ***************************  CUSTOM STYLING ****************************
+
+  // Start of ***************************  CUSTOM AMOUNT ****************************
+  console.log('Fundriaser local data ', fundraiserInfo)
+  customDonationConfiguration(fundraiserInfo, slug)
+
 }
 
 function adjust(color, amount) {
@@ -386,6 +399,65 @@ function adjust(color, amount) {
         ).substr(-2)
       )
   )
+}
+
+function customDonationConfiguration(fundraiserInfo, slug) {
+  let customDonationConfig=fundraiserInfo['custom_donation_configuration']
+  if (Object.keys(customDonationConfig).length!==0&&customDonationConfig.constructor===Object) {
+    let count=0
+    let customDonationConfig=fundraiserInfo['custom_donation_configuration']
+    if (!customDonationConfig['onetime_select']) {
+      document.getElementById('period-intervals-onetime+'+slug).style.display='none'
+      document.getElementById('onetime-bar'+slug).style.display='none'
+      count+=1
+    }
+    if (!customDonationConfig['monthly_select']) {
+      document.getElementById('period-intervals-monthly+'+slug).style.display='none'
+      document.getElementById('monthly-bar'+slug).style.display='none'
+      count+=1
+    }
+    if (!customDonationConfig['yearly_select']) {
+      document.getElementById('period-intervals-yearly+'+slug).style.display='none'
+      document.getElementById('yearly-bar'+slug).style.display='none'
+      count+=1
+    }
+
+    if (count<3) {
+      document.getElementById('period-intervals-onetime+'+slug).style.textAlign='center'
+      document.getElementById('period-intervals-monthly+'+slug).style.textAlign='center'
+      document.getElementById('period-intervals-yearly+'+slug).style.textAlign='center'
+    }
+
+    if (document.getElementById('period-intervals-onetime+'+slug).style.display=='flex') {
+      document.getElementById('onetime'+slug).checked=true
+    } else if (document.getElementById('period-intervals-onetime+'+slug).style.display=='flex') {
+      document.getElementById('monthly'+slug).checked=true
+    } else {
+      document.getElementById('yearly'+slug).checked=true
+    }
+
+    if (customDonationConfig['onetime_select']) {
+      if (customDonationConfig['onetime_style']) {
+        document.getElementById('other-amount'+slug).checked=true
+        var otherAmountDiv=document.getElementById('other-amount-input-div+'+slug)
+        otherAmountDiv.style.visibility='visible'
+        var selectAmountDiv=document.getElementById('select-amount-div-boxes'+slug)
+        selectAmountDiv.style.display='none'
+      } else {
+        document.getElementById('first-amount'+slug).value=customDonationConfig['onetime_first']
+        document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_first']
+        
+        document.getElementById('second-amount'+slug).value=customDonationConfig['onetime_second']
+        document.getElementById('second-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_second']
+
+        document.getElementById('third-amount'+slug).value=customDonationConfig['onetime_third']
+        document.getElementById('third-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_third']
+
+        document.getElementById('forth-amount'+slug).value=customDonationConfig['onetime_forth']
+        document.getElementById('forth-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_forth']
+      }
+    }
+  }
 }
 
 function designWidget(option) {
@@ -551,7 +623,8 @@ function designWidget(option) {
     }
     oneTimeLabel.id = 'onetime-label' + widgetDiv.dataset.slug
     oneTimeLabel.fontSize = '14px'
-    oneTimeLabel.style.display = 'block'
+    oneTimeLabel.style.display='block'
+    oneTimeLabel.style.width = '100%'
     oneTimeLabel.onclick = () =>
       this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
@@ -584,7 +657,8 @@ function designWidget(option) {
     }
     monthlyLabel.id = 'monthly-label' + widgetDiv.dataset.slug
     monthlyLabel.fontSize = '14px'
-    monthlyLabel.style.display = 'block'
+    monthlyLabel.style.display='block'
+    monthlyLabel.style.width = '100%'
     monthlyLabel.onclick = () =>
       this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
@@ -616,7 +690,8 @@ function designWidget(option) {
     }
     yearlyLabel.id = 'yearly-label' + widgetDiv.dataset.slug
     yearlyLabel.fontSize = '14px'
-    yearlyLabel.style.display = 'block'
+    yearlyLabel.style.display='block'
+    yearlyLabel.style.width = '100%'
     yearlyLabel.onclick = () =>
       this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
@@ -635,7 +710,7 @@ function designWidget(option) {
     // ----------- period inervals -------------------
 
     var hrule = document.createElement('hr')
-    hrule.style.background = '#72bcd4'
+    hrule.style.background= '#E8E8E8'
     hrule.style.height = '2px'
     hrule.style.display = 'flex'
     hrule.style.flexDirection = 'row'
@@ -646,7 +721,7 @@ function designWidget(option) {
     oneTimeBar.id = 'onetime-bar' + widgetDiv.dataset.slug
     oneTimeBar.className = 'onetime-bar'
     oneTimeBar.style.height = '2px'
-    oneTimeBar.style.width = '100px'
+    oneTimeBar.style.width = '100%'
     oneTimeBar.style.background = '#112FEB'
     hrule.appendChild(oneTimeBar)
 
@@ -654,16 +729,16 @@ function designWidget(option) {
     monthlyBar.id = 'monthly-bar' + widgetDiv.dataset.slug
     monthlyBar.className = 'monthly-bar'
     monthlyBar.style.height = '2px'
-    monthlyBar.style.width = '100px'
-    monthlyBar.style.background = '#72bcd4'
+    monthlyBar.style.width = '100%'
+    monthlyBar.style.background= '#E8E8E8'
     hrule.appendChild(monthlyBar)
 
     var yearlyBar = document.createElement('div')
     yearlyBar.id = 'yearly-bar' + widgetDiv.dataset.slug
     yearlyBar.className = 'yearly-bar'
     yearlyBar.style.height = '2px'
-    yearlyBar.style.width = '100px'
-    yearlyBar.style.background = '#72bcd4'
+    yearlyBar.style.width = '100%'
+    yearlyBar.style.background= '#E8E8E8'
     hrule.appendChild(yearlyBar)
 
     var selectAmountLabelDiv = document.createElement('div')
@@ -706,7 +781,7 @@ function designWidget(option) {
     firstAmount.style.width = '60px'
     firstAmount.style.borderRadius = '5px'
     firstAmount.style.border = '1px black solid'
-    firstAmount.style.backgroundColor = 'green'
+    firstAmount.style.backgroundColor= '#2828d6'
     firstAmount.style.color = 'white'
 
     var firstAmountRadio = document.createElement('input')
@@ -1259,7 +1334,8 @@ function designWidget(option) {
     }
     oneTimeLabel.id = 'onetime-label' + widgetDiv.dataset.slug
     oneTimeLabel.fontSize = '14px'
-    oneTimeLabel.style.display = 'block'
+    oneTimeLabel.style.display='block'
+    oneTimeLabel.style.width='100%'
     oneTimeLabel.onclick = () =>
       this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
@@ -1292,7 +1368,8 @@ function designWidget(option) {
     }
     monthlyLabel.id = 'monthly-label' + widgetDiv.dataset.slug
     monthlyLabel.fontSize = '14px'
-    monthlyLabel.style.display = 'block'
+    monthlyLabel.style.display='block'
+    monthlyLabel.style.width='100%'
     monthlyLabel.onclick = () =>
       this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
@@ -1324,7 +1401,8 @@ function designWidget(option) {
     }
     yearlyLabel.id = 'yearly-label' + widgetDiv.dataset.slug
     yearlyLabel.fontSize = '14px'
-    yearlyLabel.style.display = 'block'
+    yearlyLabel.style.display='block'
+    yearlyLabel.style.width='100%'
     yearlyLabel.onclick = () =>
       this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
@@ -1343,7 +1421,7 @@ function designWidget(option) {
     // ------------------ period intervals --------------------
 
     var hrule = document.createElement('hr')
-    hrule.style.background = '#72bcd4'
+    hrule.style.background='#E8E8E8'
     hrule.style.height = '2px'
     hrule.style.display = 'flex'
     hrule.style.flexDirection = 'row'
@@ -1354,7 +1432,7 @@ function designWidget(option) {
     oneTimeBar.id = 'onetime-bar' + widgetDiv.dataset.slug
     oneTimeBar.className = 'onetime-bar'
     oneTimeBar.style.height = '2px'
-    oneTimeBar.style.width = '100px'
+    oneTimeBar.style.width = '100%'
     oneTimeBar.style.background = '#112FEB'
     hrule.appendChild(oneTimeBar)
 
@@ -1362,16 +1440,16 @@ function designWidget(option) {
     monthlyBar.id = 'monthly-bar' + widgetDiv.dataset.slug
     monthlyBar.className = 'monthly-bar'
     monthlyBar.style.height = '2px'
-    monthlyBar.style.width = '100px'
-    monthlyBar.style.background = '#72bcd4'
+    monthlyBar.style.width = '100%'
+    monthlyBar.style.background= '#E8E8E8'
     hrule.appendChild(monthlyBar)
 
     var yearlyBar = document.createElement('div')
     yearlyBar.id = 'yearly-bar' + widgetDiv.dataset.slug
     yearlyBar.className = 'yearly-bar'
     yearlyBar.style.height = '2px'
-    yearlyBar.style.width = '100px'
-    yearlyBar.style.background = '#72bcd4'
+    yearlyBar.style.width = '100%'
+    yearlyBar.style.background= '#E8E8E8'
     hrule.appendChild(yearlyBar)
 
     var selectAmountLabelDiv = document.createElement('div')
@@ -1396,7 +1474,9 @@ function designWidget(option) {
 
     // ----------- copied from here -----------------------
 
-    var amountDiv = document.createElement('div')
+    var amountDiv=document.createElement('div')
+    amountDiv.id='select-amount-div-boxes'+widgetDiv.dataset.slug
+    amountDiv.className= 'select-amount-div-boxes'
     amountDiv.style.display = 'flex'
     amountDiv.style.marginTop = '10px'
     amountDiv.style.flexDirection = 'row'
@@ -1412,7 +1492,7 @@ function designWidget(option) {
     firstAmount.style.width = '60px'
     firstAmount.style.borderRadius = '5px'
     firstAmount.style.border = '1px black solid'
-    firstAmount.style.backgroundColor = 'green'
+    firstAmount.style.backgroundColor= '#2828d6'
     firstAmount.style.color = 'white'
 
     var firstAmountRadio = document.createElement('input')
@@ -1947,20 +2027,20 @@ function handlePeriodInterval(value, idValue, color) {
     onetimeRadio.checked = true
     monthlyRadio.checked = false
     yearlyRadio.checked = false
-    monthlyBar.style.backgroundColor = '#72bcd4'
-    yearlyBar.style.backgroundColor = '#72bcd4'
+    monthlyBar.style.backgroundColor= '#E8E8E8'
+    yearlyBar.style.backgroundColor= '#E8E8E8'
   } else if (value === 2) {
     monthlyRadio.checked = true
     onetimeRadio.checked = false
     yearlyRadio.checked = false
-    onetimeBar.style.backgroundColor = '#72bcd4'
-    yearlyBar.style.backgroundColor = '#72bcd4'
+    onetimeBar.style.backgroundColor= '#E8E8E8'
+    yearlyBar.style.backgroundColor= '#E8E8E8'
   } else {
     yearlyRadio.checked = true
     monthlyRadio.checked = false
     onetimeRadio.checked = false
-    onetimeBar.style.backgroundColor = '#72bcd4'
-    monthlyBar.style.backgroundColor = '#72bcd4'
+    onetimeBar.style.backgroundColor= '#E8E8E8'
+    monthlyBar.style.backgroundColor= '#E8E8E8'
   }
 }
 
@@ -1991,7 +2071,7 @@ function handleSelectAmount(value, idValue, color) {
     otherAmountDiv.style.visibility = 'hidden'
     firstAmountRadio.checked = true
 
-    firstAmountdiv.style.backgroundColor = color ? color : 'green'
+    firstAmountdiv.style.backgroundColor=color? color: '#2828d6'
     firstAmountdiv.style.color = 'white'
     firstAmountLabel.style.color = 'white'
 
@@ -2018,7 +2098,7 @@ function handleSelectAmount(value, idValue, color) {
     firstAmountdiv.style.color = 'black'
     firstAmountLabel.style.color = 'black'
 
-    secondAmountdiv.style.backgroundColor = color ? color : 'green'
+    secondAmountdiv.style.backgroundColor=color? color: '#2828d6'
     secondAmountdiv.style.color = 'white'
     secondAmountLabel.style.color = 'white'
 
@@ -2045,7 +2125,7 @@ function handleSelectAmount(value, idValue, color) {
     secondAmountdiv.style.color = 'black'
     secondAmountLabel.style.color = 'black'
 
-    thirdAmountdiv.style.backgroundColor = color ? color : 'green'
+    thirdAmountdiv.style.backgroundColor=color? color: '#2828d6'
     thirdAmountdiv.style.color = 'white'
     thirdAmountLabel.style.color = 'white'
 
@@ -2072,7 +2152,7 @@ function handleSelectAmount(value, idValue, color) {
     thirdAmountdiv.style.color = 'black'
     thirdAmountLabel.style.color = 'black'
 
-    forthAmountdiv.style.backgroundColor = color ? color : 'green'
+    forthAmountdiv.style.backgroundColor=color? color: '#2828d6'
     forthAmountdiv.style.color = 'white'
     forthAmountLabel.style.color = 'white'
 
@@ -2099,7 +2179,7 @@ function handleSelectAmount(value, idValue, color) {
     forthAmountdiv.style.color = 'black'
     forthAmountLabel.style.color = 'black'
 
-    otherAmountdiv.style.backgroundColor = color ? color : 'green'
+    otherAmountdiv.style.backgroundColor=color? color: '#2828d6'
     otherAmountdiv.style.color = 'white'
     otherAmountLabel.style.color = 'white'
   }
@@ -2208,7 +2288,8 @@ function createModal(slug) {
   }
   oneTimeLabel.id = 'onetime-label' + slug
   oneTimeLabel.fontSize = '14px'
-  oneTimeLabel.style.display = 'block'
+  oneTimeLabel.style.display='block'
+  oneTimeLabel.style.width='100%'
   oneTimeLabel.onclick = () =>
     this.handlePeriodInterval(1, periodOnetimeDiv.id, '')
 
@@ -2241,7 +2322,8 @@ function createModal(slug) {
   }
   monthlyLabel.id = 'monthly-label' + slug
   monthlyLabel.fontSize = '14px'
-  monthlyLabel.style.display = 'block'
+  monthlyLabel.style.display='block'
+  monthlyLabel.style.width='100%'
   monthlyLabel.onclick = () =>
     this.handlePeriodInterval(2, periodMonthlyDiv.id, '')
 
@@ -2273,7 +2355,8 @@ function createModal(slug) {
   }
   yearlyLabel.id = 'yearly-label' + slug
   yearlyLabel.fontSize = '14px'
-  yearlyLabel.style.display = 'block'
+  yearlyLabel.style.display='block'
+  yearlyLabel.style.width='100%'
   yearlyLabel.onclick = () =>
     this.handlePeriodInterval(3, periodYearlyDiv.id, '')
 
@@ -2290,7 +2373,7 @@ function createModal(slug) {
   periodDiv.appendChild(periodYearlyDiv)
 
   var hrule = document.createElement('hr')
-  hrule.style.background = '#72bcd4'
+  hrule.style.background='#E8E8E8'
   hrule.style.height = '2px'
   hrule.style.width = '100%'
   hrule.style.display = 'flex'
@@ -2302,7 +2385,7 @@ function createModal(slug) {
   oneTimeBar.id = 'onetime-bar' + slug
   oneTimeBar.className = 'onetime-bar'
   oneTimeBar.style.height = '2px'
-  oneTimeBar.style.width = '110px'
+  oneTimeBar.style.width = '100%'
   oneTimeBar.style.background = '#112FEB'
   hrule.appendChild(oneTimeBar)
 
@@ -2310,16 +2393,16 @@ function createModal(slug) {
   monthlyBar.id = 'monthly-bar' + slug
   monthlyBar.className = 'monthly-bar'
   monthlyBar.style.height = '2px'
-  monthlyBar.style.width = '110px'
-  monthlyBar.style.background = '#72bcd4'
+  monthlyBar.style.width = '100%'
+  monthlyBar.style.background= '#E8E8E8'
   hrule.appendChild(monthlyBar)
 
   var yearlyBar = document.createElement('div')
   yearlyBar.id = 'yearly-bar' + slug
   yearlyBar.className = 'yearly-bar'
   yearlyBar.style.height = '2px'
-  yearlyBar.style.width = '110px'
-  yearlyBar.style.background = '#72bcd4'
+  yearlyBar.style.width = '100%'
+  yearlyBar.style.background= '#E8E8E8'
   hrule.appendChild(yearlyBar)
 
   var selectAmountLabelDiv = document.createElement('div')
@@ -2342,7 +2425,9 @@ function createModal(slug) {
   selectAmountLabelDiv.appendChild(selectAmountlabel)
   donationFormDiv.appendChild(selectAmountLabelDiv)
 
-  var amountDiv = document.createElement('div')
+  var amountDiv=document.createElement('div')
+  amountDiv.id='select-amount-div-boxes'+widgetDiv.dataset.slug
+  amountDiv.className='select-amount-div-boxes'
   amountDiv.style.display = 'flex'
   amountDiv.style.marginTop = '10px'
   amountDiv.style.flexDirection = 'row'
@@ -2358,7 +2443,7 @@ function createModal(slug) {
   firstAmount.style.width = '60px'
   firstAmount.style.borderRadius = '5px'
   firstAmount.style.border = '1px black solid'
-  firstAmount.style.backgroundColor = 'green'
+  firstAmount.style.backgroundColor= '#2828d6'
   firstAmount.style.color = 'white'
 
   var firstAmountRadio = document.createElement('input')
@@ -2863,6 +2948,7 @@ function directDonate(idValue, lang) {
   if (errorCheck) {
     // Do nothing
   } else {
+    var tipBox=document.getElementById('tip-box'+slugVal)
     var data = {
       amount: selectedAmount,
       is_anonymous: false,
@@ -2873,7 +2959,7 @@ function directDonate(idValue, lang) {
       lang: 'en',
       description: '',
       bank_account: '',
-      tip_amount: calculateTotalAmount(slugVal),
+      tip_amount: tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
       return_url: window.location.href,
     }
 
