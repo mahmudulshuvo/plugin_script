@@ -1,6 +1,6 @@
 // version 2.0 with Tipbox Production-2
 // Custom donation and Style modification
-// Bug fix
+// Update Styling fixes
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -277,6 +277,9 @@ function setValues(result, slug, lang, option, card) {
       donateBtnInModal.style.borderRadius=result['data']['custom_style']['button_radius'] + 'px'
     }
 
+    // Secure donation label color
+    document.getElementById('secure-donation-label'+slug).style.color=result['data']['custom_style']['primary_color']
+
     // Design rest of the parts
     if (result['data']['tip_enabled']) {
       var tipbox = document.getElementById('tip-box' + slug)
@@ -284,6 +287,12 @@ function setValues(result, slug, lang, option, card) {
         result['data']['custom_style']['secondary_color'],
         175
       )
+    }
+
+    // Close button border
+    var closeBtn = document.getElementById('close'+slug)
+    if (closeBtn) {
+      closeBtn.style.border='2px solid '+result['data']['custom_style']['secondary_color']
     }
 
     // For Selected Interval
@@ -699,8 +708,8 @@ function designWidget(option) {
     labelDiv.appendChild(fundraiserIdLabel)
 
     var label1=document.createElement('label')
-    label1.id='label1'+widgetDiv.dataset.slug
-    label1.className='label1'
+    label1.id='secure-donation-label'+widgetDiv.dataset.slug
+    label1.className='secure-donation-label'
     if (widgetDiv.dataset.lang==='nl') {
       label1.innerText='Veilig online doneren'
     } else if (widgetDiv.dataset.lang==='de') {
@@ -1411,8 +1420,8 @@ function designWidget(option) {
     labelDiv.appendChild(fundraiserIdLabel)
 
     var label1 = document.createElement('label')
-    label1.id = 'label1' + widgetDiv.dataset.slug
-    label1.className = 'label1'
+    label1.id='secure-donation-label'+widgetDiv.dataset.slug
+    label1.className='secure-donation-label'
     if (widgetDiv.dataset.lang === 'nl') {
       label1.innerText = 'Veilig online doneren'
     } else if (widgetDiv.dataset.lang === 'de') {
@@ -2383,8 +2392,8 @@ function createModal(slug) {
   donationFormDiv.appendChild(labelDiv)
 
   var label1 = document.createElement('label')
-  label1.id = 'label1' + slug
-  label1.className = 'label1'
+  label1.id='secure-donation-label'+widgetDiv.dataset.slug
+  label1.className='secure-donation-label'
   if (widgetDiv.dataset.lang === 'nl') {
     label1.innerText = 'Veilig online doneren'
   } else if (widgetDiv.dataset.lang === 'de') {
@@ -2772,7 +2781,8 @@ function createModal(slug) {
   } else {
     otherAmountInput.placeholder = 'Other amount'
   }
-  otherAmountInput.id = 'other-amount-input' + slug
+  otherAmountInput.id='other-amount-input'+slug
+  otherAmountInput.style.width = '91%'
   otherAmountInput.value='€ '
   otherAmountInput.onkeyup = (e) =>
     this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
@@ -3104,7 +3114,7 @@ function directDonate(idValue, lang) {
       description: '',
       bank_account: '',
       tip_amount: tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
-      return_url: window.location.href,
+      return_url: 'https://www.google.com',
     }
 
     makeDonation(data, slugVal, lang)
