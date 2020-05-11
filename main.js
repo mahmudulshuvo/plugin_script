@@ -1,6 +1,5 @@
 // version 2.0 with Tipbox Production-2
-// Custom donation and Style modification
-// Update Styling fixes, tipbox spacing
+// Custom donation and Style modification finalized
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -26,8 +25,8 @@ var widgetOption = ''
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
 // style.href = 'style.css'
-style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
-// style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+// style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
+style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -282,11 +281,15 @@ function setValues(result, slug, lang, option, card) {
 
     // Design rest of the parts
     if (result['data']['tip_enabled']) {
-      var tipbox = document.getElementById('tip-box' + slug)
-      tipbox.style.background = adjust(
-        result['data']['custom_style']['secondary_color'],
-        175
-      )
+      var tipbox=document.getElementById('tip-box'+slug)
+      // console.log('actual color ', result['data']['custom_style']['secondary_color'])
+      // console.log('lighten darken color ', lighten(result['data']['custom_style']['secondary_color'], 20))
+      // tipbox.style.background = hexToRgb(
+      //   result['data']['custom_style']['secondary_color'],
+      // )
+      tipBox.style.background= '#ECECEC'
+
+      // tipBox.style.background=lighten(result['data']['custom_style']['secondary_color'], 20)
     }
 
     // Close button border
@@ -402,6 +405,66 @@ function setValues(result, slug, lang, option, card) {
   customDonationConfiguration(fundraiserInfo, slug)
 
 }
+
+function hexToRgb(hex) {
+  var result=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  }:null;
+}
+
+function addLight(color, amount) {
+  let cc=parseInt(color, 16)+amount;
+  let c=(cc>255)? 255:(cc);
+  c=(c.toString(16).length>1)? c.toString(16):`0${c.toString(16)}`;
+  return c;
+}
+
+function lighten(color, amount) {
+  color=(color.indexOf("#")>=0)? color.substring(1, color.length):color;
+  amount=parseInt((255*amount)/100);
+  return color=`#${addLight(color.substring(0, 2), amount)}${addLight(color.substring(2, 4), amount)}${addLight(color.substring(4, 6), amount)}`;
+}
+
+function LightenDarkenColor(colorCode, amount) {
+  var usePound=false;
+
+  if (colorCode[0]=="#") {
+    colorCode=colorCode.slice(1);
+    usePound=true;
+  }
+
+  var num=parseInt(colorCode, 16);
+
+  var r=(num>>16)+amount;
+
+  if (r>255) {
+    r=255;
+  } else if (r<0) {
+    r=0;
+  }
+
+  var b=((num>>8)&0x00FF)+amount;
+
+  if (b>255) {
+    b=255;
+  } else if (b<0) {
+    b=0;
+  }
+
+  var g=(num&0x0000FF)+amount;
+
+  if (g>255) {
+    g=255;
+  } else if (g<0) {
+    g=0;
+  }
+
+  return (usePound? "#":"")+(g|(b<<8)|(r<<16)).toString(16);
+}
+
 
 function adjust(color, amount) {
   return (
@@ -3131,10 +3194,10 @@ function ValidateEmail(mail) {
 
 async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  const donationApi =
-    'https://whydonate-development.appspot.com/api/v1/donation/order/'
   // const donationApi =
-  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  const donationApi =
+    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -3213,13 +3276,13 @@ async function makeDonation(data, slugVal, lang) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  const url =
-    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&&&')[0]
-
   // const url =
-  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&')[0]
+  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&&&')[0]
+
+  const url =
+    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -3282,12 +3345,12 @@ function addJquery() {
         }
 
         var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-        var api =
-          'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-          urlAddressArr[1]
         // var api =
-        //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
         //   urlAddressArr[1]
+        var api =
+          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          urlAddressArr[1]
         var url = proxyurl + api
 
         jQuery.ajax({
