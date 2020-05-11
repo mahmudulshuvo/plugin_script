@@ -1,6 +1,6 @@
 // version 2.0 with Tipbox Production-2
 // Custom donation and Style modification
-// Update Styling fixes
+// Update Styling fixes, tipbox spacing
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -3461,7 +3461,8 @@ function createTipbox(donationFormDiv, modalContent, slug, color, lang) {
   var inputTipDiv = document.createElement('div')
   inputTipDiv.id = 'input-tip-div' + slug
   inputTipDiv.style.display = 'none'
-  inputTipDiv.style.justifyContent = 'flex-end'
+  inputTipDiv.style.justifyContent='flex-end'
+  inputTipDiv.style.marginTop = '10px'
 
   //  <span class="currencyinput">$<input type="text" name="currency"></span>
   var inputTipSpan = document.createElement('span')
