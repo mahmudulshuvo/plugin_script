@@ -33,7 +33,7 @@
 
 .other-amount-input-div input {
   padding-left: 5px;
-  font-size: 12px !important;
+  /* font-size: 12px !important; */
   font-weight: 500 !important;
   width: 91% !important;
   height: 30px !important;
@@ -111,6 +111,8 @@
 .period-intervals-monthly label,
 .period-intervals-yearly label {
   cursor: pointer;
+  font-size: 16px !important;
+  font-weight: 600;
 }
 
 .period-intervals-onetime input,
@@ -163,7 +165,8 @@
 }
 
 .select-amount-div label {
-  font-weight: 600;
+  font-size: 16px !important;
+  font-weight: 600 !important;
 }
 
 /* #blank-div {
