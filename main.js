@@ -3114,7 +3114,7 @@ function directDonate(idValue, lang) {
       description: '',
       bank_account: '',
       tip_amount: tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
-      return_url: 'https://www.google.com',
+      return_url: window.location.href,
     }
 
     makeDonation(data, slugVal, lang)
