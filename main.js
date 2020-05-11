@@ -1,5 +1,6 @@
 // version 2.0 with Tipbox Production-2
 // Custom donation and Style modification finalized
+// Change Bedrag
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -2629,7 +2630,7 @@ function createModal(slug) {
   selectAmountlabel.id = 'select-amount-label' + slug
   selectAmountlabel.className = 'select-amount-label'
   if (widgetDiv.dataset.lang === 'nl') {
-    selectAmountlabel.innerText = 'Bedrag'
+    selectAmountlabel.innerText = 'Anders'
   } else if (widgetDiv.dataset.lang === 'de') {
     selectAmountlabel.innerText = 'Betrag'
   } else if (widgetDiv.dataset.lang === 'es') {
@@ -2810,7 +2811,7 @@ function createModal(slug) {
   otherAmountLabel.id = 'other-amount-label+' + slug
   otherAmountLabel.className = 'other-amount-label'
   if (widgetDiv.dataset.lang === 'nl') {
-    otherAmountLabel.innerText = 'Bedrag'
+    otherAmountLabel.innerText= 'Anders'
   } else if (widgetDiv.dataset.lang === 'de') {
     otherAmountLabel.innerText = 'Andere'
   } else if (widgetDiv.dataset.lang === 'es') {
