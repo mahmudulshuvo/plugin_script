@@ -1,4 +1,6 @@
 // version 2.0 with Tipbox Production-2
+// Custom donation and Style modification
+// Bug fix
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -446,11 +448,60 @@ function customDonationConfiguration(fundraiserInfo, slug) {
     var selectAmountDiv=document.getElementById('select-amount-div-boxes'+slug)
     selectAmountDiv.style.display='flex'
     var tipBox=document.getElementById('tip-box'+slug)
-    let onetimeCheck = false
-    let monthylyCheck = false
+
+    if (customDonationConfig['yearly_select']) {
+      handlePeriodInterval(3, 'period-intervals-yearly+' + slug, fundraiserInfo['custom_style']['secondary_color'], fundraiserInfo)
+
+      if (customDonationConfig['yearly_style']) {
+        document.getElementById('other-amount'+slug).checked=true
+        otherAmountDiv.style.visibility='visible'
+        selectAmountDiv.style.display='none'
+        renderOptionsForAmount(slug)
+      } else {
+        document.getElementById('first-amount'+slug).checked=true
+        document.getElementById('first-amount'+slug).value=customDonationConfig['yearly_first']
+        document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_first']
+
+        document.getElementById('second-amount'+slug).value=customDonationConfig['yearly_second']
+        document.getElementById('second-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_second']
+
+        document.getElementById('third-amount'+slug).value=customDonationConfig['yearly_third']
+        document.getElementById('third-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_third']
+
+        document.getElementById('forth-amount'+slug).value=customDonationConfig['yearly_forth']
+        document.getElementById('forth-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_forth']
+        renderOptionsForPercentile(slug)
+      }
+    }
+
+    if (customDonationConfig['monthly_select']) {
+      handlePeriodInterval(2, 'period-intervals-monthly+'+slug, fundraiserInfo['custom_style']['secondary_color'], fundraiserInfo)
+
+      if (customDonationConfig['monthly_style']) {
+        document.getElementById('other-amount'+slug).checked=true
+        otherAmountDiv.style.visibility='visible'
+        selectAmountDiv.style.display='none'
+        renderOptionsForAmount(slug)
+      } else {
+        document.getElementById('first-amount'+slug).checked=true
+        document.getElementById('first-amount'+slug).value=customDonationConfig['monthly_first']
+        document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_first']
+
+        document.getElementById('second-amount'+slug).value=customDonationConfig['monthly_second']
+        document.getElementById('second-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_second']
+
+        document.getElementById('third-amount'+slug).value=customDonationConfig['monthly_third']
+        document.getElementById('third-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_third']
+
+        document.getElementById('forth-amount'+slug).value=customDonationConfig['monthly_forth']
+        document.getElementById('forth-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_forth']
+        renderOptionsForPercentile(slug)
+      }
+    }
 
     if (customDonationConfig['onetime_select']) {
-      onetimeCheck = true
+      handlePeriodInterval(1, 'period-intervals-onetime+'+slug, fundraiserInfo['custom_style']['secondary_color'], fundraiserInfo)
+
       if (customDonationConfig['onetime_style']) {
         document.getElementById('other-amount'+slug).checked=true
         otherAmountDiv.style.visibility='visible'
@@ -459,71 +510,16 @@ function customDonationConfiguration(fundraiserInfo, slug) {
       } else {
         document.getElementById('first-amount'+slug).checked = true
         document.getElementById('first-amount'+slug).value=customDonationConfig['onetime_first']
-        document.getElementById('first-amount-label+'+slug).innerText='€ '+customDonationConfig['onetime_first']
+        document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_first']
         
         document.getElementById('second-amount'+slug).value=customDonationConfig['onetime_second']
-        document.getElementById('second-amount-label+'+slug).innerText='€ '+customDonationConfig['onetime_second']
+        document.getElementById('second-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_second']
 
         document.getElementById('third-amount'+slug).value=customDonationConfig['onetime_third']
-        document.getElementById('third-amount-label+'+slug).innerText='€ '+customDonationConfig['onetime_third']
+        document.getElementById('third-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_third']
 
         document.getElementById('forth-amount'+slug).value=customDonationConfig['onetime_forth']
-        document.getElementById('forth-amount-label+'+slug).innerText='€ '+customDonationConfig['onetime_forth']
-        renderOptionsForPercentile(slug)
-      }
-    }
-
-    if (customDonationConfig['monthly_select']) {
-      monthylyCheck = true
-      if (customDonationConfig['monthly_style']) {
-        if (!onetimeCheck) {
-          document.getElementById('other-amount'+slug).checked=true
-        }
-        otherAmountDiv.style.visibility='visible'
-        selectAmountDiv.style.display='none'
-        renderOptionsForAmount(slug)
-      } else {
-        if (!onetimeCheck) {
-          document.getElementById('first-amount'+slug).checked=true
-        }
-        document.getElementById('first-amount'+slug).value=customDonationConfig['monthly_first']
-        document.getElementById('first-amount-label+'+slug).innerText='€ '+customDonationConfig['monthly_first']
-
-        document.getElementById('second-amount'+slug).value=customDonationConfig['monthly_second']
-        document.getElementById('second-amount-label+'+slug).innerText='€ '+customDonationConfig['monthly_second']
-
-        document.getElementById('third-amount'+slug).value=customDonationConfig['monthly_third']
-        document.getElementById('third-amount-label+'+slug).innerText='€ '+customDonationConfig['monthly_third']
-
-        document.getElementById('forth-amount'+slug).value=customDonationConfig['monthly_forth']
-        document.getElementById('forth-amount-label+'+slug).innerText='€ '+customDonationConfig['monthly_forth']
-        renderOptionsForPercentile(slug)
-      }
-    }
-
-    if (customDonationConfig['yearly_select']) {
-      if (customDonationConfig['yearly_style']) {
-        if (!onetimeCheck || !monthylyCheck) {
-          document.getElementById('other-amount'+slug).checked=true
-        }
-        otherAmountDiv.style.visibility='visible'
-        selectAmountDiv.style.display='none'
-        renderOptionsForAmount(slug)
-      } else {
-        if (!onetimeCheck||!monthylyCheck) {
-          document.getElementById('first-amount'+slug).checked=true
-        }
-        document.getElementById('first-amount'+slug).value=customDonationConfig['yearly_first']
-        document.getElementById('first-amount-label+'+slug).innerText='€ '+customDonationConfig['yearly_first']
-
-        document.getElementById('second-amount'+slug).value=customDonationConfig['yearly_second']
-        document.getElementById('second-amount-label+'+slug).innerText='€ '+customDonationConfig['yearly_second']
-
-        document.getElementById('third-amount'+slug).value=customDonationConfig['yearly_third']
-        document.getElementById('third-amount-label+'+slug).innerText='€ '+customDonationConfig['yearly_third']
-
-        document.getElementById('forth-amount'+slug).value=customDonationConfig['yearly_forth']
-        document.getElementById('forth-amount-label+'+slug).innerText='€ '+customDonationConfig['yearly_forth']
+        document.getElementById('forth-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_forth']
         renderOptionsForPercentile(slug)
       }
     }
