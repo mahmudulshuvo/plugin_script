@@ -1,6 +1,5 @@
 // version 2.0 with Tipbox Production-2
-// Custom donation and Style modification finalized
-// Change Bedrag
+// Custom donation and Style modification with Tipbox color transparency
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -26,8 +25,8 @@ var widgetOption = ''
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
 // style.href = 'style.css'
-// style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
-style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
+// style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -288,7 +287,7 @@ function setValues(result, slug, lang, option, card) {
       // tipbox.style.background = hexToRgb(
       //   result['data']['custom_style']['secondary_color'],
       // )
-      tipBox.style.background= '#ECECEC'
+      tipBox.style.background=result['data']['custom_style']['secondary_color']+'10'
 
       // tipBox.style.background=lighten(result['data']['custom_style']['secondary_color'], 20)
     }
@@ -517,20 +516,24 @@ function customDonationConfiguration(fundraiserInfo, slug) {
     }
 
     var otherAmountDiv=document.getElementById('other-amount-input-div+'+slug)
-    otherAmountDiv.style.visibility='hidden'
+    // otherAmountDiv.style.visibility='hidden'
     var selectAmountDiv=document.getElementById('select-amount-div-boxes'+slug)
     selectAmountDiv.style.display='flex'
     var tipBox=document.getElementById('tip-box'+slug)
+    var amountErrMsg = document.getElementById('missing-error-msg-amount'+slug)
 
     if (customDonationConfig['yearly_select']) {
       handlePeriodInterval(3, 'period-intervals-yearly+' + slug, fundraiserInfo['custom_style']['secondary_color'], fundraiserInfo)
 
       if (customDonationConfig['yearly_style']) {
         document.getElementById('other-amount'+slug).checked=true
-        otherAmountDiv.style.visibility='visible'
+        otherAmountDiv.style.display='flex'
+        // otherAmountDiv.style.visibility='visible'
         selectAmountDiv.style.display='none'
         renderOptionsForAmount(slug)
       } else {
+        otherAmountDiv.style.display='none'
+        amountErrMsg.style.display = 'none'
         document.getElementById('first-amount'+slug).checked=true
         document.getElementById('first-amount'+slug).value=customDonationConfig['yearly_first']
         document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_first']
@@ -552,10 +555,13 @@ function customDonationConfiguration(fundraiserInfo, slug) {
 
       if (customDonationConfig['monthly_style']) {
         document.getElementById('other-amount'+slug).checked=true
-        otherAmountDiv.style.visibility='visible'
+        otherAmountDiv.style.display='flex'
+        // otherAmountDiv.style.visibility='visible'
         selectAmountDiv.style.display='none'
         renderOptionsForAmount(slug)
       } else {
+        otherAmountDiv.style.display='none'
+        amountErrMsg.style.display='none'
         document.getElementById('first-amount'+slug).checked=true
         document.getElementById('first-amount'+slug).value=customDonationConfig['monthly_first']
         document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_first']
@@ -577,10 +583,13 @@ function customDonationConfiguration(fundraiserInfo, slug) {
 
       if (customDonationConfig['onetime_style']) {
         document.getElementById('other-amount'+slug).checked=true
-        otherAmountDiv.style.visibility='visible'
+        otherAmountDiv.style.display='flex'
+        // otherAmountDiv.style.visibility='visible'
         selectAmountDiv.style.display='none'
         renderOptionsForAmount(slug)
       } else {
+        otherAmountDiv.style.display='none'
+        amountErrMsg.style.display='none'
         document.getElementById('first-amount'+slug).checked = true
         document.getElementById('first-amount'+slug).value=customDonationConfig['onetime_first']
         document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_first']
@@ -621,6 +630,12 @@ function renderSelectAmount(fundraiserInfo, slug, payPeriod) {
     document.getElementById('forth-amount-div'+slug).style.backgroundColor='white'
     document.getElementById('other-amount-div'+slug).style.backgroundColor='white'
 
+    document.getElementById('first-amount-div'+slug).style.border='1px solid black'
+    document.getElementById('second-amount-div'+slug).style.border='1px solid black'
+    document.getElementById('third-amount-div'+slug).style.border='1px solid black'
+    document.getElementById('forth-amount-div'+slug).style.border='1px solid black'
+    document.getElementById('other-amount-div'+slug).style.border='1px solid black'
+
     document.getElementById('first-amount-label+'+slug).style.color='black'
     document.getElementById('second-amount-label+'+slug).style.color='black'
     document.getElementById('third-amount-label+'+slug).style.color='black'
@@ -628,14 +643,19 @@ function renderSelectAmount(fundraiserInfo, slug, payPeriod) {
     document.getElementById('other-amount-label+'+slug).style.color='black'
 
     document.getElementById('other-amount-input'+slug).value='€ '
+    document.getElementById('missing-error-msg-amount'+slug).style.display = 'none'
 
     if (customDonationConfig[payPeriod+'_select']) {
       if (customDonationConfig[payPeriod+'_style']) {
         document.getElementById('other-amount'+slug).checked=true
+        otherAmountDiv.style.border='transparent'
+        otherAmountDiv.style.display = 'flex'
         otherAmountDiv.style.visibility='visible'
         selectAmountDiv.style.display='none'
         renderOptionsForAmount(slug)
       } else {
+        otherAmountDiv.style.display='none'
+        otherAmountDiv.style.visibility='hidden'
         document.getElementById('first-amount'+slug).checked=true
         document.getElementById('first-amount-label+'+slug).style.color='white'
         document.getElementById('first-amount-div'+slug).style.backgroundColor=fundraiserInfo['custom_style']['primary_color']
@@ -1176,7 +1196,7 @@ function designWidget(option) {
 
     var missingAmountMsg = document.createElement('p')
     missingAmountMsg.id = 'missing-error-msg-amount' + widgetDiv.dataset.slug
-    missingAmountMsg.className = 'missing-error-msg'
+    missingAmountMsg.className = 'missing-error-msg-amount'
     if (widgetDiv.dataset.lang === 'nl') {
       missingAmountMsg.innerText = 'Minimaal €5,-'
     } else if (widgetDiv.dataset.lang === 'de') {
@@ -1886,7 +1906,7 @@ function designWidget(option) {
 
     var missingAmountMsg = document.createElement('p')
     missingAmountMsg.id = 'missing-error-msg-amount' + widgetDiv.dataset.slug
-    missingAmountMsg.className = 'missing-error-msg'
+    missingAmountMsg.className = 'missing-error-msg-amount'
     if (widgetDiv.dataset.lang === 'nl') {
       missingAmountMsg.innerText = 'Minimaal €5,-'
     } else if (widgetDiv.dataset.lang === 'de') {
@@ -2253,7 +2273,8 @@ function handleSelectAmount(value, idValue, color) {
   var secondAmountdiv = document.getElementById('second-amount-div' + slug)
   var thirdAmountdiv = document.getElementById('third-amount-div' + slug)
   var forthAmountdiv = document.getElementById('forth-amount-div' + slug)
-  var otherAmountdiv = document.getElementById('other-amount-div' + slug)
+  var otherAmountdiv=document.getElementById('other-amount-div'+slug)
+  var otherAmountBoxDiv=document.getElementById('other-amount-div'+slug)
 
   var firstAmountLabel = document.getElementById('first-amount-label+' + slug)
   var secondAmountLabel = document.getElementById('second-amount-label+' + slug)
@@ -2267,124 +2288,163 @@ function handleSelectAmount(value, idValue, color) {
   var secondAmountRadio = document.getElementById('second-amount' + slug)
   var thirdAmountRadio = document.getElementById('third-amount' + slug)
   var forthAmountRadio = document.getElementById('forth-amount' + slug)
-  var otherAmountRadio = document.getElementById('other-amount' + slug)
+  var otherAmountRadio=document.getElementById('other-amount'+slug)
+  
+  var amountErrMsg=document.getElementById('missing-error-msg-amount'+slug)
 
   console.log('color value ', color ? color : '')
-  if (value === 'first') {
+  if (value==='first') {
+    otherAmountDiv.style.display='none'
+    amountErrMsg.style.display = 'none'
     otherAmountDiv.style.visibility = 'hidden'
     firstAmountRadio.checked = true
 
     firstAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    firstAmountdiv.style.color = 'white'
-    firstAmountLabel.style.color = 'white'
-
+    firstAmountdiv.style.color='white'
+    firstAmountdiv.style.border='transparent'
+    firstAmountLabel.style.color='white'
+    
     secondAmountdiv.style.backgroundColor = 'transparent'
-    secondAmountdiv.style.color = 'black'
-    secondAmountLabel.style.color = 'black'
+    secondAmountdiv.style.color='black'
+    secondAmountdiv.style.border='1px solid black'
+    secondAmountLabel.style.color='black'
 
     thirdAmountdiv.style.backgroundColor = 'transparent'
-    thirdAmountdiv.style.color = 'black'
-    thirdAmountLabel.style.color = 'black'
-
+    thirdAmountdiv.style.color='black'
+    thirdAmountdiv.style.border='1px solid black'
+    thirdAmountLabel.style.color='black'
+    
     forthAmountdiv.style.backgroundColor = 'transparent'
-    forthAmountdiv.style.color = 'black'
-    forthAmountLabel.style.color = 'black'
+    forthAmountdiv.style.color='black'
+    forthAmountdiv.style.border='1px solid black'
+    forthAmountLabel.style.color='black'
 
     otherAmountdiv.style.backgroundColor = 'transparent'
-    otherAmountdiv.style.color = 'black'
-    otherAmountLabel.style.color = 'black'
-  } else if (value === 'second') {
+    otherAmountdiv.style.color='black'
+    otherAmountLabel.style.color='black'
+    otherAmountBoxDiv.style.border = '1px solid black'
+    
+  } else if (value==='second') {
+    otherAmountDiv.style.display='none'
+    amountErrMsg.style.display='none'
     otherAmountDiv.style.visibility = 'hidden'
     secondAmountRadio.checked = true
 
     firstAmountdiv.style.backgroundColor = 'transparent'
-    firstAmountdiv.style.color = 'black'
-    firstAmountLabel.style.color = 'black'
-
+    firstAmountdiv.style.color='black'
+    firstAmountdiv.style.border='1px solid black'
+    firstAmountLabel.style.color='black'
+    
     secondAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    secondAmountdiv.style.color = 'white'
-    secondAmountLabel.style.color = 'white'
-
+    secondAmountdiv.style.color='white'
+    secondAmountdiv.style.border='transparent'
+    secondAmountLabel.style.color='white'
+    
     thirdAmountdiv.style.backgroundColor = 'transparent'
-    thirdAmountdiv.style.color = 'black'
-    thirdAmountLabel.style.color = 'black'
-
+    thirdAmountdiv.style.color='black'
+    thirdAmountdiv.style.border='1px solid black'
+    thirdAmountLabel.style.color='black'
+    
     forthAmountdiv.style.backgroundColor = 'transparent'
-    forthAmountdiv.style.color = 'black'
-    forthAmountLabel.style.color = 'black'
-
+    forthAmountdiv.style.color='black'
+    forthAmountdiv.style.border='1px solid black'
+    forthAmountLabel.style.color='black'
+    
     otherAmountdiv.style.backgroundColor = 'transparent'
-    otherAmountdiv.style.color = 'black'
-    otherAmountLabel.style.color = 'black'
-  } else if (value === 'third') {
+    otherAmountdiv.style.color='black'
+    otherAmountLabel.style.color='black'
+    otherAmountBoxDiv.style.border='1px solid black'
+    
+  } else if (value==='third') {
+    otherAmountDiv.style.display='none'
+    amountErrMsg.style.display='none'
     otherAmountDiv.style.visibility = 'hidden'
     thirdAmountRadio.checked = true
 
     firstAmountdiv.style.backgroundColor = 'transparent'
-    firstAmountdiv.style.color = 'black'
-    firstAmountLabel.style.color = 'black'
+    firstAmountdiv.style.color='black'
+    firstAmountdiv.style.border='1px solid black'
+    firstAmountLabel.style.color='black'
 
     secondAmountdiv.style.backgroundColor = 'transparent'
-    secondAmountdiv.style.color = 'black'
-    secondAmountLabel.style.color = 'black'
-
+    secondAmountdiv.style.color='black'
+    secondAmountdiv.style.border='1px solid black'
+    secondAmountLabel.style.color='black'
+    
     thirdAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    thirdAmountdiv.style.color = 'white'
-    thirdAmountLabel.style.color = 'white'
-
+    thirdAmountdiv.style.color='white'
+    thirdAmountdiv.style.border='transparent'
+    thirdAmountLabel.style.color='white'
+    
     forthAmountdiv.style.backgroundColor = 'transparent'
-    forthAmountdiv.style.color = 'black'
-    forthAmountLabel.style.color = 'black'
+    forthAmountdiv.style.color='black'
+    forthAmountdiv.style.border='1px solid black'
+    forthAmountLabel.style.color='black'
 
     otherAmountdiv.style.backgroundColor = 'transparent'
-    otherAmountdiv.style.color = 'black'
-    otherAmountLabel.style.color = 'black'
-  } else if (value === 'forth') {
+    otherAmountdiv.style.color='black'
+    otherAmountLabel.style.color='black'
+    otherAmountBoxDiv.style.border='1px solid black'
+    
+  } else if (value==='forth') {
+    otherAmountDiv.style.display='none'
+    amountErrMsg.style.display='none'
     otherAmountDiv.style.visibility = 'hidden'
     forthAmountRadio.checked = true
 
     firstAmountdiv.style.backgroundColor = 'transparent'
-    firstAmountdiv.style.color = 'black'
-    firstAmountLabel.style.color = 'black'
-
+    firstAmountdiv.style.color='black'
+    firstAmountdiv.style.color='1px solid black'
+    firstAmountLabel.style.color='black'
+  
     secondAmountdiv.style.backgroundColor = 'transparent'
-    secondAmountdiv.style.color = 'black'
-    secondAmountLabel.style.color = 'black'
+    secondAmountdiv.style.color='black'
+    secondAmountdiv.style.border='1px solid black'
+    secondAmountLabel.style.color='black'
 
     thirdAmountdiv.style.backgroundColor = 'transparent'
-    thirdAmountdiv.style.color = 'black'
+    thirdAmountdiv.style.color='black'
+    thirdAmountdiv.style.border = '1px solid black'
     thirdAmountLabel.style.color = 'black'
 
     forthAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    forthAmountdiv.style.color = 'white'
+    forthAmountdiv.style.color='white'
+    forthAmountdiv.style.border = 'transparent'
     forthAmountLabel.style.color = 'white'
 
     otherAmountdiv.style.backgroundColor = 'transparent'
-    otherAmountdiv.style.color = 'black'
-    otherAmountLabel.style.color = 'black'
+    otherAmountdiv.style.color='black'
+    otherAmountLabel.style.color='black'
+    otherAmountBoxDiv.style.border='1px solid black'
   } else {
+    otherAmountDiv.style.display='flex'
     otherAmountDiv.style.visibility = 'visible'
     otherAmountRadio.checked = true
 
     firstAmountdiv.style.backgroundColor = 'transparent'
-    firstAmountdiv.style.color = 'black'
+    firstAmountdiv.style.color='black'
+    firstAmountdiv.style.border = '1px solid black'
     firstAmountLabel.style.color = 'black'
 
     secondAmountdiv.style.backgroundColor = 'transparent'
-    secondAmountdiv.style.color = 'black'
+    secondAmountdiv.style.color='black'
+    secondAmountdiv.style.border='1px solid black'
     secondAmountLabel.style.color = 'black'
 
     thirdAmountdiv.style.backgroundColor = 'transparent'
-    thirdAmountdiv.style.color = 'black'
+    thirdAmountdiv.style.color='black'
+    thirdAmountdiv.style.border='1px solid black'
     thirdAmountLabel.style.color = 'black'
 
     forthAmountdiv.style.backgroundColor = 'transparent'
-    forthAmountdiv.style.color = 'black'
+    forthAmountdiv.style.color='black'
+    forthAmountdiv.style.border='1px solid black'
     forthAmountLabel.style.color = 'black'
 
     otherAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    otherAmountdiv.style.color = 'white'
-    otherAmountLabel.style.color = 'white'
+    otherAmountdiv.style.color='white'
+    otherAmountLabel.style.color='white'
+    otherAmountBoxDiv.style.border='transparent'
   }
 
   var tipbox = document.getElementById('tip-box'+slug)
@@ -2832,8 +2892,8 @@ function createModal(slug) {
 
   var otherAmountInputDiv = document.createElement('div')
   otherAmountInputDiv.id = 'other-amount-input-div+' + slug
-  otherAmountInputDiv.className = 'other-amount-input-div'
-
+  otherAmountInputDiv.className='other-amount-input-div'
+  
   var otherAmountInput = document.createElement('input')
   otherAmount.setAttribute('type', 'number')
   if (widgetDiv.dataset.lang === 'nl') {
@@ -2855,7 +2915,7 @@ function createModal(slug) {
 
   var missingAmountMsg = document.createElement('p')
   missingAmountMsg.id = 'missing-error-msg-amount' + slug
-  missingAmountMsg.className = 'missing-error-msg'
+  missingAmountMsg.className = 'missing-error-msg-amount'
   if (widgetDiv.dataset.lang === 'nl') {
     missingAmountMsg.innerText = 'Minimaal €5,-'
   } else if (widgetDiv.dataset.lang === 'de') {
@@ -3144,7 +3204,7 @@ function directDonate(idValue, lang) {
   email = document.getElementById('email-field' + slugVal).value
 
   if (selectedAmount < 5 || isNaN(selectedAmount) || selectedAmount % 1 !== 0) {
-    amountErrMsg.style.display = 'block'
+    amountErrMsg.style.display='block'
     errorCheck = true
   }
 
@@ -3195,10 +3255,10 @@ function ValidateEmail(mail) {
 
 async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  // const donationApi =
-  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
   const donationApi =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+    'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  // const donationApi =
+  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -3277,13 +3337,13 @@ async function makeDonation(data, slugVal, lang) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  // const url =
-  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&&&')[0]
-
   const url =
-    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&')[0]
+    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&&&')[0]
+
+  // const url =
+  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -3346,12 +3406,12 @@ function addJquery() {
         }
 
         var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-        // var api =
-        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-        //   urlAddressArr[1]
         var api =
-          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
           urlAddressArr[1]
+        // var api =
+        //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   urlAddressArr[1]
         var url = proxyurl + api
 
         jQuery.ajax({
@@ -3465,14 +3525,14 @@ function resize() {
 }
 
 function createTipbox(donationFormDiv, modalContent, slug, color, lang) {
-  if (modalContent) {
-    modalContent.style.height = '900px'
-  }
+  // if (modalContent) {
+  //   modalContent.style.height = '900px'
+  // }
   var tipBox = document.createElement('div')
   tipBox.id = 'tip-box' + slug
   tipBox.className = 'tip-box'
   tipBox.style.width = '95%'
-  tipBox.style.height = '200px'
+  tipBox.style.height = 'auto !important'
   tipBox.style.margin = 'auto'
   tipBox.style.marginTop = '30px'
   tipBox.style.padding = '5px'
