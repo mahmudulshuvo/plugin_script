@@ -1,5 +1,4 @@
-// version 2.0 with Tipbox Production-2
-// Custom donation and Style modification with Tipbox color transparency
+// version 2.1 
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -934,7 +933,8 @@ function designWidget(option) {
     hrule.style.height = '2px'
     hrule.style.display = 'flex'
     hrule.style.flexDirection = 'row'
-    hrule.style.justifyContent = 'space-between'
+    hrule.style.justifyContent='space-between'
+    hrule.style.border = 'transparent'
     donationForm.appendChild(hrule)
 
     var oneTimeBar = document.createElement('div')
@@ -1645,7 +1645,8 @@ function designWidget(option) {
     hrule.style.height = '2px'
     hrule.style.display = 'flex'
     hrule.style.flexDirection = 'row'
-    hrule.style.justifyContent = 'space-between'
+    hrule.style.justifyContent='space-between'
+    hrule.style.border = 'transparent'
     donationForm.appendChild(hrule)
 
     var oneTimeBar = document.createElement('div')
@@ -2449,6 +2450,8 @@ function handleSelectAmount(value, idValue, color) {
 
   var tipbox = document.getElementById('tip-box'+slug)
   if (value!=='other') {
+    document.getElementById('other-amount-input'+slug).value='€ '
+    handleOtherAmountInput(document.getElementById('other-amount-input'+slug).value, 'other-amount-input'+slug)
     let amount=parseInt(document.getElementById(value+'-amount'+slug).value)
     if (amount<9) {
       renderOptionsForAmount(slug)
@@ -2458,7 +2461,7 @@ function handleSelectAmount(value, idValue, color) {
     }
   }
   else {
-    renderOptionsForAmount(slug)
+    renderOptionsForPercentile(slug)
   }
   setDropdownFunc(tipbox, slug)
   handleTipDropdown(slug)
@@ -2655,7 +2658,8 @@ function createModal(slug) {
   hrule.style.width = '100%'
   hrule.style.display = 'flex'
   hrule.style.flexDirection = 'row'
-  hrule.style.justifyContent = 'space-between'
+  hrule.style.justifyContent='space-between'
+  hrule.style.border = 'transparent'
   donationFormDiv.appendChild(hrule)
 
   var oneTimeBar = document.createElement('div')
@@ -3755,6 +3759,17 @@ function renderOptionsForAmount(slug) {
 function handleOtherAmountInput(value, idValue) {
   var slug = idValue.split('other-amount-input')[1]
   console.log('Other amount input on change value ', value, slug)
+  var otherAmountInputField=document.getElementById('other-amount-input'+slug)
+  if (!value.includes('€ ')) {
+    if (!value.includes('€')) {
+      otherAmountInputField.value='€ '+value
+      value='€ '+value
+    } else {
+      otherAmountInputField.value+=' '
+      value+=' '
+    }
+  }
+
   if (value.includes('€')) {
     value = value.split('€ ')[1]
   }

@@ -1,5 +1,4 @@
-/* version 2.0 with Tipbox */
-/* Custom Donation and Style Finalized */
+/* version 2.1 */
 
 .widget {
   height: 215px;
@@ -497,6 +496,7 @@ button:focus {
   display: flex;
   align-items: flex-end;
   text-align: end;
+  margin-bottom: 10px;
 }
 .powered-by-label {
   text-align: right !important;
