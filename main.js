@@ -24,8 +24,8 @@ var widgetOption = ''
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
 // style.href = 'style.css'
-style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
-// style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+// style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
+style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -3259,10 +3259,10 @@ function ValidateEmail(mail) {
 
 async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  const donationApi =
-    'https://whydonate-development.appspot.com/api/v1/donation/order/'
   // const donationApi =
-  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  const donationApi =
+    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -3341,13 +3341,13 @@ async function makeDonation(data, slugVal, lang) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  const url =
-    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&&&')[0]
-
   // const url =
-  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&')[0]
+  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&&&')[0]
+
+  const url =
+    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -3410,12 +3410,12 @@ function addJquery() {
         }
 
         var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-        var api =
-          'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-          urlAddressArr[1]
         // var api =
-        //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
         //   urlAddressArr[1]
+        var api =
+          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          urlAddressArr[1]
         var url = proxyurl + api
 
         jQuery.ajax({
