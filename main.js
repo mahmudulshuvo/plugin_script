@@ -1,4 +1,5 @@
-// version 2.1 
+// version 2.1
+// Bug fix success and failure url
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -3258,11 +3259,14 @@ function ValidateEmail(mail) {
 }
 
 async function makeDonation(data, slugVal, lang) {
-  const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-  // const donationApi =
-  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  const proxyurl='https://intense-temple-29395.herokuapp.com/'
+  
   const donationApi =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+    'https://whydonate-development.appspot.com/api/v1/donation/order/'
+
+  // const donationApi =
+  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+  
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -3341,13 +3345,13 @@ async function makeDonation(data, slugVal, lang) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  // const url =
-  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&&&')[0]
-
   const url =
-    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&')[0]
+    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&&&')[0]
+
+  // const url =
+  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -3380,7 +3384,8 @@ function addJquery() {
         var widgetWithFormArrayList = document.getElementsByClassName(
           'widget-with-form'
         )
-
+        
+        widgetArrayList = [...widgetArrayList]
         if (widgetWithFormArrayList.length > 0) {
           for (var j = 0; j < widgetWithFormArrayList.length; j++) {
             widgetArrayList.push(widgetWithFormArrayList[j])
@@ -3405,17 +3410,22 @@ function addJquery() {
         var success_url = ''
         var fail_url = ''
         if (widgetElement) {
-          success_url = widgetElement.dataset.success_url
-          fail_url = widgetElement.dataset.fail_url
+          // success_url = widgetElement.dataset.success_url
+          // fail_url=widgetElement.dataset.fail_url
+          success_url='https://www.google.com'
+          fail_url='https://www.bing.com'
         }
 
-        var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
-        // var api =
-        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-        //   urlAddressArr[1]
+        var proxyurl='https://intense-temple-29395.herokuapp.com/'
+        
         var api =
-          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
           urlAddressArr[1]
+
+        // var api =
+        //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   urlAddressArr[1]
+        
         var url = proxyurl + api
 
         jQuery.ajax({
@@ -3425,15 +3435,18 @@ function addJquery() {
           success: function (res) {
             // console.log('order status response ', res)
             if (res['data']['status'] === 'paid') {
-              if (typeof success_url !== 'undefined') {
-                window.location.replace(success_url)
+              if (success_url !== '') {
+                window.location.assign(success_url)
               }
             } else if (res['data']['status'] === 'canceled') {
-              if (typeof fail_url !== 'undefined') {
-                window.location.replace(fail_url)
+              if (fail_url !== '') {
+                window.location.assign(fail_url)
               }
             } else {
               // do nothing
+              if (fail_url!=='') {
+                window.location.assign(fail_url)
+              }
             }
           },
           error: function (xhr) {
