@@ -4,7 +4,7 @@
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
 var tipBoxSlugList = { current: '' }
-var whydonateSlugs={}
+var whydonateSlugs = {}
 
 var classArray = document.getElementsByClassName('widget')
 if (classArray.length > 1) {
@@ -112,7 +112,7 @@ async function getFundraiserLocalValue(url, slug, lang, option, card) {
 }
 
 function setValues(result, slug, lang, option, card) {
-  fundraiserInfo=result['data']
+  fundraiserInfo = result['data']
 
   // Decide whether to show the tip_box or not
   var tipBox = document.getElementById('tip-box' + slug)
@@ -255,8 +255,12 @@ function setValues(result, slug, lang, option, card) {
       )
       donateBtnInForm.style.background =
         result['data']['custom_style']['secondary_color']
-      console.log('border radius 1 ', result['data']['custom_style']['button_radius'])
-      donateBtnInForm.style.borderRadius = result['data']['custom_style']['button_radius'] + 'px'
+      console.log(
+        'border radius 1 ',
+        result['data']['custom_style']['button_radius']
+      )
+      donateBtnInForm.style.borderRadius =
+        result['data']['custom_style']['button_radius'] + 'px'
     } else {
       console.log('result is ', result['data']['custom_style']['primary_color'])
       console.log(
@@ -267,35 +271,43 @@ function setValues(result, slug, lang, option, card) {
       var donateBtnInModal = document.getElementById(
         'donate-btn-in-modal+' + slug
       )
-      console.log('border radius 1 ', result['data']['custom_style']['button_radius'])
+      console.log(
+        'border radius 1 ',
+        result['data']['custom_style']['button_radius']
+      )
       donateBtnInWidget.style.background =
         result['data']['custom_style']['secondary_color']
-      donateBtnInWidget.style.borderRadius = result['data']['custom_style']['button_radius'] + 'px'
+      donateBtnInWidget.style.borderRadius =
+        result['data']['custom_style']['button_radius'] + 'px'
       donateBtnInModal.style.background =
         result['data']['custom_style']['secondary_color']
-      donateBtnInModal.style.borderRadius=result['data']['custom_style']['button_radius'] + 'px'
+      donateBtnInModal.style.borderRadius =
+        result['data']['custom_style']['button_radius'] + 'px'
     }
 
     // Secure donation label color
-    document.getElementById('secure-donation-label'+slug).style.color=result['data']['custom_style']['primary_color']
+    document.getElementById('secure-donation-label' + slug).style.color =
+      result['data']['custom_style']['primary_color']
 
     // Design rest of the parts
     if (result['data']['tip_enabled']) {
-      var tipbox=document.getElementById('tip-box'+slug)
+      var tipbox = document.getElementById('tip-box' + slug)
       // console.log('actual color ', result['data']['custom_style']['secondary_color'])
       // console.log('lighten darken color ', lighten(result['data']['custom_style']['secondary_color'], 20))
       // tipbox.style.background = hexToRgb(
       //   result['data']['custom_style']['secondary_color'],
       // )
-      tipBox.style.background=result['data']['custom_style']['secondary_color']+'10'
+      tipBox.style.background =
+        result['data']['custom_style']['secondary_color'] + '10'
 
       // tipBox.style.background=lighten(result['data']['custom_style']['secondary_color'], 20)
     }
 
     // Close button border
-    var closeBtn = document.getElementById('close'+slug)
+    var closeBtn = document.getElementById('close' + slug)
     if (closeBtn) {
-      closeBtn.style.border='2px solid '+result['data']['custom_style']['secondary_color']
+      closeBtn.style.border =
+        '2px solid ' + result['data']['custom_style']['secondary_color']
     }
 
     // For Selected Interval
@@ -395,7 +407,6 @@ function setValues(result, slug, lang, option, card) {
         otherAmountLabel.id,
         result['data']['custom_style']['primary_color']
       )
-
   }
 
   // END of ***************************  CUSTOM STYLING ****************************
@@ -403,68 +414,71 @@ function setValues(result, slug, lang, option, card) {
   // Start of ***************************  CUSTOM AMOUNT ****************************
   console.log('Fundriaser local data ', fundraiserInfo)
   customDonationConfiguration(fundraiserInfo, slug)
-
 }
 
 function hexToRgb(hex) {
-  var result=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  }:null;
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null
 }
 
 function addLight(color, amount) {
-  let cc=parseInt(color, 16)+amount;
-  let c=(cc>255)? 255:(cc);
-  c=(c.toString(16).length>1)? c.toString(16):`0${c.toString(16)}`;
-  return c;
+  let cc = parseInt(color, 16) + amount
+  let c = cc > 255 ? 255 : cc
+  c = c.toString(16).length > 1 ? c.toString(16) : `0${c.toString(16)}`
+  return c
 }
 
 function lighten(color, amount) {
-  color=(color.indexOf("#")>=0)? color.substring(1, color.length):color;
-  amount=parseInt((255*amount)/100);
-  return color=`#${addLight(color.substring(0, 2), amount)}${addLight(color.substring(2, 4), amount)}${addLight(color.substring(4, 6), amount)}`;
+  color = color.indexOf('#') >= 0 ? color.substring(1, color.length) : color
+  amount = parseInt((255 * amount) / 100)
+  return (color = `#${addLight(color.substring(0, 2), amount)}${addLight(
+    color.substring(2, 4),
+    amount
+  )}${addLight(color.substring(4, 6), amount)}`)
 }
 
 function LightenDarkenColor(colorCode, amount) {
-  var usePound=false;
+  var usePound = false
 
-  if (colorCode[0]=="#") {
-    colorCode=colorCode.slice(1);
-    usePound=true;
+  if (colorCode[0] == '#') {
+    colorCode = colorCode.slice(1)
+    usePound = true
   }
 
-  var num=parseInt(colorCode, 16);
+  var num = parseInt(colorCode, 16)
 
-  var r=(num>>16)+amount;
+  var r = (num >> 16) + amount
 
-  if (r>255) {
-    r=255;
-  } else if (r<0) {
-    r=0;
+  if (r > 255) {
+    r = 255
+  } else if (r < 0) {
+    r = 0
   }
 
-  var b=((num>>8)&0x00FF)+amount;
+  var b = ((num >> 8) & 0x00ff) + amount
 
-  if (b>255) {
-    b=255;
-  } else if (b<0) {
-    b=0;
+  if (b > 255) {
+    b = 255
+  } else if (b < 0) {
+    b = 0
   }
 
-  var g=(num&0x0000FF)+amount;
+  var g = (num & 0x0000ff) + amount
 
-  if (g>255) {
-    g=255;
-  } else if (g<0) {
-    g=0;
+  if (g > 255) {
+    g = 255
+  } else if (g < 0) {
+    g = 0
   }
 
-  return (usePound? "#":"")+(g|(b<<8)|(r<<16)).toString(16);
+  return (usePound ? '#' : '') + (g | (b << 8) | (r << 16)).toString(16)
 }
-
 
 function adjust(color, amount) {
   return (
@@ -481,127 +495,192 @@ function adjust(color, amount) {
 }
 
 function customDonationConfiguration(fundraiserInfo, slug) {
-  let customDonationConfig=fundraiserInfo['custom_donation_configuration']
-  if (Object.keys(customDonationConfig).length!==0&&customDonationConfig.constructor===Object) {
-    let count=0
-    let customDonationConfig=fundraiserInfo['custom_donation_configuration']
+  let customDonationConfig = fundraiserInfo['custom_donation_configuration']
+  if (
+    Object.keys(customDonationConfig).length !== 0 &&
+    customDonationConfig.constructor === Object
+  ) {
+    let count = 0
+    let customDonationConfig = fundraiserInfo['custom_donation_configuration']
     if (!customDonationConfig['onetime_select']) {
-      document.getElementById('period-intervals-onetime+'+slug).style.display='none'
-      document.getElementById('onetime-bar'+slug).style.display='none'
-      count+=1
+      document.getElementById(
+        'period-intervals-onetime+' + slug
+      ).style.display = 'none'
+      document.getElementById('onetime-bar' + slug).style.display = 'none'
+      count += 1
     }
     if (!customDonationConfig['monthly_select']) {
-      document.getElementById('period-intervals-monthly+'+slug).style.display='none'
-      document.getElementById('monthly-bar'+slug).style.display='none'
-      count+=1
+      document.getElementById(
+        'period-intervals-monthly+' + slug
+      ).style.display = 'none'
+      document.getElementById('monthly-bar' + slug).style.display = 'none'
+      count += 1
     }
     if (!customDonationConfig['yearly_select']) {
-      document.getElementById('period-intervals-yearly+'+slug).style.display='none'
-      document.getElementById('yearly-bar'+slug).style.display='none'
-      count+=1
+      document.getElementById('period-intervals-yearly+' + slug).style.display =
+        'none'
+      document.getElementById('yearly-bar' + slug).style.display = 'none'
+      count += 1
     }
 
-    if (count<3) {
-      document.getElementById('period-intervals-onetime+'+slug).style.textAlign='center'
-      document.getElementById('period-intervals-monthly+'+slug).style.textAlign='center'
-      document.getElementById('period-intervals-yearly+'+slug).style.textAlign='center'
+    if (count < 3) {
+      document.getElementById(
+        'period-intervals-onetime+' + slug
+      ).style.textAlign = 'center'
+      document.getElementById(
+        'period-intervals-monthly+' + slug
+      ).style.textAlign = 'center'
+      document.getElementById(
+        'period-intervals-yearly+' + slug
+      ).style.textAlign = 'center'
     }
 
-    if (document.getElementById('period-intervals-onetime+'+slug).style.display=='flex') {
-      document.getElementById('onetime'+slug).checked=true
-    } else if (document.getElementById('period-intervals-onetime+'+slug).style.display=='flex') {
-      document.getElementById('monthly'+slug).checked=true
+    if (
+      document.getElementById('period-intervals-onetime+' + slug).style
+        .display == 'flex'
+    ) {
+      document.getElementById('onetime' + slug).checked = true
+    } else if (
+      document.getElementById('period-intervals-onetime+' + slug).style
+        .display == 'flex'
+    ) {
+      document.getElementById('monthly' + slug).checked = true
     } else {
-      document.getElementById('yearly'+slug).checked=true
+      document.getElementById('yearly' + slug).checked = true
     }
 
-    var otherAmountDiv=document.getElementById('other-amount-input-div+'+slug)
+    var otherAmountDiv = document.getElementById(
+      'other-amount-input-div+' + slug
+    )
     // otherAmountDiv.style.visibility='hidden'
-    var selectAmountDiv=document.getElementById('select-amount-div-boxes'+slug)
-    selectAmountDiv.style.display='flex'
-    var tipBox=document.getElementById('tip-box'+slug)
-    var amountErrMsg = document.getElementById('missing-error-msg-amount'+slug)
+    var selectAmountDiv = document.getElementById(
+      'select-amount-div-boxes' + slug
+    )
+    selectAmountDiv.style.display = 'flex'
+    var tipBox = document.getElementById('tip-box' + slug)
+    var amountErrMsg = document.getElementById(
+      'missing-error-msg-amount' + slug
+    )
 
     if (customDonationConfig['yearly_select']) {
-      handlePeriodInterval(3, 'period-intervals-yearly+' + slug, fundraiserInfo['custom_style']['secondary_color'], fundraiserInfo)
+      handlePeriodInterval(
+        3,
+        'period-intervals-yearly+' + slug,
+        fundraiserInfo['custom_style']['secondary_color'],
+        fundraiserInfo
+      )
 
       if (customDonationConfig['yearly_style']) {
-        document.getElementById('other-amount'+slug).checked=true
-        otherAmountDiv.style.display='flex'
+        document.getElementById('other-amount' + slug).checked = true
+        otherAmountDiv.style.display = 'flex'
         // otherAmountDiv.style.visibility='visible'
-        selectAmountDiv.style.display='none'
+        selectAmountDiv.style.display = 'none'
         renderOptionsForAmount(slug)
       } else {
-        otherAmountDiv.style.display='none'
+        otherAmountDiv.style.display = 'none'
         amountErrMsg.style.display = 'none'
-        document.getElementById('first-amount'+slug).checked=true
-        document.getElementById('first-amount'+slug).value=customDonationConfig['yearly_first']
-        document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_first']
+        document.getElementById('first-amount' + slug).checked = true
+        document.getElementById('first-amount' + slug).value =
+          customDonationConfig['yearly_first']
+        document.getElementById('first-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['yearly_first']
 
-        document.getElementById('second-amount'+slug).value=customDonationConfig['yearly_second']
-        document.getElementById('second-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_second']
+        document.getElementById('second-amount' + slug).value =
+          customDonationConfig['yearly_second']
+        document.getElementById('second-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['yearly_second']
 
-        document.getElementById('third-amount'+slug).value=customDonationConfig['yearly_third']
-        document.getElementById('third-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_third']
+        document.getElementById('third-amount' + slug).value =
+          customDonationConfig['yearly_third']
+        document.getElementById('third-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['yearly_third']
 
-        document.getElementById('forth-amount'+slug).value=customDonationConfig['yearly_forth']
-        document.getElementById('forth-amount-label+'+slug).innerText='€'+customDonationConfig['yearly_forth']
+        document.getElementById('forth-amount' + slug).value =
+          customDonationConfig['yearly_forth']
+        document.getElementById('forth-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['yearly_forth']
         renderOptionsForPercentile(slug)
       }
     }
 
     if (customDonationConfig['monthly_select']) {
-      handlePeriodInterval(2, 'period-intervals-monthly+'+slug, fundraiserInfo['custom_style']['secondary_color'], fundraiserInfo)
+      handlePeriodInterval(
+        2,
+        'period-intervals-monthly+' + slug,
+        fundraiserInfo['custom_style']['secondary_color'],
+        fundraiserInfo
+      )
 
       if (customDonationConfig['monthly_style']) {
-        document.getElementById('other-amount'+slug).checked=true
-        otherAmountDiv.style.display='flex'
+        document.getElementById('other-amount' + slug).checked = true
+        otherAmountDiv.style.display = 'flex'
         // otherAmountDiv.style.visibility='visible'
-        selectAmountDiv.style.display='none'
+        selectAmountDiv.style.display = 'none'
         renderOptionsForAmount(slug)
       } else {
-        otherAmountDiv.style.display='none'
-        amountErrMsg.style.display='none'
-        document.getElementById('first-amount'+slug).checked=true
-        document.getElementById('first-amount'+slug).value=customDonationConfig['monthly_first']
-        document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_first']
+        otherAmountDiv.style.display = 'none'
+        amountErrMsg.style.display = 'none'
+        document.getElementById('first-amount' + slug).checked = true
+        document.getElementById('first-amount' + slug).value =
+          customDonationConfig['monthly_first']
+        document.getElementById('first-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['monthly_first']
 
-        document.getElementById('second-amount'+slug).value=customDonationConfig['monthly_second']
-        document.getElementById('second-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_second']
+        document.getElementById('second-amount' + slug).value =
+          customDonationConfig['monthly_second']
+        document.getElementById('second-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['monthly_second']
 
-        document.getElementById('third-amount'+slug).value=customDonationConfig['monthly_third']
-        document.getElementById('third-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_third']
+        document.getElementById('third-amount' + slug).value =
+          customDonationConfig['monthly_third']
+        document.getElementById('third-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['monthly_third']
 
-        document.getElementById('forth-amount'+slug).value=customDonationConfig['monthly_forth']
-        document.getElementById('forth-amount-label+'+slug).innerText='€'+customDonationConfig['monthly_forth']
+        document.getElementById('forth-amount' + slug).value =
+          customDonationConfig['monthly_forth']
+        document.getElementById('forth-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['monthly_forth']
         renderOptionsForPercentile(slug)
       }
     }
 
     if (customDonationConfig['onetime_select']) {
-      handlePeriodInterval(1, 'period-intervals-onetime+'+slug, fundraiserInfo['custom_style']['secondary_color'], fundraiserInfo)
+      handlePeriodInterval(
+        1,
+        'period-intervals-onetime+' + slug,
+        fundraiserInfo['custom_style']['secondary_color'],
+        fundraiserInfo
+      )
 
       if (customDonationConfig['onetime_style']) {
-        document.getElementById('other-amount'+slug).checked=true
-        otherAmountDiv.style.display='flex'
+        document.getElementById('other-amount' + slug).checked = true
+        otherAmountDiv.style.display = 'flex'
         // otherAmountDiv.style.visibility='visible'
-        selectAmountDiv.style.display='none'
+        selectAmountDiv.style.display = 'none'
         renderOptionsForAmount(slug)
       } else {
-        otherAmountDiv.style.display='none'
-        amountErrMsg.style.display='none'
-        document.getElementById('first-amount'+slug).checked = true
-        document.getElementById('first-amount'+slug).value=customDonationConfig['onetime_first']
-        document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_first']
-        
-        document.getElementById('second-amount'+slug).value=customDonationConfig['onetime_second']
-        document.getElementById('second-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_second']
+        otherAmountDiv.style.display = 'none'
+        amountErrMsg.style.display = 'none'
+        document.getElementById('first-amount' + slug).checked = true
+        document.getElementById('first-amount' + slug).value =
+          customDonationConfig['onetime_first']
+        document.getElementById('first-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['onetime_first']
 
-        document.getElementById('third-amount'+slug).value=customDonationConfig['onetime_third']
-        document.getElementById('third-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_third']
+        document.getElementById('second-amount' + slug).value =
+          customDonationConfig['onetime_second']
+        document.getElementById('second-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['onetime_second']
 
-        document.getElementById('forth-amount'+slug).value=customDonationConfig['onetime_forth']
-        document.getElementById('forth-amount-label+'+slug).innerText='€'+customDonationConfig['onetime_forth']
+        document.getElementById('third-amount' + slug).value =
+          customDonationConfig['onetime_third']
+        document.getElementById('third-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['onetime_third']
+
+        document.getElementById('forth-amount' + slug).value =
+          customDonationConfig['onetime_forth']
+        document.getElementById('forth-amount-label+' + slug).innerText =
+          '€' + customDonationConfig['onetime_forth']
         renderOptionsForPercentile(slug)
       }
     }
@@ -612,64 +691,94 @@ function customDonationConfiguration(fundraiserInfo, slug) {
 }
 
 function renderSelectAmount(fundraiserInfo, slug, payPeriod) {
-  let customDonationConfig=fundraiserInfo['custom_donation_configuration']
+  let customDonationConfig = fundraiserInfo['custom_donation_configuration']
 
-  if (Object.keys(customDonationConfig).length!==0&&customDonationConfig.constructor===Object) {
-    var otherAmountDiv=document.getElementById('other-amount-input-div+'+slug)
-    otherAmountDiv.style.visibility='hidden'
-    var selectAmountDiv=document.getElementById('select-amount-div-boxes'+slug)
-    selectAmountDiv.style.display='flex'
-    var tipBox=document.getElementById('tip-box'+slug)
+  if (
+    Object.keys(customDonationConfig).length !== 0 &&
+    customDonationConfig.constructor === Object
+  ) {
+    var otherAmountDiv = document.getElementById(
+      'other-amount-input-div+' + slug
+    )
+    otherAmountDiv.style.visibility = 'hidden'
+    var selectAmountDiv = document.getElementById(
+      'select-amount-div-boxes' + slug
+    )
+    selectAmountDiv.style.display = 'flex'
+    var tipBox = document.getElementById('tip-box' + slug)
 
-    document.getElementById('other-amount'+slug).checked=false
-    document.getElementById('first-amount'+slug).checked=false
+    document.getElementById('other-amount' + slug).checked = false
+    document.getElementById('first-amount' + slug).checked = false
 
-    document.getElementById('first-amount-div'+slug).style.backgroundColor='white'
-    document.getElementById('second-amount-div'+slug).style.backgroundColor='white'
-    document.getElementById('third-amount-div'+slug).style.backgroundColor='white'
-    document.getElementById('forth-amount-div'+slug).style.backgroundColor='white'
-    document.getElementById('other-amount-div'+slug).style.backgroundColor='white'
+    document.getElementById('first-amount-div' + slug).style.backgroundColor =
+      'white'
+    document.getElementById('second-amount-div' + slug).style.backgroundColor =
+      'white'
+    document.getElementById('third-amount-div' + slug).style.backgroundColor =
+      'white'
+    document.getElementById('forth-amount-div' + slug).style.backgroundColor =
+      'white'
+    document.getElementById('other-amount-div' + slug).style.backgroundColor =
+      'white'
 
-    document.getElementById('first-amount-div'+slug).style.border='1px solid black'
-    document.getElementById('second-amount-div'+slug).style.border='1px solid black'
-    document.getElementById('third-amount-div'+slug).style.border='1px solid black'
-    document.getElementById('forth-amount-div'+slug).style.border='1px solid black'
-    document.getElementById('other-amount-div'+slug).style.border='1px solid black'
+    document.getElementById('first-amount-div' + slug).style.border =
+      '1px solid black'
+    document.getElementById('second-amount-div' + slug).style.border =
+      '1px solid black'
+    document.getElementById('third-amount-div' + slug).style.border =
+      '1px solid black'
+    document.getElementById('forth-amount-div' + slug).style.border =
+      '1px solid black'
+    document.getElementById('other-amount-div' + slug).style.border =
+      '1px solid black'
 
-    document.getElementById('first-amount-label+'+slug).style.color='black'
-    document.getElementById('second-amount-label+'+slug).style.color='black'
-    document.getElementById('third-amount-label+'+slug).style.color='black'
-    document.getElementById('forth-amount-label+'+slug).style.color='black'
-    document.getElementById('other-amount-label+'+slug).style.color='black'
+    document.getElementById('first-amount-label+' + slug).style.color = 'black'
+    document.getElementById('second-amount-label+' + slug).style.color = 'black'
+    document.getElementById('third-amount-label+' + slug).style.color = 'black'
+    document.getElementById('forth-amount-label+' + slug).style.color = 'black'
+    document.getElementById('other-amount-label+' + slug).style.color = 'black'
 
-    document.getElementById('other-amount-input'+slug).value='€ '
-    document.getElementById('missing-error-msg-amount'+slug).style.display = 'none'
+    document.getElementById('other-amount-input' + slug).value = '€ '
+    document.getElementById('missing-error-msg-amount' + slug).style.display =
+      'none'
 
-    if (customDonationConfig[payPeriod+'_select']) {
-      if (customDonationConfig[payPeriod+'_style']) {
-        document.getElementById('other-amount'+slug).checked=true
-        otherAmountDiv.style.border='transparent'
+    if (customDonationConfig[payPeriod + '_select']) {
+      if (customDonationConfig[payPeriod + '_style']) {
+        document.getElementById('other-amount' + slug).checked = true
+        otherAmountDiv.style.border = 'transparent'
         otherAmountDiv.style.display = 'flex'
-        otherAmountDiv.style.visibility='visible'
-        selectAmountDiv.style.display='none'
+        otherAmountDiv.style.visibility = 'visible'
+        selectAmountDiv.style.display = 'none'
         renderOptionsForAmount(slug)
       } else {
-        otherAmountDiv.style.display='none'
-        otherAmountDiv.style.visibility='hidden'
-        document.getElementById('first-amount'+slug).checked=true
-        document.getElementById('first-amount-label+'+slug).style.color='white'
-        document.getElementById('first-amount-div'+slug).style.backgroundColor=fundraiserInfo['custom_style']['primary_color']
-        document.getElementById('first-amount'+slug).value=customDonationConfig[payPeriod+'_first']
-        document.getElementById('first-amount-label+'+slug).innerText='€'+customDonationConfig[payPeriod+'_first']
+        otherAmountDiv.style.display = 'none'
+        otherAmountDiv.style.visibility = 'hidden'
+        document.getElementById('first-amount' + slug).checked = true
+        document.getElementById('first-amount-label+' + slug).style.color =
+          'white'
+        document.getElementById(
+          'first-amount-div' + slug
+        ).style.backgroundColor =
+          fundraiserInfo['custom_style']['primary_color']
+        document.getElementById('first-amount' + slug).value =
+          customDonationConfig[payPeriod + '_first']
+        document.getElementById('first-amount-label+' + slug).innerText =
+          '€' + customDonationConfig[payPeriod + '_first']
 
-        document.getElementById('second-amount'+slug).value=customDonationConfig[payPeriod+'_second']
-        document.getElementById('second-amount-label+'+slug).innerText='€'+customDonationConfig[payPeriod+'_second']
+        document.getElementById('second-amount' + slug).value =
+          customDonationConfig[payPeriod + '_second']
+        document.getElementById('second-amount-label+' + slug).innerText =
+          '€' + customDonationConfig[payPeriod + '_second']
 
-        document.getElementById('third-amount'+slug).value=customDonationConfig[payPeriod+'_third']
-        document.getElementById('third-amount-label+'+slug).innerText='€'+customDonationConfig[payPeriod+'_third']
+        document.getElementById('third-amount' + slug).value =
+          customDonationConfig[payPeriod + '_third']
+        document.getElementById('third-amount-label+' + slug).innerText =
+          '€' + customDonationConfig[payPeriod + '_third']
 
-        document.getElementById('forth-amount'+slug).value=customDonationConfig[payPeriod+'_forth']
-        document.getElementById('forth-amount-label+'+slug).innerText='€'+customDonationConfig[payPeriod+'_forth']
+        document.getElementById('forth-amount' + slug).value =
+          customDonationConfig[payPeriod + '_forth']
+        document.getElementById('forth-amount-label+' + slug).innerText =
+          '€' + customDonationConfig[payPeriod + '_forth']
         renderOptionsForPercentile(slug)
       }
     }
@@ -677,65 +786,64 @@ function renderSelectAmount(fundraiserInfo, slug, payPeriod) {
     setDropdownFunc(tipBox, slug)
     calculateTotalAmount(slug)
   }
-
 }
 
 function designWidget(option) {
-  if (option===1) {
-    var fundraiserImage=document.createElement('IMG')
-    fundraiserImage.id='fundraiser-image'+widgetDiv.dataset.slug
-    fundraiserImage.className='fundraiser-image'
-    fundraiserImage.src=
+  if (option === 1) {
+    var fundraiserImage = document.createElement('IMG')
+    fundraiserImage.id = 'fundraiser-image' + widgetDiv.dataset.slug
+    fundraiserImage.className = 'fundraiser-image'
+    fundraiserImage.src =
       'https://res.cloudinary.com/dxhaja5tz/image/upload/v1585584744/35_gdepw8.gif'
-    fundraiserImage.style.height='150px'
-    fundraiserImage.style.width='100%'
-    fundraiserImage.style.marginBottom='10px'
-    fundraiserImage.style.borderTopLeftRadius='15px'
-    fundraiserImage.style.borderTopRightRadius='15px'
-    widgetDiv.style.height='350px'
+    fundraiserImage.style.height = '150px'
+    fundraiserImage.style.width = '100%'
+    fundraiserImage.style.marginBottom = '10px'
+    fundraiserImage.style.borderTopLeftRadius = '15px'
+    fundraiserImage.style.borderTopRightRadius = '15px'
+    widgetDiv.style.height = '350px'
     // var blankDiv = document.createElement('DIV')
     // blankDiv.style.width = '100%'
     widgetDiv.appendChild(fundraiserImage)
     // widgetDiv.appendChild(blankDiv)
 
-    var amountInfoDiv=document.createElement('div')
-    amountInfoDiv.id='amount-info-div-only-image'+widgetDiv.dataset.slug
-    amountInfoDiv.className='amount-info-div-only-image'
+    var amountInfoDiv = document.createElement('div')
+    amountInfoDiv.id = 'amount-info-div-only-image' + widgetDiv.dataset.slug
+    amountInfoDiv.className = 'amount-info-div-only-image'
     widgetDiv.appendChild(amountInfoDiv)
 
-    var receiveAmount=document.createElement('LABEL')
-    receiveAmount.id='receive-amount'+widgetDiv.dataset.slug
-    receiveAmount.className='receive-amount'
+    var receiveAmount = document.createElement('LABEL')
+    receiveAmount.id = 'receive-amount' + widgetDiv.dataset.slug
+    receiveAmount.className = 'receive-amount'
     amountInfoDiv.appendChild(receiveAmount)
 
-    var targetAmount=document.createElement('LABEL')
-    targetAmount.id='target-amount'+widgetDiv.dataset.slug
-    targetAmount.className='target-amount'
+    var targetAmount = document.createElement('LABEL')
+    targetAmount.id = 'target-amount' + widgetDiv.dataset.slug
+    targetAmount.className = 'target-amount'
     amountInfoDiv.appendChild(targetAmount)
 
-    var progressBar=document.createElement('DIV')
-    progressBar.className='progress-bar'
-    progressBar.id='progress-bar'+widgetDiv.dataset.slug
+    var progressBar = document.createElement('DIV')
+    progressBar.className = 'progress-bar'
+    progressBar.id = 'progress-bar' + widgetDiv.dataset.slug
     widgetDiv.appendChild(progressBar)
 
-    var raisedBar=document.createElement('DIV')
-    raisedBar.id='raised-bar'+widgetDiv.dataset.slug
-    raisedBar.className='raised-bar'
+    var raisedBar = document.createElement('DIV')
+    raisedBar.id = 'raised-bar' + widgetDiv.dataset.slug
+    raisedBar.className = 'raised-bar'
     progressBar.appendChild(raisedBar)
 
-    var progressDiv=document.createElement('DIV')
-    progressDiv.id='progress-div'+widgetDiv.dataset.slug
-    progressDiv.className='progress-div'
+    var progressDiv = document.createElement('DIV')
+    progressDiv.id = 'progress-div' + widgetDiv.dataset.slug
+    progressDiv.className = 'progress-div'
     widgetDiv.appendChild(progressDiv)
 
-    var raisedLabel=document.createElement('LABEL')
-    raisedLabel.id='raised-label'+widgetDiv.dataset.slug
-    raisedLabel.className='raised-label'
+    var raisedLabel = document.createElement('LABEL')
+    raisedLabel.id = 'raised-label' + widgetDiv.dataset.slug
+    raisedLabel.className = 'raised-label'
     progressDiv.appendChild(raisedLabel)
 
-    var daysLabel=document.createElement('LABEL')
-    daysLabel.id='remaining-days'+widgetDiv.dataset.slug
-    daysLabel.className='remaining-days'
+    var daysLabel = document.createElement('LABEL')
+    daysLabel.id = 'remaining-days' + widgetDiv.dataset.slug
+    daysLabel.className = 'remaining-days'
     progressDiv.appendChild(daysLabel)
 
     // donateButton.id = 'donate-btn+' + widgetDiv.dataset.slug
@@ -744,150 +852,150 @@ function designWidget(option) {
     // donateButton.onclick = () => this.handleDonate(donateButton.id)
     // widgetDiv.appendChild(donateButton)
 
-    var donateBtnDiv=document.createElement('div')
-    donateBtnDiv.id='donate-btn-div+'+widgetDiv.dataset.slug
-    donateButton.id='donate-btn+'+widgetDiv.dataset.slug
-    donateButton.className='donate-btn'
-    if (widgetDiv.dataset.lang==='nl') {
-      donateButton.innerHTML='<i class="fa"></i> Doneer'
-    } else if (widgetDiv.dataset.lang==='de') {
-      donateButton.innerHTML='<i class="fa"></i> Spenden'
-    } else if (widgetDiv.dataset.lang==='es') {
-      modalDonateButton.innerHTML='<i class="fa"></i> Donar'
+    var donateBtnDiv = document.createElement('div')
+    donateBtnDiv.id = 'donate-btn-div+' + widgetDiv.dataset.slug
+    donateButton.id = 'donate-btn+' + widgetDiv.dataset.slug
+    donateButton.className = 'donate-btn'
+    if (widgetDiv.dataset.lang === 'nl') {
+      donateButton.innerHTML = '<i class="fa"></i> Doneer'
+    } else if (widgetDiv.dataset.lang === 'de') {
+      donateButton.innerHTML = '<i class="fa"></i> Spenden'
+    } else if (widgetDiv.dataset.lang === 'es') {
+      modalDonateButton.innerHTML = '<i class="fa"></i> Donar'
     } else {
-      donateButton.innerHTML='<i class="fa"></i> Donate'
+      donateButton.innerHTML = '<i class="fa"></i> Donate'
     }
-    donateButton.onclick=() => this.handleDonate(donateBtnDiv.id)
+    donateButton.onclick = () => this.handleDonate(donateBtnDiv.id)
     donateBtnDiv.appendChild(donateButton)
     widgetDiv.appendChild(donateBtnDiv)
-  } else if (option===2) {
+  } else if (option === 2) {
     //create left side
-    var donationForm=document.createElement('DIV')
-    donationForm.id='donation-form'+widgetDiv.dataset.slug
-    donationForm.className='donation-form'
-    donationForm.style.height='100%'
-    donationForm.style.width='50%'
-    donationForm.style.margin='10px'
+    var donationForm = document.createElement('DIV')
+    donationForm.id = 'donation-form' + widgetDiv.dataset.slug
+    donationForm.className = 'donation-form'
+    donationForm.style.height = '100%'
+    donationForm.style.width = '50%'
+    donationForm.style.margin = '10px'
     // donationForm.style.backgroundColor = 'red'
-    widgetDiv.className='widget-with-form'
-    widgetDiv.style.backgroundColor='white'
+    widgetDiv.className = 'widget-with-form'
+    widgetDiv.style.backgroundColor = 'white'
     // widgetDiv.style.height = '350px !important'
     widgetDiv.appendChild(donationForm)
 
-    widgetDiv.style.display='flex'
-    widgetDiv.style.flexDirection='row'
-    widgetDiv.style.width='800px'
+    widgetDiv.style.display = 'flex'
+    widgetDiv.style.flexDirection = 'row'
+    widgetDiv.style.width = '800px'
 
-    var labelDiv=document.createElement('div')
-    labelDiv.id='block-div'+widgetDiv.dataset.slug
-    labelDiv.className='block-div'
+    var labelDiv = document.createElement('div')
+    labelDiv.id = 'block-div' + widgetDiv.dataset.slug
+    labelDiv.className = 'block-div'
     // labelDiv.style.display = 'flex'
     // labelDiv.style.flexDirection = 'column'
     donationForm.appendChild(labelDiv)
 
-    var fundraiserIdLabel=document.createElement('label')
-    fundraiserIdLabel.id='fundraiser-id-label'+widgetDiv.dataset.slug
-    fundraiserIdLabel.style.display='none'
-    fundraiserIdLabel.style.float='left'
+    var fundraiserIdLabel = document.createElement('label')
+    fundraiserIdLabel.id = 'fundraiser-id-label' + widgetDiv.dataset.slug
+    fundraiserIdLabel.style.display = 'none'
+    fundraiserIdLabel.style.float = 'left'
     labelDiv.appendChild(fundraiserIdLabel)
 
-    var label1=document.createElement('label')
-    label1.id='secure-donation-label'+widgetDiv.dataset.slug
-    label1.className='secure-donation-label'
-    if (widgetDiv.dataset.lang==='nl') {
-      label1.innerText='Veilig online doneren'
-    } else if (widgetDiv.dataset.lang==='de') {
-      label1.innerText='Gesicherte Online-Spende'
-    } else if (widgetDiv.dataset.lang==='es') {
-      label1.innerText='Donación en línea segura'
+    var label1 = document.createElement('label')
+    label1.id = 'secure-donation-label' + widgetDiv.dataset.slug
+    label1.className = 'secure-donation-label'
+    if (widgetDiv.dataset.lang === 'nl') {
+      label1.innerText = 'Veilig online doneren'
+    } else if (widgetDiv.dataset.lang === 'de') {
+      label1.innerText = 'Gesicherte Online-Spende'
+    } else if (widgetDiv.dataset.lang === 'es') {
+      label1.innerText = 'Donación en línea segura'
     } else {
-      label1.innerText='Secured Online Donation'
+      label1.innerText = 'Secured Online Donation'
     }
 
     labelDiv.appendChild(label1)
 
-    var label2=document.createElement('label')
-    label2.id='label2'+widgetDiv.dataset.slug
-    label2.className='label2'
-    if (widgetDiv.dataset.lang==='nl') {
-      label2.innerText='Voer je donatie in'
-    } else if (widgetDiv.dataset.lang==='de') {
-      label2.innerText='Geben Sie Ihre Spende ein'
-    } else if (widgetDiv.dataset.lang==='es') {
-      label2.innerText='Ingrese su donación'
+    var label2 = document.createElement('label')
+    label2.id = 'label2' + widgetDiv.dataset.slug
+    label2.className = 'label2'
+    if (widgetDiv.dataset.lang === 'nl') {
+      label2.innerText = 'Voer je donatie in'
+    } else if (widgetDiv.dataset.lang === 'de') {
+      label2.innerText = 'Geben Sie Ihre Spende ein'
+    } else if (widgetDiv.dataset.lang === 'es') {
+      label2.innerText = 'Ingrese su donación'
     } else {
-      label2.innerText='Enter your donation'
+      label2.innerText = 'Enter your donation'
     }
     labelDiv.appendChild(label2)
 
     // ----------- period inervals -------------------
 
-    var periodDiv=document.createElement('div')
-    periodDiv.id='period-intervals'+widgetDiv.dataset.slug
-    periodDiv.className='period-intervals'
+    var periodDiv = document.createElement('div')
+    periodDiv.id = 'period-intervals' + widgetDiv.dataset.slug
+    periodDiv.className = 'period-intervals'
     donationForm.appendChild(periodDiv)
 
-    var periodOnetimeDiv=document.createElement('div')
-    periodOnetimeDiv.id='period-intervals-onetime+'+widgetDiv.dataset.slug
-    periodOnetimeDiv.className='period-intervals-onetime'
+    var periodOnetimeDiv = document.createElement('div')
+    periodOnetimeDiv.id = 'period-intervals-onetime+' + widgetDiv.dataset.slug
+    periodOnetimeDiv.className = 'period-intervals-onetime'
 
-    var oneTimeLabel=document.createElement('label')
-    if (widgetDiv.dataset.lang==='nl') {
-      oneTimeLabel.innerText='Eenmalig'
-    } else if (widgetDiv.dataset.lang==='de') {
-      oneTimeLabel.innerText='Einmalig'
-    } else if (widgetDiv.dataset.lang==='es') {
-      oneTimeLabel.innerText='Una Vez'
+    var oneTimeLabel = document.createElement('label')
+    if (widgetDiv.dataset.lang === 'nl') {
+      oneTimeLabel.innerText = 'Eenmalig'
+    } else if (widgetDiv.dataset.lang === 'de') {
+      oneTimeLabel.innerText = 'Einmalig'
+    } else if (widgetDiv.dataset.lang === 'es') {
+      oneTimeLabel.innerText = 'Una Vez'
     } else {
-      oneTimeLabel.innerText='One time'
+      oneTimeLabel.innerText = 'One time'
     }
-    oneTimeLabel.id='onetime-label'+widgetDiv.dataset.slug
-    oneTimeLabel.fontSize='14px'
-    oneTimeLabel.style.display='block'
-    oneTimeLabel.style.width='100%'
-    oneTimeLabel.onclick=() =>
+    oneTimeLabel.id = 'onetime-label' + widgetDiv.dataset.slug
+    oneTimeLabel.fontSize = '14px'
+    oneTimeLabel.style.display = 'block'
+    oneTimeLabel.style.width = '100%'
+    oneTimeLabel.onclick = () =>
       this.handlePeriodInterval(1, periodOnetimeDiv.id, '', {})
 
-    var oneTimeRadio=document.createElement('input')
+    var oneTimeRadio = document.createElement('input')
     oneTimeRadio.setAttribute('type', 'radio')
-    oneTimeRadio.id='onetime'+widgetDiv.dataset.slug
-    oneTimeRadio.name='period-intervals'+widgetDiv.dataset.slug
-    oneTimeRadio.value='1'
-    oneTimeRadio.checked=true
-    oneTimeRadio.onclick=() =>
+    oneTimeRadio.id = 'onetime' + widgetDiv.dataset.slug
+    oneTimeRadio.name = 'period-intervals' + widgetDiv.dataset.slug
+    oneTimeRadio.value = '1'
+    oneTimeRadio.checked = true
+    oneTimeRadio.onclick = () =>
       this.handlePeriodInterval(1, periodOnetimeDiv.id, '', {})
 
     periodOnetimeDiv.appendChild(oneTimeRadio)
     periodOnetimeDiv.appendChild(oneTimeLabel)
     periodDiv.appendChild(periodOnetimeDiv)
 
-    var periodMonthlyDiv=document.createElement('div')
-    periodMonthlyDiv.id='period-intervals-monthly+'+widgetDiv.dataset.slug
-    periodMonthlyDiv.className='period-intervals-monthly'
+    var periodMonthlyDiv = document.createElement('div')
+    periodMonthlyDiv.id = 'period-intervals-monthly+' + widgetDiv.dataset.slug
+    periodMonthlyDiv.className = 'period-intervals-monthly'
 
-    var monthlyLabel=document.createElement('label')
-    if (widgetDiv.dataset.lang==='nl') {
-      monthlyLabel.innerText='Maandelijks'
-    } else if (widgetDiv.dataset.lang==='de') {
-      monthlyLabel.innerText='Monatlich'
-    } else if (widgetDiv.dataset.lang==='es') {
-      monthlyLabel.innerText='Mensualmente'
+    var monthlyLabel = document.createElement('label')
+    if (widgetDiv.dataset.lang === 'nl') {
+      monthlyLabel.innerText = 'Maandelijks'
+    } else if (widgetDiv.dataset.lang === 'de') {
+      monthlyLabel.innerText = 'Monatlich'
+    } else if (widgetDiv.dataset.lang === 'es') {
+      monthlyLabel.innerText = 'Mensualmente'
     } else {
-      monthlyLabel.innerText='Monthly'
+      monthlyLabel.innerText = 'Monthly'
     }
-    monthlyLabel.id='monthly-label'+widgetDiv.dataset.slug
-    monthlyLabel.fontSize='14px'
-    monthlyLabel.style.display='block'
-    monthlyLabel.style.width='100%'
-    monthlyLabel.onclick=() =>
+    monthlyLabel.id = 'monthly-label' + widgetDiv.dataset.slug
+    monthlyLabel.fontSize = '14px'
+    monthlyLabel.style.display = 'block'
+    monthlyLabel.style.width = '100%'
+    monthlyLabel.onclick = () =>
       this.handlePeriodInterval(2, periodMonthlyDiv.id, '', {})
 
-    var monthlyRadio=document.createElement('input')
+    var monthlyRadio = document.createElement('input')
     monthlyRadio.setAttribute('type', 'radio')
-    monthlyRadio.id='monthly'+widgetDiv.dataset.slug
-    monthlyRadio.name='period-intervals'+widgetDiv.dataset.slug
-    monthlyRadio.value='2'
-    monthlyRadio.onclick=() =>
+    monthlyRadio.id = 'monthly' + widgetDiv.dataset.slug
+    monthlyRadio.name = 'period-intervals' + widgetDiv.dataset.slug
+    monthlyRadio.value = '2'
+    monthlyRadio.onclick = () =>
       this.handlePeriodInterval(2, periodMonthlyDiv.id, '', {})
 
     periodMonthlyDiv.appendChild(monthlyRadio)
@@ -910,7 +1018,7 @@ function designWidget(option) {
     }
     yearlyLabel.id = 'yearly-label' + widgetDiv.dataset.slug
     yearlyLabel.fontSize = '14px'
-    yearlyLabel.style.display='block'
+    yearlyLabel.style.display = 'block'
     yearlyLabel.style.width = '100%'
     yearlyLabel.onclick = () =>
       this.handlePeriodInterval(3, periodYearlyDiv.id, '', {})
@@ -930,11 +1038,11 @@ function designWidget(option) {
     // ----------- period inervals -------------------
 
     var hrule = document.createElement('hr')
-    hrule.style.background= '#E8E8E8'
+    hrule.style.background = '#E8E8E8'
     hrule.style.height = '2px'
     hrule.style.display = 'flex'
     hrule.style.flexDirection = 'row'
-    hrule.style.justifyContent='space-between'
+    hrule.style.justifyContent = 'space-between'
     hrule.style.border = 'transparent'
     donationForm.appendChild(hrule)
 
@@ -951,7 +1059,7 @@ function designWidget(option) {
     monthlyBar.className = 'monthly-bar'
     monthlyBar.style.height = '2px'
     monthlyBar.style.width = '100%'
-    monthlyBar.style.background= '#E8E8E8'
+    monthlyBar.style.background = '#E8E8E8'
     hrule.appendChild(monthlyBar)
 
     var yearlyBar = document.createElement('div')
@@ -959,7 +1067,7 @@ function designWidget(option) {
     yearlyBar.className = 'yearly-bar'
     yearlyBar.style.height = '2px'
     yearlyBar.style.width = '100%'
-    yearlyBar.style.background= '#E8E8E8'
+    yearlyBar.style.background = '#E8E8E8'
     hrule.appendChild(yearlyBar)
 
     var selectAmountLabelDiv = document.createElement('div')
@@ -1002,7 +1110,7 @@ function designWidget(option) {
     firstAmount.style.width = '60px'
     firstAmount.style.borderRadius = '5px'
     firstAmount.style.border = '1px black solid'
-    firstAmount.style.backgroundColor= '#2828d6'
+    firstAmount.style.backgroundColor = '#2828d6'
     firstAmount.style.color = 'white'
 
     var firstAmountRadio = document.createElement('input')
@@ -1188,7 +1296,7 @@ function designWidget(option) {
       otherAmountInput.placeholder = 'Other amount'
     }
     otherAmountInput.id = 'other-amount-input' + widgetDiv.dataset.slug
-    otherAmountInput.value='€ '
+    otherAmountInput.value = '€ '
     otherAmountInput.onkeyup = (e) =>
       this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
 
@@ -1505,8 +1613,8 @@ function designWidget(option) {
     labelDiv.appendChild(fundraiserIdLabel)
 
     var label1 = document.createElement('label')
-    label1.id='secure-donation-label'+widgetDiv.dataset.slug
-    label1.className='secure-donation-label'
+    label1.id = 'secure-donation-label' + widgetDiv.dataset.slug
+    label1.className = 'secure-donation-label'
     if (widgetDiv.dataset.lang === 'nl') {
       label1.innerText = 'Veilig online doneren'
     } else if (widgetDiv.dataset.lang === 'de') {
@@ -1555,8 +1663,8 @@ function designWidget(option) {
     }
     oneTimeLabel.id = 'onetime-label' + widgetDiv.dataset.slug
     oneTimeLabel.fontSize = '14px'
-    oneTimeLabel.style.display='block'
-    oneTimeLabel.style.width='100%'
+    oneTimeLabel.style.display = 'block'
+    oneTimeLabel.style.width = '100%'
     oneTimeLabel.onclick = () =>
       this.handlePeriodInterval(1, periodOnetimeDiv.id, '', {})
 
@@ -1589,8 +1697,8 @@ function designWidget(option) {
     }
     monthlyLabel.id = 'monthly-label' + widgetDiv.dataset.slug
     monthlyLabel.fontSize = '14px'
-    monthlyLabel.style.display='block'
-    monthlyLabel.style.width='100%'
+    monthlyLabel.style.display = 'block'
+    monthlyLabel.style.width = '100%'
     monthlyLabel.onclick = () =>
       this.handlePeriodInterval(2, periodMonthlyDiv.id, '', {})
 
@@ -1622,8 +1730,8 @@ function designWidget(option) {
     }
     yearlyLabel.id = 'yearly-label' + widgetDiv.dataset.slug
     yearlyLabel.fontSize = '14px'
-    yearlyLabel.style.display='block'
-    yearlyLabel.style.width='100%'
+    yearlyLabel.style.display = 'block'
+    yearlyLabel.style.width = '100%'
     yearlyLabel.onclick = () =>
       this.handlePeriodInterval(3, periodYearlyDiv.id, '', {})
 
@@ -1642,11 +1750,11 @@ function designWidget(option) {
     // ------------------ period intervals --------------------
 
     var hrule = document.createElement('hr')
-    hrule.style.background='#E8E8E8'
+    hrule.style.background = '#E8E8E8'
     hrule.style.height = '2px'
     hrule.style.display = 'flex'
     hrule.style.flexDirection = 'row'
-    hrule.style.justifyContent='space-between'
+    hrule.style.justifyContent = 'space-between'
     hrule.style.border = 'transparent'
     donationForm.appendChild(hrule)
 
@@ -1663,7 +1771,7 @@ function designWidget(option) {
     monthlyBar.className = 'monthly-bar'
     monthlyBar.style.height = '2px'
     monthlyBar.style.width = '100%'
-    monthlyBar.style.background= '#E8E8E8'
+    monthlyBar.style.background = '#E8E8E8'
     hrule.appendChild(monthlyBar)
 
     var yearlyBar = document.createElement('div')
@@ -1671,7 +1779,7 @@ function designWidget(option) {
     yearlyBar.className = 'yearly-bar'
     yearlyBar.style.height = '2px'
     yearlyBar.style.width = '100%'
-    yearlyBar.style.background= '#E8E8E8'
+    yearlyBar.style.background = '#E8E8E8'
     hrule.appendChild(yearlyBar)
 
     var selectAmountLabelDiv = document.createElement('div')
@@ -1696,9 +1804,9 @@ function designWidget(option) {
 
     // ----------- copied from here -----------------------
 
-    var amountDiv=document.createElement('div')
-    amountDiv.id='select-amount-div-boxes'+widgetDiv.dataset.slug
-    amountDiv.className= 'select-amount-div-boxes'
+    var amountDiv = document.createElement('div')
+    amountDiv.id = 'select-amount-div-boxes' + widgetDiv.dataset.slug
+    amountDiv.className = 'select-amount-div-boxes'
     amountDiv.style.display = 'flex'
     amountDiv.style.marginTop = '10px'
     amountDiv.style.flexDirection = 'row'
@@ -1714,7 +1822,7 @@ function designWidget(option) {
     firstAmount.style.width = '60px'
     firstAmount.style.borderRadius = '5px'
     firstAmount.style.border = '1px black solid'
-    firstAmount.style.backgroundColor= '#2828d6'
+    firstAmount.style.backgroundColor = '#2828d6'
     firstAmount.style.color = 'white'
 
     var firstAmountRadio = document.createElement('input')
@@ -1900,7 +2008,7 @@ function designWidget(option) {
       otherAmountInput.placeholder = 'Other amount'
     }
     otherAmountInput.id = 'other-amount-input' + widgetDiv.dataset.slug
-    otherAmountInput.value='€ '
+    otherAmountInput.value = '€ '
     otherAmountInput.onkeyup = (e) =>
       this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
     otherAmountInputDiv.appendChild(otherAmountInput)
@@ -2249,22 +2357,22 @@ function handlePeriodInterval(value, idValue, color, fundraiserInfo) {
     onetimeRadio.checked = true
     monthlyRadio.checked = false
     yearlyRadio.checked = false
-    monthlyBar.style.backgroundColor= '#E8E8E8'
-    yearlyBar.style.backgroundColor='#E8E8E8'
+    monthlyBar.style.backgroundColor = '#E8E8E8'
+    yearlyBar.style.backgroundColor = '#E8E8E8'
     renderSelectAmount(fundraiserInfo, slug, 'onetime')
   } else if (value === 2) {
     monthlyRadio.checked = true
     onetimeRadio.checked = false
     yearlyRadio.checked = false
-    onetimeBar.style.backgroundColor= '#E8E8E8'
-    yearlyBar.style.backgroundColor='#E8E8E8'
+    onetimeBar.style.backgroundColor = '#E8E8E8'
+    yearlyBar.style.backgroundColor = '#E8E8E8'
     renderSelectAmount(fundraiserInfo, slug, 'monthly')
   } else {
     yearlyRadio.checked = true
     monthlyRadio.checked = false
     onetimeRadio.checked = false
-    onetimeBar.style.backgroundColor= '#E8E8E8'
-    monthlyBar.style.backgroundColor='#E8E8E8'
+    onetimeBar.style.backgroundColor = '#E8E8E8'
+    monthlyBar.style.backgroundColor = '#E8E8E8'
     renderSelectAmount(fundraiserInfo, slug, 'yearly')
   }
 }
@@ -2275,8 +2383,8 @@ function handleSelectAmount(value, idValue, color) {
   var secondAmountdiv = document.getElementById('second-amount-div' + slug)
   var thirdAmountdiv = document.getElementById('third-amount-div' + slug)
   var forthAmountdiv = document.getElementById('forth-amount-div' + slug)
-  var otherAmountdiv=document.getElementById('other-amount-div'+slug)
-  var otherAmountBoxDiv=document.getElementById('other-amount-div'+slug)
+  var otherAmountdiv = document.getElementById('other-amount-div' + slug)
+  var otherAmountBoxDiv = document.getElementById('other-amount-div' + slug)
 
   var firstAmountLabel = document.getElementById('first-amount-label+' + slug)
   var secondAmountLabel = document.getElementById('second-amount-label+' + slug)
@@ -2290,178 +2398,178 @@ function handleSelectAmount(value, idValue, color) {
   var secondAmountRadio = document.getElementById('second-amount' + slug)
   var thirdAmountRadio = document.getElementById('third-amount' + slug)
   var forthAmountRadio = document.getElementById('forth-amount' + slug)
-  var otherAmountRadio=document.getElementById('other-amount'+slug)
-  
-  var amountErrMsg=document.getElementById('missing-error-msg-amount'+slug)
+  var otherAmountRadio = document.getElementById('other-amount' + slug)
+
+  var amountErrMsg = document.getElementById('missing-error-msg-amount' + slug)
 
   console.log('color value ', color ? color : '')
-  if (value==='first') {
-    otherAmountDiv.style.display='none'
+  if (value === 'first') {
+    otherAmountDiv.style.display = 'none'
     amountErrMsg.style.display = 'none'
     otherAmountDiv.style.visibility = 'hidden'
     firstAmountRadio.checked = true
 
-    firstAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    firstAmountdiv.style.color='white'
-    firstAmountdiv.style.border='transparent'
-    firstAmountLabel.style.color='white'
-    
+    firstAmountdiv.style.backgroundColor = color ? color : '#2828d6'
+    firstAmountdiv.style.color = 'white'
+    firstAmountdiv.style.border = 'transparent'
+    firstAmountLabel.style.color = 'white'
+
     secondAmountdiv.style.backgroundColor = 'transparent'
-    secondAmountdiv.style.color='black'
-    secondAmountdiv.style.border='1px solid black'
-    secondAmountLabel.style.color='black'
+    secondAmountdiv.style.color = 'black'
+    secondAmountdiv.style.border = '1px solid black'
+    secondAmountLabel.style.color = 'black'
 
     thirdAmountdiv.style.backgroundColor = 'transparent'
-    thirdAmountdiv.style.color='black'
-    thirdAmountdiv.style.border='1px solid black'
-    thirdAmountLabel.style.color='black'
-    
+    thirdAmountdiv.style.color = 'black'
+    thirdAmountdiv.style.border = '1px solid black'
+    thirdAmountLabel.style.color = 'black'
+
     forthAmountdiv.style.backgroundColor = 'transparent'
-    forthAmountdiv.style.color='black'
-    forthAmountdiv.style.border='1px solid black'
-    forthAmountLabel.style.color='black'
+    forthAmountdiv.style.color = 'black'
+    forthAmountdiv.style.border = '1px solid black'
+    forthAmountLabel.style.color = 'black'
 
     otherAmountdiv.style.backgroundColor = 'transparent'
-    otherAmountdiv.style.color='black'
-    otherAmountLabel.style.color='black'
+    otherAmountdiv.style.color = 'black'
+    otherAmountLabel.style.color = 'black'
     otherAmountBoxDiv.style.border = '1px solid black'
-    
-  } else if (value==='second') {
-    otherAmountDiv.style.display='none'
-    amountErrMsg.style.display='none'
+  } else if (value === 'second') {
+    otherAmountDiv.style.display = 'none'
+    amountErrMsg.style.display = 'none'
     otherAmountDiv.style.visibility = 'hidden'
     secondAmountRadio.checked = true
 
     firstAmountdiv.style.backgroundColor = 'transparent'
-    firstAmountdiv.style.color='black'
-    firstAmountdiv.style.border='1px solid black'
-    firstAmountLabel.style.color='black'
-    
-    secondAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    secondAmountdiv.style.color='white'
-    secondAmountdiv.style.border='transparent'
-    secondAmountLabel.style.color='white'
-    
+    firstAmountdiv.style.color = 'black'
+    firstAmountdiv.style.border = '1px solid black'
+    firstAmountLabel.style.color = 'black'
+
+    secondAmountdiv.style.backgroundColor = color ? color : '#2828d6'
+    secondAmountdiv.style.color = 'white'
+    secondAmountdiv.style.border = 'transparent'
+    secondAmountLabel.style.color = 'white'
+
     thirdAmountdiv.style.backgroundColor = 'transparent'
-    thirdAmountdiv.style.color='black'
-    thirdAmountdiv.style.border='1px solid black'
-    thirdAmountLabel.style.color='black'
-    
+    thirdAmountdiv.style.color = 'black'
+    thirdAmountdiv.style.border = '1px solid black'
+    thirdAmountLabel.style.color = 'black'
+
     forthAmountdiv.style.backgroundColor = 'transparent'
-    forthAmountdiv.style.color='black'
-    forthAmountdiv.style.border='1px solid black'
-    forthAmountLabel.style.color='black'
-    
+    forthAmountdiv.style.color = 'black'
+    forthAmountdiv.style.border = '1px solid black'
+    forthAmountLabel.style.color = 'black'
+
     otherAmountdiv.style.backgroundColor = 'transparent'
-    otherAmountdiv.style.color='black'
-    otherAmountLabel.style.color='black'
-    otherAmountBoxDiv.style.border='1px solid black'
-    
-  } else if (value==='third') {
-    otherAmountDiv.style.display='none'
-    amountErrMsg.style.display='none'
+    otherAmountdiv.style.color = 'black'
+    otherAmountLabel.style.color = 'black'
+    otherAmountBoxDiv.style.border = '1px solid black'
+  } else if (value === 'third') {
+    otherAmountDiv.style.display = 'none'
+    amountErrMsg.style.display = 'none'
     otherAmountDiv.style.visibility = 'hidden'
     thirdAmountRadio.checked = true
 
     firstAmountdiv.style.backgroundColor = 'transparent'
-    firstAmountdiv.style.color='black'
-    firstAmountdiv.style.border='1px solid black'
-    firstAmountLabel.style.color='black'
-
-    secondAmountdiv.style.backgroundColor = 'transparent'
-    secondAmountdiv.style.color='black'
-    secondAmountdiv.style.border='1px solid black'
-    secondAmountLabel.style.color='black'
-    
-    thirdAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    thirdAmountdiv.style.color='white'
-    thirdAmountdiv.style.border='transparent'
-    thirdAmountLabel.style.color='white'
-    
-    forthAmountdiv.style.backgroundColor = 'transparent'
-    forthAmountdiv.style.color='black'
-    forthAmountdiv.style.border='1px solid black'
-    forthAmountLabel.style.color='black'
-
-    otherAmountdiv.style.backgroundColor = 'transparent'
-    otherAmountdiv.style.color='black'
-    otherAmountLabel.style.color='black'
-    otherAmountBoxDiv.style.border='1px solid black'
-    
-  } else if (value==='forth') {
-    otherAmountDiv.style.display='none'
-    amountErrMsg.style.display='none'
-    otherAmountDiv.style.visibility = 'hidden'
-    forthAmountRadio.checked = true
-
-    firstAmountdiv.style.backgroundColor = 'transparent'
-    firstAmountdiv.style.color='black'
-    firstAmountdiv.style.color='1px solid black'
-    firstAmountLabel.style.color='black'
-  
-    secondAmountdiv.style.backgroundColor = 'transparent'
-    secondAmountdiv.style.color='black'
-    secondAmountdiv.style.border='1px solid black'
-    secondAmountLabel.style.color='black'
-
-    thirdAmountdiv.style.backgroundColor = 'transparent'
-    thirdAmountdiv.style.color='black'
-    thirdAmountdiv.style.border = '1px solid black'
-    thirdAmountLabel.style.color = 'black'
-
-    forthAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    forthAmountdiv.style.color='white'
-    forthAmountdiv.style.border = 'transparent'
-    forthAmountLabel.style.color = 'white'
-
-    otherAmountdiv.style.backgroundColor = 'transparent'
-    otherAmountdiv.style.color='black'
-    otherAmountLabel.style.color='black'
-    otherAmountBoxDiv.style.border='1px solid black'
-  } else {
-    otherAmountDiv.style.display='flex'
-    otherAmountDiv.style.visibility = 'visible'
-    otherAmountRadio.checked = true
-
-    firstAmountdiv.style.backgroundColor = 'transparent'
-    firstAmountdiv.style.color='black'
+    firstAmountdiv.style.color = 'black'
     firstAmountdiv.style.border = '1px solid black'
     firstAmountLabel.style.color = 'black'
 
     secondAmountdiv.style.backgroundColor = 'transparent'
-    secondAmountdiv.style.color='black'
-    secondAmountdiv.style.border='1px solid black'
+    secondAmountdiv.style.color = 'black'
+    secondAmountdiv.style.border = '1px solid black'
+    secondAmountLabel.style.color = 'black'
+
+    thirdAmountdiv.style.backgroundColor = color ? color : '#2828d6'
+    thirdAmountdiv.style.color = 'white'
+    thirdAmountdiv.style.border = 'transparent'
+    thirdAmountLabel.style.color = 'white'
+
+    forthAmountdiv.style.backgroundColor = 'transparent'
+    forthAmountdiv.style.color = 'black'
+    forthAmountdiv.style.border = '1px solid black'
+    forthAmountLabel.style.color = 'black'
+
+    otherAmountdiv.style.backgroundColor = 'transparent'
+    otherAmountdiv.style.color = 'black'
+    otherAmountLabel.style.color = 'black'
+    otherAmountBoxDiv.style.border = '1px solid black'
+  } else if (value === 'forth') {
+    otherAmountDiv.style.display = 'none'
+    amountErrMsg.style.display = 'none'
+    otherAmountDiv.style.visibility = 'hidden'
+    forthAmountRadio.checked = true
+
+    firstAmountdiv.style.backgroundColor = 'transparent'
+    firstAmountdiv.style.color = 'black'
+    firstAmountdiv.style.color = '1px solid black'
+    firstAmountLabel.style.color = 'black'
+
+    secondAmountdiv.style.backgroundColor = 'transparent'
+    secondAmountdiv.style.color = 'black'
+    secondAmountdiv.style.border = '1px solid black'
     secondAmountLabel.style.color = 'black'
 
     thirdAmountdiv.style.backgroundColor = 'transparent'
-    thirdAmountdiv.style.color='black'
-    thirdAmountdiv.style.border='1px solid black'
+    thirdAmountdiv.style.color = 'black'
+    thirdAmountdiv.style.border = '1px solid black'
+    thirdAmountLabel.style.color = 'black'
+
+    forthAmountdiv.style.backgroundColor = color ? color : '#2828d6'
+    forthAmountdiv.style.color = 'white'
+    forthAmountdiv.style.border = 'transparent'
+    forthAmountLabel.style.color = 'white'
+
+    otherAmountdiv.style.backgroundColor = 'transparent'
+    otherAmountdiv.style.color = 'black'
+    otherAmountLabel.style.color = 'black'
+    otherAmountBoxDiv.style.border = '1px solid black'
+  } else {
+    otherAmountDiv.style.display = 'flex'
+    otherAmountDiv.style.visibility = 'visible'
+    otherAmountRadio.checked = true
+
+    firstAmountdiv.style.backgroundColor = 'transparent'
+    firstAmountdiv.style.color = 'black'
+    firstAmountdiv.style.border = '1px solid black'
+    firstAmountLabel.style.color = 'black'
+
+    secondAmountdiv.style.backgroundColor = 'transparent'
+    secondAmountdiv.style.color = 'black'
+    secondAmountdiv.style.border = '1px solid black'
+    secondAmountLabel.style.color = 'black'
+
+    thirdAmountdiv.style.backgroundColor = 'transparent'
+    thirdAmountdiv.style.color = 'black'
+    thirdAmountdiv.style.border = '1px solid black'
     thirdAmountLabel.style.color = 'black'
 
     forthAmountdiv.style.backgroundColor = 'transparent'
-    forthAmountdiv.style.color='black'
-    forthAmountdiv.style.border='1px solid black'
+    forthAmountdiv.style.color = 'black'
+    forthAmountdiv.style.border = '1px solid black'
     forthAmountLabel.style.color = 'black'
 
-    otherAmountdiv.style.backgroundColor=color? color: '#2828d6'
-    otherAmountdiv.style.color='white'
-    otherAmountLabel.style.color='white'
-    otherAmountBoxDiv.style.border='transparent'
+    otherAmountdiv.style.backgroundColor = color ? color : '#2828d6'
+    otherAmountdiv.style.color = 'white'
+    otherAmountLabel.style.color = 'white'
+    otherAmountBoxDiv.style.border = 'transparent'
   }
 
-  var tipbox = document.getElementById('tip-box'+slug)
-  if (value!=='other') {
-    document.getElementById('other-amount-input'+slug).value='€ '
-    handleOtherAmountInput(document.getElementById('other-amount-input'+slug).value, 'other-amount-input'+slug)
-    let amount=parseInt(document.getElementById(value+'-amount'+slug).value)
-    if (amount<9) {
+  var tipbox = document.getElementById('tip-box' + slug)
+  if (value !== 'other') {
+    document.getElementById('other-amount-input' + slug).value = '€ '
+    handleOtherAmountInput(
+      document.getElementById('other-amount-input' + slug).value,
+      'other-amount-input' + slug
+    )
+    let amount = parseInt(
+      document.getElementById(value + '-amount' + slug).value
+    )
+    if (amount < 9) {
       renderOptionsForAmount(slug)
-    }
-    else {
+    } else {
       renderOptionsForPercentile(slug)
     }
-  }
-  else {
+  } else {
     renderOptionsForPercentile(slug)
   }
   setDropdownFunc(tipbox, slug)
@@ -2520,8 +2628,8 @@ function createModal(slug) {
   donationFormDiv.appendChild(labelDiv)
 
   var label1 = document.createElement('label')
-  label1.id='secure-donation-label'+widgetDiv.dataset.slug
-  label1.className='secure-donation-label'
+  label1.id = 'secure-donation-label' + widgetDiv.dataset.slug
+  label1.className = 'secure-donation-label'
   if (widgetDiv.dataset.lang === 'nl') {
     label1.innerText = 'Veilig online doneren'
   } else if (widgetDiv.dataset.lang === 'de') {
@@ -2569,8 +2677,8 @@ function createModal(slug) {
   }
   oneTimeLabel.id = 'onetime-label' + slug
   oneTimeLabel.fontSize = '14px'
-  oneTimeLabel.style.display='block'
-  oneTimeLabel.style.width='100%'
+  oneTimeLabel.style.display = 'block'
+  oneTimeLabel.style.width = '100%'
   oneTimeLabel.onclick = () =>
     this.handlePeriodInterval(1, periodOnetimeDiv.id, '', {})
 
@@ -2603,8 +2711,8 @@ function createModal(slug) {
   }
   monthlyLabel.id = 'monthly-label' + slug
   monthlyLabel.fontSize = '14px'
-  monthlyLabel.style.display='block'
-  monthlyLabel.style.width='100%'
+  monthlyLabel.style.display = 'block'
+  monthlyLabel.style.width = '100%'
   monthlyLabel.onclick = () =>
     this.handlePeriodInterval(2, periodMonthlyDiv.id, '', {})
 
@@ -2636,8 +2744,8 @@ function createModal(slug) {
   }
   yearlyLabel.id = 'yearly-label' + slug
   yearlyLabel.fontSize = '14px'
-  yearlyLabel.style.display='block'
-  yearlyLabel.style.width='100%'
+  yearlyLabel.style.display = 'block'
+  yearlyLabel.style.width = '100%'
   yearlyLabel.onclick = () =>
     this.handlePeriodInterval(3, periodYearlyDiv.id, '', {})
 
@@ -2654,12 +2762,12 @@ function createModal(slug) {
   periodDiv.appendChild(periodYearlyDiv)
 
   var hrule = document.createElement('hr')
-  hrule.style.background='#E8E8E8'
+  hrule.style.background = '#E8E8E8'
   hrule.style.height = '2px'
   hrule.style.width = '100%'
   hrule.style.display = 'flex'
   hrule.style.flexDirection = 'row'
-  hrule.style.justifyContent='space-between'
+  hrule.style.justifyContent = 'space-between'
   hrule.style.border = 'transparent'
   donationFormDiv.appendChild(hrule)
 
@@ -2676,7 +2784,7 @@ function createModal(slug) {
   monthlyBar.className = 'monthly-bar'
   monthlyBar.style.height = '2px'
   monthlyBar.style.width = '100%'
-  monthlyBar.style.background= '#E8E8E8'
+  monthlyBar.style.background = '#E8E8E8'
   hrule.appendChild(monthlyBar)
 
   var yearlyBar = document.createElement('div')
@@ -2684,7 +2792,7 @@ function createModal(slug) {
   yearlyBar.className = 'yearly-bar'
   yearlyBar.style.height = '2px'
   yearlyBar.style.width = '100%'
-  yearlyBar.style.background= '#E8E8E8'
+  yearlyBar.style.background = '#E8E8E8'
   hrule.appendChild(yearlyBar)
 
   var selectAmountLabelDiv = document.createElement('div')
@@ -2707,9 +2815,9 @@ function createModal(slug) {
   selectAmountLabelDiv.appendChild(selectAmountlabel)
   donationFormDiv.appendChild(selectAmountLabelDiv)
 
-  var amountDiv=document.createElement('div')
-  amountDiv.id='select-amount-div-boxes'+widgetDiv.dataset.slug
-  amountDiv.className='select-amount-div-boxes'
+  var amountDiv = document.createElement('div')
+  amountDiv.id = 'select-amount-div-boxes' + widgetDiv.dataset.slug
+  amountDiv.className = 'select-amount-div-boxes'
   amountDiv.style.display = 'flex'
   amountDiv.style.marginTop = '10px'
   amountDiv.style.flexDirection = 'row'
@@ -2725,7 +2833,7 @@ function createModal(slug) {
   firstAmount.style.width = '60px'
   firstAmount.style.borderRadius = '5px'
   firstAmount.style.border = '1px black solid'
-  firstAmount.style.backgroundColor= '#2828d6'
+  firstAmount.style.backgroundColor = '#2828d6'
   firstAmount.style.color = 'white'
 
   var firstAmountRadio = document.createElement('input')
@@ -2876,7 +2984,7 @@ function createModal(slug) {
   otherAmountLabel.id = 'other-amount-label+' + slug
   otherAmountLabel.className = 'other-amount-label'
   if (widgetDiv.dataset.lang === 'nl') {
-    otherAmountLabel.innerText= 'Anders'
+    otherAmountLabel.innerText = 'Anders'
   } else if (widgetDiv.dataset.lang === 'de') {
     otherAmountLabel.innerText = 'Andere'
   } else if (widgetDiv.dataset.lang === 'es') {
@@ -2897,8 +3005,8 @@ function createModal(slug) {
 
   var otherAmountInputDiv = document.createElement('div')
   otherAmountInputDiv.id = 'other-amount-input-div+' + slug
-  otherAmountInputDiv.className='other-amount-input-div'
-  
+  otherAmountInputDiv.className = 'other-amount-input-div'
+
   var otherAmountInput = document.createElement('input')
   otherAmount.setAttribute('type', 'number')
   if (widgetDiv.dataset.lang === 'nl') {
@@ -2910,9 +3018,9 @@ function createModal(slug) {
   } else {
     otherAmountInput.placeholder = 'Other amount'
   }
-  otherAmountInput.id='other-amount-input'+slug
+  otherAmountInput.id = 'other-amount-input' + slug
   otherAmountInput.style.width = '91%'
-  otherAmountInput.value='€ '
+  otherAmountInput.value = '€ '
   otherAmountInput.onkeyup = (e) =>
     this.handleOtherAmountInput(e.target.value, otherAmountInput.id)
   otherAmountInputDiv.appendChild(otherAmountInput)
@@ -3172,18 +3280,14 @@ function directDonate(idValue, lang) {
   }
 
   if (document.getElementById('first-amount' + slugVal).checked) {
-    selectedAmount=document.getElementById('first-amount'+slugVal).value
-  }
-  else if (document.getElementById('second-amount' + slugVal).checked) {
-    selectedAmount=document.getElementById('second-amount'+slugVal).value
-  }
-  else if (document.getElementById('third-amount' + slugVal).checked) {
-    selectedAmount=document.getElementById('third-amount'+slugVal).value
-  }
-  else if (document.getElementById('forth-amount' + slugVal).checked) {
-    selectedAmount=document.getElementById('forth-amount'+slugVal).value
-  }
-  else {
+    selectedAmount = document.getElementById('first-amount' + slugVal).value
+  } else if (document.getElementById('second-amount' + slugVal).checked) {
+    selectedAmount = document.getElementById('second-amount' + slugVal).value
+  } else if (document.getElementById('third-amount' + slugVal).checked) {
+    selectedAmount = document.getElementById('third-amount' + slugVal).value
+  } else if (document.getElementById('forth-amount' + slugVal).checked) {
+    selectedAmount = document.getElementById('forth-amount' + slugVal).value
+  } else {
     selectedAmount = parseFloat(
       document
         .getElementById('other-amount-input' + slugVal)
@@ -3209,7 +3313,7 @@ function directDonate(idValue, lang) {
   email = document.getElementById('email-field' + slugVal).value
 
   if (selectedAmount < 5 || isNaN(selectedAmount) || selectedAmount % 1 !== 0) {
-    amountErrMsg.style.display='block'
+    amountErrMsg.style.display = 'block'
     errorCheck = true
   }
 
@@ -3231,7 +3335,7 @@ function directDonate(idValue, lang) {
   if (errorCheck) {
     // Do nothing
   } else {
-    var tipBox=document.getElementById('tip-box'+slugVal)
+    var tipBox = document.getElementById('tip-box' + slugVal)
     var data = {
       amount: selectedAmount,
       is_anonymous: false,
@@ -3242,9 +3346,10 @@ function directDonate(idValue, lang) {
       lang: 'en',
       description: '',
       bank_account: '',
-      tip_amount: tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
+      tip_amount:
+        tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
       return_url: window.location.href,
-      source: 'script'
+      source: 'script',
     }
 
     makeDonation(data, slugVal, lang)
@@ -3259,14 +3364,14 @@ function ValidateEmail(mail) {
 }
 
 async function makeDonation(data, slugVal, lang) {
-  const proxyurl='https://intense-temple-29395.herokuapp.com/'
-  
+  const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
+
   const donationApi =
     'https://whydonate-development.appspot.com/api/v1/donation/order/'
 
   // const donationApi =
   //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
-  
+
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
   const url = proxyurl + donationApi
@@ -3384,7 +3489,7 @@ function addJquery() {
         var widgetWithFormArrayList = document.getElementsByClassName(
           'widget-with-form'
         )
-        
+
         widgetArrayList = [...widgetArrayList]
         if (widgetWithFormArrayList.length > 0) {
           for (var j = 0; j < widgetWithFormArrayList.length; j++) {
@@ -3412,12 +3517,12 @@ function addJquery() {
         if (widgetElement) {
           // success_url = widgetElement.dataset.success_url
           // fail_url=widgetElement.dataset.fail_url
-          success_url='https://www.google.com'
-          fail_url='https://www.bing.com'
+          success_url = 'https://www.google.com'
+          fail_url = 'https://www.bing.com'
         }
 
-        var proxyurl='https://intense-temple-29395.herokuapp.com/'
-        
+        var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
+
         var api =
           'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
           urlAddressArr[1]
@@ -3425,7 +3530,7 @@ function addJquery() {
         // var api =
         //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
         //   urlAddressArr[1]
-        
+
         var url = proxyurl + api
 
         jQuery.ajax({
@@ -3444,7 +3549,7 @@ function addJquery() {
               }
             } else {
               // do nothing
-              if (fail_url!=='') {
+              if (fail_url !== '') {
                 window.location.assign(fail_url)
               }
             }
@@ -3603,7 +3708,7 @@ function createTipbox(donationFormDiv, modalContent, slug, color, lang) {
   var inputTipDiv = document.createElement('div')
   inputTipDiv.id = 'input-tip-div' + slug
   inputTipDiv.style.display = 'none'
-  inputTipDiv.style.justifyContent='flex-end'
+  inputTipDiv.style.justifyContent = 'flex-end'
   inputTipDiv.style.marginTop = '10px'
 
   //  <span class="currencyinput">$<input type="text" name="currency"></span>
@@ -3772,14 +3877,16 @@ function renderOptionsForAmount(slug) {
 function handleOtherAmountInput(value, idValue) {
   var slug = idValue.split('other-amount-input')[1]
   console.log('Other amount input on change value ', value, slug)
-  var otherAmountInputField=document.getElementById('other-amount-input'+slug)
+  var otherAmountInputField = document.getElementById(
+    'other-amount-input' + slug
+  )
   if (!value.includes('€ ')) {
     if (!value.includes('€')) {
-      otherAmountInputField.value='€ '+value
-      value='€ '+value
+      otherAmountInputField.value = '€ ' + value
+      value = '€ ' + value
     } else {
-      otherAmountInputField.value+=' '
-      value+=' '
+      otherAmountInputField.value += ' '
+      value += ' '
     }
   }
 
@@ -3807,7 +3914,7 @@ function handleOtherAmountInput(value, idValue) {
 }
 
 function handleTipDropdown(slug) {
-  var elm=document.getElementById('custom-select'+slug)
+  var elm = document.getElementById('custom-select' + slug)
   var selectedValue = document.getElementById('custom-select' + slug)
     .children[1].innerHTML
   console.log('Selected value ', selectedValue)
