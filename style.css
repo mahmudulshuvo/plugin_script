@@ -1,4 +1,5 @@
 /* version 2.1 */
+/* Add transparent border */
 
 .widget {
   height: 215px;
@@ -327,6 +328,7 @@
   margin-left: 20px;
   margin-top: 10px;
   border-radius: 30px;
+  border: transparent !important;
 }
 
 .donate-btn-in-form {
@@ -340,6 +342,7 @@
   /* margin-left: 40px !important; */
   margin-top: 30px !important;
   border-radius: 30px;
+  border: transparent !important;
 }
 
 .right-side-rule {
