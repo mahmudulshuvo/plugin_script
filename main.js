@@ -1,5 +1,6 @@
 // version 2.1
 // Bug fix success and failure url
+// Add anonymous checkbox
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -1429,6 +1430,9 @@ function designWidget(option) {
     // donateButton.onclick = () => this.directDonate(donateButton.id)
     // donationForm.appendChild(donateButton)
 
+    var anonymousDiv=addAnonymousBox(widgetDiv.dataset.slug, widgetDiv.dataset.lang)
+    donationForm.appendChild(anonymousDiv)
+
     donateBtnDiv = document.createElement('div')
     donateBtnDiv.id = 'donate-btn-in-form-div+' + widgetDiv.dataset.slug
     donateButton.id = 'donate-btn-in-form+' + widgetDiv.dataset.slug
@@ -2133,6 +2137,9 @@ function designWidget(option) {
     calculateTotalAmount(widgetDiv.dataset.slug)
 
     // ----------- copied from here -----------------------
+
+    var anonymousDiv=addAnonymousBox(widgetDiv.dataset.slug, widgetDiv.dataset.lang)
+    donationForm.appendChild(anonymousDiv)
 
     donateBtnDiv = document.createElement('div')
     donateBtnDiv.id = 'donate-btn-in-form-div+' + widgetDiv.dataset.slug
@@ -3141,6 +3148,9 @@ function createModal(slug) {
   )
   calculateTotalAmount(slug)
 
+  var anonymousDiv=addAnonymousBox(slug, widgetDiv.dataset.lang)
+  donationFormDiv.appendChild(anonymousDiv)
+
   var modalDonateButton = document.createElement('button')
   modalDonateButton.id = 'donate-btn-in-modal+' + slug
   modalDonateButton.className = 'donate-btn-in-form'
@@ -3192,6 +3202,41 @@ function createModal(slug) {
   poweredByDiv.appendChild(whydonateLogo)
 
   document.body.appendChild(modalDiv)
+}
+
+function addAnonymousBox(slug, lang) {
+  var anonymousDiv=document.createElement('div')
+  anonymousDiv.style.display='flex'
+  anonymousDiv.style.alignItems='center'
+  anonymousDiv.style.marginTop='10px'
+
+  var anonymousCheckbox=document.createElement('input')
+  anonymousCheckbox.id='donate-anonymous'+slug
+  anonymousCheckbox.className='donate-anonymous'
+  anonymousCheckbox.type='checkbox'
+  anonymousCheckbox.style.width='20px'
+  anonymousCheckbox.style.height='20px'
+  anonymousDiv.appendChild(anonymousCheckbox)
+
+  var anonymousLabel=document.createElement('label')
+  anonymousLabel.id='donate-anonymous-label'+slug
+  anonymousLabel.className='donate-anonymous-label'
+  anonymousLabel.style.fontSize='16px'
+  anonymousLabel.style.marginLeft='5px'
+
+  if (lang==='nl') {
+    anonymousLabel.textContent='Anoniem doneren'
+  } else if (lang==='de') {
+    anonymousLabel.textContent='Anonym spenden'
+  } else if (lang==='es') {
+    anonymousLabel.textContent='Done anónimamente'
+  } else {
+    anonymousLabel.textContent='Donate Anonymous'
+  }
+ 
+  anonymousDiv.appendChild(anonymousLabel)
+
+  return anonymousDiv
 }
 
 function setModalId(f_id, f_slug) {
@@ -3346,6 +3391,7 @@ function directDonate(idValue, lang) {
       lang: 'en',
       description: '',
       bank_account: '',
+      is_anonymous: document.getElementById('donate-anonymous'+ slugVal).checked ? true: false,
       tip_amount:
         tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
       return_url: window.location.href,
