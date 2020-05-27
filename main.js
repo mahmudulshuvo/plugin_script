@@ -1,6 +1,7 @@
 // version 2.1
 // Bug fix success and failure url
-// Add anonymous checkbox
+// Add anonymous checkbox baseline
+// Bug fix url
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -3207,8 +3208,9 @@ function createModal(slug) {
 function addAnonymousBox(slug, lang) {
   var anonymousDiv=document.createElement('div')
   anonymousDiv.style.display='flex'
-  anonymousDiv.style.alignItems='center'
+  anonymousDiv.style.alignItems='baseline'
   anonymousDiv.style.marginTop='10px'
+  anonymousDiv.style.marginLeft='10px'
 
   var anonymousCheckbox=document.createElement('input')
   anonymousCheckbox.id='donate-anonymous'+slug
@@ -3412,11 +3414,11 @@ function ValidateEmail(mail) {
 async function makeDonation(data, slugVal, lang) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  const donationApi =
-    'https://whydonate-development.appspot.com/api/v1/donation/order/'
-
   // const donationApi =
-  //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
+
+  const donationApi =
+    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
@@ -3496,13 +3498,13 @@ async function makeDonation(data, slugVal, lang) {
 function makeUrl() {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-  const url =
-    'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&&&')[0]
-
   // const url =
-  //   'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&')[0]
+  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&&&')[0]
+
+  const url =
+    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -3569,13 +3571,13 @@ function addJquery() {
 
         var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
-        var api =
-          'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-          urlAddressArr[1]
-
         // var api =
-        //   'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+        //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
         //   urlAddressArr[1]
+
+        var api =
+          'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
+          urlAddressArr[1]
 
         var url = proxyurl + api
 
