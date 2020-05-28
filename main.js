@@ -3,6 +3,8 @@
 // Add anonymous checkbox baseline
 // Bug fix url
 // Bug fix donor information update
+// Add Jquery
+// Change success and redirect url
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -92,11 +94,12 @@ function loadWidget() {
   } else {
     // Do nothing
   }
-  if (window.jQuery) {
-    // Do nothing
-  } else {
-    addJquery()
-  }
+  // if (window.jQuery) {
+  //   // Do nothing
+  // } else {
+  //   addJquery()
+  // }
+  addJquery()
   addFontAwesome()
 
   var url = makeUrl()
@@ -3578,10 +3581,10 @@ function addJquery() {
         var success_url = ''
         var fail_url = ''
         if (widgetElement) {
-          // success_url = widgetElement.dataset.success_url
-          // fail_url=widgetElement.dataset.fail_url
-          success_url = 'https://www.google.com'
-          fail_url = 'https://www.bing.com'
+          success_url = widgetElement.dataset.success_url
+          fail_url=widgetElement.dataset.fail_url
+          // success_url = 'https://www.google.com'
+          // fail_url = 'https://www.bing.com'
         }
 
         var proxyurl = 'https://intense-temple-29395.herokuapp.com/'
@@ -3605,6 +3608,7 @@ function addJquery() {
             if (res['data']['status']==='paid') {
               updateDonorInformation(donorInfo, success_url)
             } else if (res['data']['status']==='canceled') {
+              // updateDonorInformation(donorInfo, fail_url)
               if (fail_url !== '') {
                 window.location.assign(fail_url)
               }
@@ -3651,6 +3655,7 @@ async function updateDonorInformation(donorInfo, urlToRedirect) {
       return response.json()
     })
     .then(function (result) {
+      console.log('donor information ', donorInfo)
       localStorage.setItem('donor_info', {})
       setTimeout(function () {
         if (urlToRedirect&&urlToRedirect!=='') {
