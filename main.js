@@ -2,6 +2,7 @@
 // Bug fix success and failure url
 // Add anonymous checkbox baseline
 // Bug fix url
+// Bug fix donor information update
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -3385,7 +3386,6 @@ function directDonate(idValue, lang) {
     var tipBox = document.getElementById('tip-box' + slugVal)
     var data = {
       amount: selectedAmount,
-      is_anonymous: false,
       newsletter: false,
       pay_period: periodIntervals,
       fundraising_local_id: fundrasier_id,
@@ -3393,14 +3393,21 @@ function directDonate(idValue, lang) {
       lang: 'en',
       description: '',
       bank_account: '',
-      is_anonymous: document.getElementById('donate-anonymous'+ slugVal).checked ? true: false,
+      is_anonymous: '',
       tip_amount:
         tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
       return_url: window.location.href,
       source: 'script',
     }
 
-    makeDonation(data, slugVal, lang)
+    var donorInfo = {
+      email: email,
+      firstname: firstName,
+      lastname: lastName,
+      is_anonymous: document.getElementById('donate-anonymous'+slugVal).checked? true:false,
+  }
+
+    makeDonation(data, slugVal, lang, donorInfo)
   }
 }
 
@@ -3411,7 +3418,7 @@ function ValidateEmail(mail) {
   return false
 }
 
-async function makeDonation(data, slugVal, lang) {
+async function makeDonation(data, slugVal, lang, donorInfo) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
   // const donationApi =
@@ -3491,12 +3498,13 @@ async function makeDonation(data, slugVal, lang) {
           donateBtnInModal.innerHTML = '<i class="fa"></i> Donate'
         }
       }
+      localStorage.setItem('donor_info', JSON.stringify(donorInfo))
       window.location.replace(result['data']['url'])
     })
 }
 
 function makeUrl() {
-  const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
+  const proxyurl='https://intense-temple-29395.herokuapp.com/'
 
   // const url =
   //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
@@ -3526,6 +3534,13 @@ function addJquery() {
       if (urlAddress.includes('&o_id=')) {
         let urlAddressArr = urlAddress.split('&o_id=')
         // console.log('order id ', urlAddressArr[1])
+
+        var donorInfo=localStorage.getItem('donor_info')
+        // donorInfo['o_id']=urlAddressArr[1]
+        
+        donorInfo=JSON.parse(donorInfo)
+        donorInfo['o_id']=urlAddressArr[1].split('&client=')[0]
+
         var actualUrlArr = urlAddress.split('?d_id=')
         window.history.replaceState({}, document.title, actualUrlArr[0])
 
@@ -3587,11 +3602,9 @@ function addJquery() {
           beforeSend: function () {},
           success: function (res) {
             // console.log('order status response ', res)
-            if (res['data']['status'] === 'paid') {
-              if (success_url !== '') {
-                window.location.assign(success_url)
-              }
-            } else if (res['data']['status'] === 'canceled') {
+            if (res['data']['status']==='paid') {
+              updateDonorInformation(donorInfo, success_url)
+            } else if (res['data']['status']==='canceled') {
               if (fail_url !== '') {
                 window.location.assign(fail_url)
               }
@@ -3613,6 +3626,38 @@ function addJquery() {
     })
   }
   document.getElementsByTagName('head')[0].appendChild(script)
+}
+
+async function updateDonorInformation(donorInfo, urlToRedirect) {
+  var proxyurl='https://intense-temple-29395.herokuapp.com/'
+
+  // var api=
+  //   'https://whydonate-development.appspot.com/api/v1/donation/donor/update/'
+
+  var api =
+    'https://whydonate-production-api.appspot.com/api/v1/donation/donor/update/'
+
+  var url=proxyurl+api
+
+  await fetch(url, {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(donorInfo),
+  })
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (result) {
+      localStorage.setItem('donor_info', {})
+      setTimeout(function () {
+        if (urlToRedirect&&urlToRedirect!=='') {
+          window.location.assign(urlToRedirect)
+        }
+      }, 3000);
+    })
 }
 
 function resize() {
