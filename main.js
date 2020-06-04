@@ -5,6 +5,7 @@
 // Bug fix donor information update
 // Add Jquery
 // Change success and redirect url
+// Fix styling issues
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -1110,13 +1111,13 @@ function designWidget(option) {
     var firstAmount = document.createElement('div')
     firstAmount.id = 'first-amount-div' + widgetDiv.dataset.slug
     firstAmount.className = 'first-amount-div'
-    firstAmount.style.display = 'flex'
-    firstAmount.style.flexDirection = 'row'
-    firstAmount.style.height = '45px'
-    firstAmount.style.width = '60px'
-    firstAmount.style.borderRadius = '5px'
-    firstAmount.style.border = '1px black solid'
-    firstAmount.style.backgroundColor = '#2828d6'
+    // firstAmount.style.display = 'flex'
+    // firstAmount.style.flexDirection = 'row'
+    // firstAmount.style.height = '45px'
+    // firstAmount.style.width = '60px'
+    // firstAmount.style.borderRadius = '5px'
+    // firstAmount.style.border = '1px black solid'
+    // firstAmount.style.backgroundColor = '#2828d6'
     firstAmount.style.color = 'white'
 
     var firstAmountRadio = document.createElement('input')
@@ -1146,13 +1147,12 @@ function designWidget(option) {
     var secondAmount = document.createElement('div')
     secondAmount.id = 'second-amount-div' + widgetDiv.dataset.slug
     secondAmount.className = 'second-amount-div'
-    secondAmount.style.height = '45px'
-    secondAmount.style.width = '60px'
-    secondAmount.style.borderRadius = '5px'
-    secondAmount.style.border = '1px black solid'
-
-    secondAmount.style.display = 'flex'
-    secondAmount.style.flexDirection = 'row'
+    // secondAmount.style.height = '45px'
+    // secondAmount.style.width = '60px'
+    // secondAmount.style.borderRadius = '5px'
+    // secondAmount.style.border = '1px black solid'
+    // secondAmount.style.display = 'flex'
+    // secondAmount.style.flexDirection = 'row'
 
     var secondAmountRadio = document.createElement('input')
     secondAmountRadio.setAttribute('type', 'radio')
@@ -1180,13 +1180,12 @@ function designWidget(option) {
     var thirdAmount = document.createElement('div')
     thirdAmount.id = 'third-amount-div' + widgetDiv.dataset.slug
     thirdAmount.className = 'third-amount-div'
-    thirdAmount.style.height = '45px'
-    thirdAmount.style.width = '60px'
-    thirdAmount.style.borderRadius = '5px'
-    thirdAmount.style.border = '1px black solid'
-
-    thirdAmount.style.display = 'flex'
-    thirdAmount.style.flexDirection = 'row'
+    // thirdAmount.style.height = '45px'
+    // thirdAmount.style.width = '60px'
+    // thirdAmount.style.borderRadius = '5px'
+    // thirdAmount.style.border = '1px black solid'
+    // thirdAmount.style.display = 'flex'
+    // thirdAmount.style.flexDirection = 'row'
 
     var thirdAmountRadio = document.createElement('input')
     thirdAmountRadio.setAttribute('type', 'radio')
@@ -1214,13 +1213,12 @@ function designWidget(option) {
     var forthAmount = document.createElement('div')
     forthAmount.id = 'forth-amount-div' + widgetDiv.dataset.slug
     forthAmount.className = 'forth-amount-div'
-    forthAmount.style.height = '45px'
-    forthAmount.style.width = '60px'
-    forthAmount.style.borderRadius = '5px'
-    forthAmount.style.border = '1px black solid'
-
-    forthAmount.style.display = 'flex'
-    forthAmount.style.flexDirection = 'row'
+    // forthAmount.style.height = '45px'
+    // forthAmount.style.width = '60px'
+    // forthAmount.style.borderRadius = '5px'
+    // forthAmount.style.border = '1px black solid'
+    // forthAmount.style.display = 'flex'
+    // forthAmount.style.flexDirection = 'row'
 
     var forthAmountRadio = document.createElement('input')
     forthAmountRadio.setAttribute('type', 'radio')
@@ -1248,13 +1246,12 @@ function designWidget(option) {
     var otherAmount = document.createElement('div')
     otherAmount.id = 'other-amount-div' + widgetDiv.dataset.slug
     otherAmount.className = 'other-amount-div'
-    otherAmount.style.height = '45px'
-    otherAmount.style.width = '60px'
-    otherAmount.style.borderRadius = '5px'
-    otherAmount.style.border = '1px black solid'
-
-    otherAmount.style.display = 'flex'
-    otherAmount.style.flexDirection = 'row'
+    // otherAmount.style.height = '45px'
+    // otherAmount.style.width = '60px'
+    // otherAmount.style.borderRadius = '5px'
+    // otherAmount.style.border = '1px black solid'
+    // otherAmount.style.display = 'flex'
+    // otherAmount.style.flexDirection = 'row'
 
     var otherAmountRadio = document.createElement('input')
     otherAmountRadio.setAttribute('type', 'radio')
@@ -1825,13 +1822,13 @@ function designWidget(option) {
     var firstAmount = document.createElement('div')
     firstAmount.id = 'first-amount-div' + widgetDiv.dataset.slug
     firstAmount.className = 'first-amount-div'
-    firstAmount.style.display = 'flex'
-    firstAmount.style.flexDirection = 'row'
-    firstAmount.style.height = '45px'
-    firstAmount.style.width = '60px'
-    firstAmount.style.borderRadius = '5px'
-    firstAmount.style.border = '1px black solid'
-    firstAmount.style.backgroundColor = '#2828d6'
+    // firstAmount.style.display = 'flex'
+    // firstAmount.style.flexDirection = 'row'
+    // firstAmount.style.height = '45px'
+    // firstAmount.style.width = '60px'
+    // firstAmount.style.borderRadius = '5px'
+    // firstAmount.style.border = '1px black solid'
+    // firstAmount.style.backgroundColor = '#2828d6'
     firstAmount.style.color = 'white'
 
     var firstAmountRadio = document.createElement('input')
@@ -1861,13 +1858,12 @@ function designWidget(option) {
     var secondAmount = document.createElement('div')
     secondAmount.id = 'second-amount-div' + widgetDiv.dataset.slug
     secondAmount.className = 'second-amount-div'
-    secondAmount.style.height = '45px'
-    secondAmount.style.width = '60px'
-    secondAmount.style.borderRadius = '5px'
-    secondAmount.style.border = '1px black solid'
-
-    secondAmount.style.display = 'flex'
-    secondAmount.style.flexDirection = 'row'
+    // secondAmount.style.height = '45px'
+    // secondAmount.style.width = '60px'
+    // secondAmount.style.borderRadius = '5px'
+    // secondAmount.style.border = '1px black solid'
+    // secondAmount.style.display = 'flex'
+    // secondAmount.style.flexDirection = 'row'
 
     var secondAmountRadio = document.createElement('input')
     secondAmountRadio.setAttribute('type', 'radio')
@@ -1895,13 +1891,12 @@ function designWidget(option) {
     var thirdAmount = document.createElement('div')
     thirdAmount.id = 'third-amount-div' + widgetDiv.dataset.slug
     thirdAmount.className = 'third-amount-div'
-    thirdAmount.style.height = '45px'
-    thirdAmount.style.width = '60px'
-    thirdAmount.style.borderRadius = '5px'
-    thirdAmount.style.border = '1px black solid'
-
-    thirdAmount.style.display = 'flex'
-    thirdAmount.style.flexDirection = 'row'
+    // thirdAmount.style.height = '45px'
+    // thirdAmount.style.width = '60px'
+    // thirdAmount.style.borderRadius = '5px'
+    // thirdAmount.style.border = '1px black solid'
+    // thirdAmount.style.display = 'flex'
+    // thirdAmount.style.flexDirection = 'row'
 
     var thirdAmountRadio = document.createElement('input')
     thirdAmountRadio.setAttribute('type', 'radio')
@@ -1929,13 +1924,12 @@ function designWidget(option) {
     var forthAmount = document.createElement('div')
     forthAmount.id = 'forth-amount-div' + widgetDiv.dataset.slug
     forthAmount.className = 'forth-amount-div'
-    forthAmount.style.height = '45px'
-    forthAmount.style.width = '60px'
-    forthAmount.style.borderRadius = '5px'
-    forthAmount.style.border = '1px black solid'
-
-    forthAmount.style.display = 'flex'
-    forthAmount.style.flexDirection = 'row'
+    // forthAmount.style.height = '45px'
+    // forthAmount.style.width = '60px'
+    // forthAmount.style.borderRadius = '5px'
+    // forthAmount.style.border = '1px black solid'
+    // forthAmount.style.display = 'flex'
+    // forthAmount.style.flexDirection = 'row'
 
     var forthAmountRadio = document.createElement('input')
     forthAmountRadio.setAttribute('type', 'radio')
@@ -1963,13 +1957,12 @@ function designWidget(option) {
     var otherAmount = document.createElement('div')
     otherAmount.id = 'other-amount-div' + widgetDiv.dataset.slug
     otherAmount.className = 'other-amount-div'
-    otherAmount.style.height = '45px'
-    otherAmount.style.width = '60px'
-    otherAmount.style.borderRadius = '5px'
-    otherAmount.style.border = '1px black solid'
-
-    otherAmount.style.display = 'flex'
-    otherAmount.style.flexDirection = 'row'
+    // otherAmount.style.height = '45px'
+    // otherAmount.style.width = '60px'
+    // otherAmount.style.borderRadius = '5px'
+    // otherAmount.style.border = '1px black solid'
+    // otherAmount.style.display = 'flex'
+    // otherAmount.style.flexDirection = 'row'
 
     var otherAmountRadio = document.createElement('input')
     otherAmountRadio.setAttribute('type', 'radio')
@@ -2839,13 +2832,13 @@ function createModal(slug) {
   var firstAmount = document.createElement('div')
   firstAmount.id = 'first-amount-div' + slug
   firstAmount.className = 'first-amount-div'
-  firstAmount.style.display = 'flex'
-  firstAmount.style.flexDirection = 'row'
-  firstAmount.style.height = '45px'
-  firstAmount.style.width = '60px'
-  firstAmount.style.borderRadius = '5px'
-  firstAmount.style.border = '1px black solid'
-  firstAmount.style.backgroundColor = '#2828d6'
+  // firstAmount.style.display = 'flex'
+  // firstAmount.style.flexDirection = 'row'
+  // firstAmount.style.height = '45px'
+  // firstAmount.style.width = '60px'
+  // firstAmount.style.borderRadius = '5px'
+  // firstAmount.style.border = '1px black solid'
+  // firstAmount.style.backgroundColor = '#2828d6'
   firstAmount.style.color = 'white'
 
   var firstAmountRadio = document.createElement('input')
@@ -2875,13 +2868,12 @@ function createModal(slug) {
   var secondAmount = document.createElement('div')
   secondAmount.id = 'second-amount-div' + slug
   secondAmount.className = 'second-amount-div'
-  secondAmount.style.height = '45px'
-  secondAmount.style.width = '60px'
-  secondAmount.style.borderRadius = '5px'
-  secondAmount.style.border = '1px black solid'
-
-  secondAmount.style.display = 'flex'
-  secondAmount.style.flexDirection = 'row'
+  // secondAmount.style.height = '45px'
+  // secondAmount.style.width = '60px'
+  // secondAmount.style.borderRadius = '5px'
+  // secondAmount.style.border = '1px black solid'
+  // secondAmount.style.display = 'flex'
+  // secondAmount.style.flexDirection = 'row'
 
   var secondAmountRadio = document.createElement('input')
   secondAmountRadio.setAttribute('type', 'radio')
@@ -2909,13 +2901,12 @@ function createModal(slug) {
   var thirdAmount = document.createElement('div')
   thirdAmount.id = 'third-amount-div' + slug
   thirdAmount.className = 'third-amount-div'
-  thirdAmount.style.height = '45px'
-  thirdAmount.style.width = '60px'
-  thirdAmount.style.borderRadius = '5px'
-  thirdAmount.style.border = '1px black solid'
-
-  thirdAmount.style.display = 'flex'
-  thirdAmount.style.flexDirection = 'row'
+  // thirdAmount.style.height = '45px'
+  // thirdAmount.style.width = '60px'
+  // thirdAmount.style.borderRadius = '5px'
+  // thirdAmount.style.border = '1px black solid'
+  // thirdAmount.style.display = 'flex'
+  // thirdAmount.style.flexDirection = 'row'
 
   var thirdAmountRadio = document.createElement('input')
   thirdAmountRadio.setAttribute('type', 'radio')
@@ -2943,13 +2934,12 @@ function createModal(slug) {
   var forthAmount = document.createElement('div')
   forthAmount.id = 'forth-amount-div' + slug
   forthAmount.className = 'forth-amount-div'
-  forthAmount.style.height = '45px'
-  forthAmount.style.width = '60px'
-  forthAmount.style.borderRadius = '5px'
-  forthAmount.style.border = '1px black solid'
-
-  forthAmount.style.display = 'flex'
-  forthAmount.style.flexDirection = 'row'
+  // forthAmount.style.height = '45px'
+  // forthAmount.style.width = '60px'
+  // forthAmount.style.borderRadius = '5px'
+  // forthAmount.style.border = '1px black solid'
+  // forthAmount.style.display = 'flex'
+  // forthAmount.style.flexDirection = 'row'
 
   var forthAmountRadio = document.createElement('input')
   forthAmountRadio.setAttribute('type', 'radio')
@@ -2977,13 +2967,12 @@ function createModal(slug) {
   var otherAmount = document.createElement('div')
   otherAmount.id = 'other-amount-div' + slug
   otherAmount.className = 'other-amount-div'
-  otherAmount.style.height = '45px'
-  otherAmount.style.width = '60px'
-  otherAmount.style.borderRadius = '5px'
-  otherAmount.style.border = '1px black solid'
-
-  otherAmount.style.display = 'flex'
-  otherAmount.style.flexDirection = 'row'
+  // otherAmount.style.height = '45px'
+  // otherAmount.style.width = '60px'
+  // otherAmount.style.borderRadius = '5px'
+  // otherAmount.style.border = '1px black solid'
+  // otherAmount.style.display = 'flex'
+  // otherAmount.style.flexDirection = 'row'
 
   var otherAmountRadio = document.createElement('input')
   otherAmountRadio.setAttribute('type', 'radio')
@@ -3822,7 +3811,7 @@ function createTipbox(donationFormDiv, modalContent, slug, color, lang) {
     `onkeyup = "calculateTotalAmount('${slug}')"` +
     // slug +
     // ')"' +
-    ' name="currency" value="1.00" style="width: 145px; height: 25px; border-radius: 3px; border-color: transparent; font-family: arial; font-size: 15px; text-align: right"></span>'
+    ' name="currency" value="1.00" style="width: 145px !important; height: 25px !important; min-height: 25px !important; border-radius: 3px !important; border-color: transparent !important; font-family: arial !important; font-size: 15px !important; text-align: right !important; line-height: 2em !important; background: white !important"></span>'
   inputTipSpan.style.width = '165px'
   inputTipDiv.appendChild(inputTipSpan)
 
