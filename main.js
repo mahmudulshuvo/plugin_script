@@ -1,4 +1,4 @@
-// version 2.1
+// version 2.2
 // Bug fix success and failure url
 // Add anonymous checkbox baseline
 // Bug fix url
@@ -3386,8 +3386,7 @@ function directDonate(idValue, lang) {
       description: '',
       bank_account: '',
       is_anonymous: '',
-      tip_amount:
-        tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
+      tip_amount: tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
       return_url: window.location.href,
       source: 'script',
     }
@@ -3417,7 +3416,7 @@ async function makeDonation(data, slugVal, lang, donorInfo) {
   //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
 
   const donationApi =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
+    'https://whydonate-production-api.appspot.com/api/v1/donation/order/?client=whydonate-production'
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
@@ -3504,7 +3503,7 @@ function makeUrl() {
 
   const url =
     'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    widgetDiv.dataset.slug.split('&')[0]
+      widgetDiv.dataset.slug.split('&')[0]+'&'+'client=whydonate-production'
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -3584,7 +3583,7 @@ function addJquery() {
 
         var api =
           'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
-          urlAddressArr[1]
+          urlAddressArr[1]+'&'+'client=whydonate-production'
 
         var url = proxyurl + api
 
@@ -3628,7 +3627,7 @@ async function updateDonorInformation(donorInfo, urlToRedirect) {
   //   'https://whydonate-development.appspot.com/api/v1/donation/donor/update/'
 
   var api =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/donor/update/'
+    'https://whydonate-production-api.appspot.com/api/v1/donation/donor/update/?client=whydonate-production'
 
   var url=proxyurl+api
 
