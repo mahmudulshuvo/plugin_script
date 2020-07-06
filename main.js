@@ -1,16 +1,11 @@
-// version 2.2
-// Bug fix success and failure url
-// Add anonymous checkbox baseline
-// Bug fix url
-// Bug fix donor information update
-// Add Jquery
-// Change success and redirect url
-// Fix styling issues
+// version 2.3
+// Active Installations
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
 var tipBoxSlugList = { current: '' }
-var whydonateSlugs = {}
+var whydonateSlugs={}
+localStorage.setItem('checkFirstTime', true)
 
 var classArray = document.getElementsByClassName('widget')
 if (classArray.length > 1) {
@@ -3413,10 +3408,10 @@ async function makeDonation(data, slugVal, lang, donorInfo) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
   // const donationApi =
-  //   'https://whydonate-development.appspot.com/api/v1/donation/order/'
+  //  'https://whydonate-development.appspot.com/api/v1/donation/order/?client=whydonate_staging'
 
   const donationApi =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/order/?client=whydonate-production'
+     'https://whydonate-production-api.appspot.com/api/v1/donation/order/?client=whydonate_production'
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
@@ -3498,12 +3493,12 @@ function makeUrl() {
   const proxyurl='https://intense-temple-29395.herokuapp.com/'
 
   // const url =
-  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-  //   widgetDiv.dataset.slug.split('&&&')[0]
+    // 'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+    // widgetDiv.dataset.slug.split('&&&')[0]+'&'+'client=whydonate_staging'
 
-  const url =
-    'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-      widgetDiv.dataset.slug.split('&')[0]+'&'+'client=whydonate-production'
+   const url =
+     'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
+       widgetDiv.dataset.slug.split('&')[0]+'&'+'client=whydonate_production'
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -3579,11 +3574,11 @@ function addJquery() {
 
         // var api =
         //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-        //   urlAddressArr[1]
+        //   urlAddressArr[1]+'&'+'client=whydonate_staging'
 
         var api =
           'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
-          urlAddressArr[1]+'&'+'client=whydonate-production'
+          urlAddressArr[1]+'&'+'client=whydonate_production'
 
         var url = proxyurl + api
 
@@ -3615,19 +3610,56 @@ function addJquery() {
           },
         })
       }
+      else {
+        if (localStorage.getItem('checkFirstTime') === "true") {
+          localStorage.setItem('checkFirstTime', false)
+          let domainPart=urlAddress.split('//')
+          let domain=domainPart[1].split('/')[0]
+          let payload={
+            'url': domain,
+            'product': 'script'
+          }
+          checkInstallations(payload)
+        }
+      }
     })
   }
   document.getElementsByTagName('head')[0].appendChild(script)
+}
+
+async function checkInstallations(payload) {
+  //Testing api
+  // let apiUrl='http://127.0.0.1:8080/http://127.0.0.1:8000/api/v1/account/installations/?client=whydonate_staging'
+
+  let proxyurl='https://intense-temple-29395.herokuapp.com/'
+  // let stagingApi='https://whydonate-development.appspot.com/api/v1/account/installations/?client=whydonate_staging'
+  let productionApi='https://whydonate-production-api.appspot.com/api/v1/account/installations/?client=whydonate_production'
+  let apiUrl=proxyurl+productionApi
+
+  const settings={
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload)
+  }
+  const res=await fetch(apiUrl, settings)
+  if (res.ok) {
+    const json=await res.json()
+    // console.log(json)
+  } else {
+    console.log("Track installations error: "+response.status);
+  }
 }
 
 async function updateDonorInformation(donorInfo, urlToRedirect) {
   var proxyurl='https://intense-temple-29395.herokuapp.com/'
 
   // var api=
-  //   'https://whydonate-development.appspot.com/api/v1/donation/donor/update/'
+  //   'https://whydonate-development.appspot.com/api/v1/donation/donor/update/?client=whydonate_staging'
 
   var api =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/donor/update/?client=whydonate-production'
+    'https://whydonate-production-api.appspot.com/api/v1/donation/donor/update/?client=whydonate_production'
 
   var url=proxyurl+api
 
@@ -3995,7 +4027,8 @@ function handleOtherAmountInput(value, idValue) {
     }
     calculateTotalAmount(slug)
   } else {
-    document.getElementById('other-amount-input' + slug).value = '€'
+    const editedValue=value.slice(0, -1)
+    document.getElementById('other-amount-input'+slug).value='€ '+editedValue
   }
 }
 
