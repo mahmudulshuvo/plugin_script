@@ -1,5 +1,6 @@
 // version 2.3
 // Active Installations
+// Bugfix negetive tip amount
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -4247,7 +4248,13 @@ function calculateTotalAmount(slug) {
     }
   }
 
-  selectedAmount = Number(parseFloat(selectedAmount).toFixed(2))
+  selectedAmount=Number(parseFloat(selectedAmount).toFixed(2))
+  if (isNaN(tipAmount)) {
+    const editedValue=tipAmount.slice(0, -1)
+    document.getElementById('input-tip'+slug).value=editedValue
+    return
+  }
+
   if (tipAmount !== '') {
     tipAmount = Number(parseFloat(tipAmount.replace(',', '.')).toFixed(2))
   } else {
