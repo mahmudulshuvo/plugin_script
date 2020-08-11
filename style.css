@@ -2,6 +2,7 @@
 /* Add transparent border */
 /* Add auto width */
 /* Fix styling issues */
+	/* Responsive issue fix */
 
 .widget {
   height: 215px;
@@ -18,7 +19,7 @@
 .widget-with-form {
   height: auto !important;
   /* min-height: 690px; */
-  width: auto;
+  width: auto !important;
   max-width: 800px;
   margin: 0px !important;
   border-radius: 15px !important;
