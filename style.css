@@ -1,7 +1,8 @@
-/* version 2.1 */
+/* version 2.2 */
 /* Add transparent border */
 /* Add auto width */
 /* Fix styling issues */
+/* Responsive issue fix-media query */
 
 .widget {
   height: 215px;
@@ -624,5 +625,11 @@ button:focus {
 @media screen and (max-width: 500px) {
   .select-amount-div-boxes {
     justify-content: flex-start !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .widget-with-form {
+    width: auto !important;
   }
 }
