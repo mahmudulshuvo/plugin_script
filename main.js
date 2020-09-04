@@ -417,7 +417,16 @@ function setValues(result, slug, lang, option, card) {
 
   // Start of ***************************  CUSTOM AMOUNT ****************************
   console.log('Fundriaser local data ', fundraiserInfo)
-  customDonationConfiguration(fundraiserInfo, slug)
+  if ('is_draft' in fundraiserInfo) {
+    if (fundraiserInfo['is_draft']) {
+      window.alert('This donation widget will not work because the fundraiser is in draft mode')
+      return
+    }
+    else {
+      customDonationConfiguration(fundraiserInfo, slug)
+    }
+  }
+  
 }
 
 function hexToRgb(hex) {
