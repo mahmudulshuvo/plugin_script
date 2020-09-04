@@ -1,6 +1,7 @@
 // version 2.3
 // Active Installations
 // Bugfix negetive tip amount
+// Translations fix
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -1260,11 +1261,11 @@ function designWidget(option) {
     otherAmountLabel.id = 'other-amount-label+' + widgetDiv.dataset.slug
     otherAmountLabel.className = 'other-amount-label'
     if (widgetDiv.dataset.lang === 'nl') {
-      otherAmountLabel.innerText = 'Anders'
+      otherAmountLabel.innerText = 'Bedrag'
     } else if (widgetDiv.dataset.lang === 'de') {
       otherAmountLabel.innerText = 'Andere'
     } else if (widgetDiv.dataset.lang === 'es') {
-      otherAmountLabel.innerText = 'Otra'
+      otherAmountLabel.innerText = 'Cantidad'
     } else {
       otherAmountLabel.innerText = 'Other'
     }
@@ -1971,11 +1972,11 @@ function designWidget(option) {
     otherAmountLabel.id = 'other-amount-label+' + widgetDiv.dataset.slug
     otherAmountLabel.className = 'other-amount-label'
     if (widgetDiv.dataset.lang === 'nl') {
-      otherAmountLabel.innerText = 'Anders'
+      otherAmountLabel.innerText = 'Bedrag'
     } else if (widgetDiv.dataset.lang === 'de') {
       otherAmountLabel.innerText = 'Andere'
     } else if (widgetDiv.dataset.lang === 'es') {
-      otherAmountLabel.innerText = 'Otra'
+      otherAmountLabel.innerText = 'Cantidad'
     } else {
       otherAmountLabel.innerText = 'Other'
     }
@@ -2981,11 +2982,11 @@ function createModal(slug) {
   otherAmountLabel.id = 'other-amount-label+' + slug
   otherAmountLabel.className = 'other-amount-label'
   if (widgetDiv.dataset.lang === 'nl') {
-    otherAmountLabel.innerText = 'Anders'
+    otherAmountLabel.innerText = 'Bedrag'
   } else if (widgetDiv.dataset.lang === 'de') {
     otherAmountLabel.innerText = 'Andere'
   } else if (widgetDiv.dataset.lang === 'es') {
-    otherAmountLabel.innerText = 'Otra'
+    otherAmountLabel.innerText = 'Cantidad'
   } else {
     otherAmountLabel.innerText = 'Other'
   }
