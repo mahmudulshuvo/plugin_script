@@ -2,6 +2,7 @@
 // Active Installations
 // Bugfix negetive tip amount
 // Translations fix
+// is_draft and remove child
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -237,8 +238,12 @@ function setValues(result, slug, lang, option, card) {
       'fundraiser-info-div' + slug
     )
     if (fundraiserInfoDiv) {
-      var motherDiv = document.getElementById(slug)
-      motherDiv.removeChild(motherDiv.lastChild)
+      var motherDiv=document.getElementById(slug)
+      if (motherDiv.firstChild.id.includes('fundraiser-info-div')) {
+        motherDiv.removeChild(motherDiv.firstChild)
+      } else {
+        motherDiv.removeChild(motherDiv.lastChild)
+      }
       motherDiv.style.width = '400px'
 
       motherDiv.firstChild.style.width = '420px'
@@ -419,7 +424,15 @@ function setValues(result, slug, lang, option, card) {
   console.log('Fundriaser local data ', fundraiserInfo)
   if ('is_draft' in fundraiserInfo) {
     if (fundraiserInfo['is_draft']) {
-      window.alert('This donation widget will not work because the fundraiser is in draft mode')
+      if (widgetDiv.dataset.lang=='nl') {
+        window.alert('Url is al bezet.')
+      } else if (widgetDiv.dataset.lang=='es') {
+        window.alert('Url ya está tomada.')
+      } else if (widgetDiv.dataset.lang=='de') {
+        window.alert('Url ist bereits besetzt.')
+      } else {
+        window.alert('Url is already taken.')
+      }
       return
     }
     else {
