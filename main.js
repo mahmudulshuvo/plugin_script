@@ -1,15 +1,16 @@
-// version 2.3
+// version 2.4
 // Active Installations
 // Bugfix negetive tip amount
 // Translations fix
 // is_draft and remove child
-// Remove font awesome and console logs
+// resolve jQuery conflict, wix issue
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
 var tipBoxSlugList = { current: '' }
 var whydonateSlugs={}
 localStorage.setItem('checkFirstTime', true)
+var jQueryTemp=undefined;
 
 var classArray = document.getElementsByClassName('widget')
 if (classArray.length > 1) {
@@ -49,23 +50,23 @@ function css(element, property) {
   return window.getComputedStyle(element, null).getPropertyValue(property)
 }
 
-// function addFontAwesome() {
-//   var span = document.createElement('span')
-//   span.className = 'fa'
-//   span.style.display = 'none'
-//   document.body.insertBefore(span, document.body.firstChild)
+function addFontAwesome() {
+  var span = document.createElement('span')
+  span.className = 'faspan'
+  span.style.display = 'none'
+  document.body.insertBefore(span, document.body.firstChild)
 
-//   if (css(span, 'font-family') !== 'FontAwesome') {
-//     // add a local fallback
-//     var fontAwesomeCss = document.createElement('link')
-//     fontAwesomeCss.href =
-//       'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
-//     fontAwesomeCss.type = 'text/css'
-//     fontAwesomeCss.rel = 'stylesheet'
-//     document.getElementsByTagName('head')[0].appendChild(fontAwesomeCss)
-//   }
-//   document.body.removeChild(span)
-// }
+  if (css(span, 'font-family') !== 'FontAwesome') {
+    // add a local fallback
+    var fontAwesomeCss = document.createElement('link')
+    fontAwesomeCss.href =
+      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+    fontAwesomeCss.type = 'text/css'
+    fontAwesomeCss.rel = 'stylesheet'
+    document.getElementsByTagName('head')[0].appendChild(fontAwesomeCss)
+  }
+  document.body.removeChild(span)
+}
 
 function loadWidget() {
   widgetOption = widgetDiv.getAttribute('value')
@@ -100,7 +101,7 @@ function loadWidget() {
   //   addJquery()
   // }
   addJquery()
-  //addFontAwesome()
+  addFontAwesome()
 
   var url = makeUrl()
   getFundraiserLocalValue(url, slug, lang, option, card)
@@ -3395,7 +3396,24 @@ function directDonate(idValue, lang) {
   if (errorCheck) {
     // Do nothing
   } else {
-    var tipBox = document.getElementById('tip-box' + slugVal)
+    var tipBox=document.getElementById('tip-box'+slugVal)
+    var mollie_return_url = ''
+    if (window.location!=window.parent.location) {
+      if (document.referrer.includes('?d_id=')&&document.referrer.includes('o_id=')) {
+        mollie_return_url = document.referrer.split('?d_id')[0]
+      }
+      else {
+        mollie_return_url = document.referrer
+      }
+    } else {
+      if (window.location.href.includes('?d_id=')&&window.location.href.includes('o_id=')) {
+        mollie_return_url=window.location.href.split('?d_id')[0]
+      }
+      else {
+        mollie_return_url=window.location.href
+      }
+    }
+
     var data = {
       amount: selectedAmount,
       newsletter: false,
@@ -3407,7 +3425,7 @@ function directDonate(idValue, lang) {
       bank_account: '',
       is_anonymous: '',
       tip_amount: tipBox.style.display === 'none' ? 0 : calculateTotalAmount(slugVal),
-      return_url: window.location.href,
+      return_url: mollie_return_url,
       source: 'script',
     }
 
@@ -3433,10 +3451,10 @@ async function makeDonation(data, slugVal, lang, donorInfo) {
   const proxyurl = 'https://intense-temple-29395.herokuapp.com/'
 
   // const donationApi =
-  //  'https://whydonate-development.appspot.com/api/v1/donation/order/?client=whydonate_staging'
+  //  'https://whydonate-development.appspot.com/api/v1/donation/order/'
 
   const donationApi =
-     'https://whydonate-production-api.appspot.com/api/v1/donation/order/?client=whydonate_production'
+     'https://whydonate-production-api.appspot.com/api/v1/donation/order/'
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const donationApi = 'http://127.0.0.1:8000/api/v1/donation/order/'
@@ -3509,8 +3527,15 @@ async function makeDonation(data, slugVal, lang, donorInfo) {
           donateBtnInModal.innerHTML = '<i class="fa"></i> Donate'
         }
       }
+
       localStorage.setItem('donor_info', JSON.stringify(donorInfo))
-      window.location.replace(result['data']['url'])
+      var isInIframe = (window.location != window.parent.location)
+      if(isInIframe) {
+        window.open(result['data']['url'])
+      } else {
+        window.location.replace(result['data']['url'])
+      }
+
     })
 }
 
@@ -3518,12 +3543,12 @@ function makeUrl() {
   const proxyurl='https://intense-temple-29395.herokuapp.com/'
 
   // const url =
-    // 'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
-    // widgetDiv.dataset.slug.split('&&&')[0]+'&'+'client=whydonate_staging'
+  //   'https://whydonate-development.appspot.com/api/v1/project/fundraising/local/?slug=' +
+  //   widgetDiv.dataset.slug.split('&&&')[0]
 
    const url =
      'https://whydonate-production-api.appspot.com/api/v1/project/fundraising/local/?slug=' +
-       widgetDiv.dataset.slug.split('&')[0]+'&'+'client=whydonate_production'
+       widgetDiv.dataset.slug.split('&')[0]
 
   // const proxyurl = 'http://127.0.0.1:8080/'
   // const url =
@@ -3535,13 +3560,14 @@ function makeUrl() {
 
 function addJquery() {
   var script = document.createElement('script')
-  script.src = 'https://code.jquery.com/jquery-1.7.2.js'
-  script.type = 'text/javascript'
-  script.onload = function () {
-    jQuery(document).ready(function () {
-      jQuery(window).resize(resize)
+  script.src= 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'
+  script.type='text/javascript'
+  script.onload=function () {
+    jQueryTemp=jQuery.noConflict(true);
+    jQueryTemp(document).ready(function () {
+      jQueryTemp(window).resize(resize)
       resize()
-      var urlAddress = window.location.href
+      var urlAddress=window.location.href
       if (urlAddress.includes('&o_id=')) {
         let urlAddressArr = urlAddress.split('&o_id=')
         // console.log('order id ', urlAddressArr[1])
@@ -3599,15 +3625,15 @@ function addJquery() {
 
         // var api =
         //   'https://whydonate-development.appspot.com/api/v1/donation/order/status/?order_id=' +
-        //   urlAddressArr[1]+'&'+'client=whydonate_staging'
+        //   urlAddressArr[1]
 
         var api =
           'https://whydonate-production-api.appspot.com/api/v1/donation/order/status/?order_id=' +
-          urlAddressArr[1]+'&'+'client=whydonate_production'
+          urlAddressArr[1]
 
         var url = proxyurl + api
 
-        jQuery.ajax({
+        jQueryTemp.ajax({
           url: url,
           type: 'GET',
           beforeSend: function () {},
@@ -3657,9 +3683,9 @@ async function checkInstallations(payload) {
   // let apiUrl='http://127.0.0.1:8080/http://127.0.0.1:8000/api/v1/account/installations/?client=whydonate_staging'
 
   let proxyurl='https://intense-temple-29395.herokuapp.com/'
-  // let stagingApi='https://whydonate-development.appspot.com/api/v1/account/installations/?client=whydonate_staging'
-  let productionApi='https://whydonate-production-api.appspot.com/api/v1/account/installations/?client=whydonate_production'
-  let apiUrl=proxyurl+productionApi
+  // let api='https://whydonate-development.appspot.com/api/v1/account/installations/'
+  let api='https://whydonate-production-api.appspot.com/api/v1/account/installations/'
+  let apiUrl=proxyurl+api
 
   const settings={
     method: 'post',
@@ -3681,10 +3707,10 @@ async function updateDonorInformation(donorInfo, urlToRedirect) {
   var proxyurl='https://intense-temple-29395.herokuapp.com/'
 
   // var api=
-  //   'https://whydonate-development.appspot.com/api/v1/donation/donor/update/?client=whydonate_staging'
+  //   'https://whydonate-development.appspot.com/api/v1/donation/donor/update/'
 
   var api =
-    'https://whydonate-production-api.appspot.com/api/v1/donation/donor/update/?client=whydonate_production'
+    'https://whydonate-production-api.appspot.com/api/v1/donation/donor/update/'
 
   var url=proxyurl+api
 
@@ -3711,8 +3737,8 @@ async function updateDonorInformation(donorInfo, urlToRedirect) {
 }
 
 function resize() {
-  if (jQuery(window).width() < 514) {
-    jQuery('html').addClass('mobile')
+  if (jQueryTemp(window).width() < 514) {
+    jQueryTemp('html').addClass('mobile')
 
     var widgetWithFormList = document.getElementsByClassName('widget-with-form')
 
@@ -3785,7 +3811,7 @@ function resize() {
         modals[j].style.margin = 'auto'
       }
     }
-    jQuery('html').removeClass('wide')
+    jQueryTemp('html').removeClass('wide')
   }
 }
 
