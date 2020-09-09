@@ -3,6 +3,7 @@
 // Bugfix negetive tip amount
 // Translations fix
 // is_draft and remove child
+// Remove font awesome and console logs
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -48,23 +49,23 @@ function css(element, property) {
   return window.getComputedStyle(element, null).getPropertyValue(property)
 }
 
-function addFontAwesome() {
-  var span = document.createElement('span')
-  span.className = 'fa'
-  span.style.display = 'none'
-  document.body.insertBefore(span, document.body.firstChild)
+// function addFontAwesome() {
+//   var span = document.createElement('span')
+//   span.className = 'fa'
+//   span.style.display = 'none'
+//   document.body.insertBefore(span, document.body.firstChild)
 
-  if (css(span, 'font-family') !== 'FontAwesome') {
-    // add a local fallback
-    var fontAwesomeCss = document.createElement('link')
-    fontAwesomeCss.href =
-      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
-    fontAwesomeCss.type = 'text/css'
-    fontAwesomeCss.rel = 'stylesheet'
-    document.getElementsByTagName('head')[0].appendChild(fontAwesomeCss)
-  }
-  document.body.removeChild(span)
-}
+//   if (css(span, 'font-family') !== 'FontAwesome') {
+//     // add a local fallback
+//     var fontAwesomeCss = document.createElement('link')
+//     fontAwesomeCss.href =
+//       'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+//     fontAwesomeCss.type = 'text/css'
+//     fontAwesomeCss.rel = 'stylesheet'
+//     document.getElementsByTagName('head')[0].appendChild(fontAwesomeCss)
+//   }
+//   document.body.removeChild(span)
+// }
 
 function loadWidget() {
   widgetOption = widgetDiv.getAttribute('value')
@@ -99,7 +100,7 @@ function loadWidget() {
   //   addJquery()
   // }
   addJquery()
-  addFontAwesome()
+  //addFontAwesome()
 
   var url = makeUrl()
   getFundraiserLocalValue(url, slug, lang, option, card)
@@ -264,26 +265,26 @@ function setValues(result, slug, lang, option, card) {
       )
       donateBtnInForm.style.background =
         result['data']['custom_style']['secondary_color']
-      console.log(
-        'border radius 1 ',
-        result['data']['custom_style']['button_radius']
-      )
+      // console.log(
+      //   'border radius 1 ',
+      //   result['data']['custom_style']['button_radius']
+      // )
       donateBtnInForm.style.borderRadius =
         result['data']['custom_style']['button_radius'] + 'px'
     } else {
-      console.log('result is ', result['data']['custom_style']['primary_color'])
-      console.log(
-        'result is ',
-        result['data']['custom_style']['secondary_color']
-      )
+      // console.log('result is ', result['data']['custom_style']['primary_color'])
+      // console.log(
+      //   'result is ',
+      //   result['data']['custom_style']['secondary_color']
+      // )
       var donateBtnInWidget = document.getElementById('donate-btn+' + slug)
       var donateBtnInModal = document.getElementById(
         'donate-btn-in-modal+' + slug
       )
-      console.log(
-        'border radius 1 ',
-        result['data']['custom_style']['button_radius']
-      )
+      // console.log(
+      //   'border radius 1 ',
+      //   result['data']['custom_style']['button_radius']
+      // )
       donateBtnInWidget.style.background =
         result['data']['custom_style']['secondary_color']
       donateBtnInWidget.style.borderRadius =
@@ -421,7 +422,7 @@ function setValues(result, slug, lang, option, card) {
   // END of ***************************  CUSTOM STYLING ****************************
 
   // Start of ***************************  CUSTOM AMOUNT ****************************
-  console.log('Fundriaser local data ', fundraiserInfo)
+  // console.log('Fundriaser local data ', fundraiserInfo)
   if ('is_draft' in fundraiserInfo) {
     if (fundraiserInfo['is_draft']) {
       if (widgetDiv.dataset.lang=='nl') {
@@ -2426,7 +2427,7 @@ function handleSelectAmount(value, idValue, color) {
 
   var amountErrMsg = document.getElementById('missing-error-msg-amount' + slug)
 
-  console.log('color value ', color ? color : '')
+  // console.log('color value ', color ? color : '')
   if (value === 'first') {
     otherAmountDiv.style.display = 'none'
     amountErrMsg.style.display = 'none'
@@ -3699,7 +3700,7 @@ async function updateDonorInformation(donorInfo, urlToRedirect) {
       return response.json()
     })
     .then(function (result) {
-      console.log('donor information ', donorInfo)
+      // console.log('donor information ', donorInfo)
       localStorage.setItem('donor_info', {})
       setTimeout(function () {
         if (urlToRedirect&&urlToRedirect!=='') {
@@ -4018,7 +4019,7 @@ function renderOptionsForAmount(slug) {
 
 function handleOtherAmountInput(value, idValue) {
   var slug = idValue.split('other-amount-input')[1]
-  console.log('Other amount input on change value ', value, slug)
+  // console.log('Other amount input on change value ', value, slug)
   var otherAmountInputField = document.getElementById(
     'other-amount-input' + slug
   )
@@ -4060,7 +4061,7 @@ function handleTipDropdown(slug) {
   var elm = document.getElementById('custom-select' + slug)
   var selectedValue = document.getElementById('custom-select' + slug)
     .children[1].innerHTML
-  console.log('Selected value ', selectedValue)
+  // console.log('Selected value ', selectedValue)
   var tipBox = document.getElementById('tip-box' + slug)
   if (selectedValue === 'Other') {
     renderOptionsForAmount(slug)
@@ -4293,9 +4294,9 @@ function calculateTotalAmount(slug) {
   totalAmount = (Math.round(totalAmount * 100) / 100).toFixed(2)
   tipLabel.innerHTML = ''
   tipLabel.innerHTML = 'Total Charge: € ' + totalAmount
-  console.log('Actual donation ', selectedAmount)
-  console.log('Tip amount ', tipAmount)
-  console.log('Total amount ', totalAmount)
+  // console.log('Actual donation ', selectedAmount)
+  // console.log('Tip amount ', tipAmount)
+  // console.log('Total amount ', totalAmount)
   return tipAmount
 }
 
