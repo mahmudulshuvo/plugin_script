@@ -4,6 +4,7 @@
 // Translations fix
 // is_draft and remove child
 // resolve jQuery conflict, wix issue
+// disable fix
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -173,7 +174,7 @@ function setValues(result, slug, lang, option, card) {
     var timeDiffInDays = Math.ceil(timeDiff / 1000 / 3600 / 24) // in second
     var remainDaysLabel = document.getElementById('remaining-days' + slug)
 
-    if (timeDiffInDays <= 0) {
+    if (timeDiffInDays <= 0 || result['data']['completed']) {
       if (lang === 'nl') {
         remainDaysLabel.innerText = 'Gesloten'
       } else if (lang === 'de') {
