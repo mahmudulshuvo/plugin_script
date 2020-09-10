@@ -4,7 +4,7 @@
 // Translations fix
 // is_draft and remove child
 // resolve jQuery conflict, wix issue
-// disable fix
+// disable button and change color fix
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -184,9 +184,9 @@ function setValues(result, slug, lang, option, card) {
         remainDaysLabel.innerText = 'Closed'
       }
 
-      var donateBtn = document.getElementById('donate-btn' + slug)
-      donateBtn.disabled = true
-      donateBtn.style.backgroundColor = 'gray'
+      var donateBtn = document.getElementById('donate-btn+' + slug)
+      donateBtn.disable = true
+      donateBtn.style.backgroundColor = 'gray !important'
     } else if (timeDiffInDays > 1000) {
       remainDaysLabel.innerText = ''
     } else {
