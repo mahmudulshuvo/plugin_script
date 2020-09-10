@@ -4,7 +4,7 @@
 // Translations fix
 // is_draft and remove child
 // resolve jQuery conflict, wix issue
-// disable button and change color fix
+// Show disable on completed
 
 var randExtension = Math.floor(Math.random() * 1000)
 randExtension = randExtension.toString()
@@ -31,9 +31,9 @@ var widgetOption = ''
 
 var head = document.getElementsByTagName('head')[0]
 var style = document.createElement('link')
-// style.href = 'style.css'
+//style.href = 'style.css'
 // style.href='https://codepen.io/mahmudulshuvo/pen/xxGyvQy.css'
-style.href = 'https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
+style.href='https://res.cloudinary.com/dxhaja5tz/raw/upload/script_style.css'
 style.type = 'text/css'
 style.rel = 'stylesheet'
 head.appendChild(style)
@@ -185,8 +185,8 @@ function setValues(result, slug, lang, option, card) {
       }
 
       var donateBtn = document.getElementById('donate-btn+' + slug)
-      donateBtn.disable = true
-      donateBtn.style.backgroundColor = 'gray !important'
+      donateBtn.disabled=true
+      donateBtn.style.setProperty("background", "gray", "important")
     } else if (timeDiffInDays > 1000) {
       remainDaysLabel.innerText = ''
     } else {
@@ -267,28 +267,20 @@ function setValues(result, slug, lang, option, card) {
       )
       donateBtnInForm.style.background =
         result['data']['custom_style']['secondary_color']
-      // console.log(
-      //   'border radius 1 ',
-      //   result['data']['custom_style']['button_radius']
-      // )
+
       donateBtnInForm.style.borderRadius =
         result['data']['custom_style']['button_radius'] + 'px'
     } else {
-      // console.log('result is ', result['data']['custom_style']['primary_color'])
-      // console.log(
-      //   'result is ',
-      //   result['data']['custom_style']['secondary_color']
-      // )
       var donateBtnInWidget = document.getElementById('donate-btn+' + slug)
       var donateBtnInModal = document.getElementById(
         'donate-btn-in-modal+' + slug
       )
-      // console.log(
-      //   'border radius 1 ',
-      //   result['data']['custom_style']['button_radius']
-      // )
-      donateBtnInWidget.style.background =
-        result['data']['custom_style']['secondary_color']
+
+      if (timeDiffInDays>0 && !result['data']['completed']) {    
+        donateBtnInWidget.style.background =
+          result['data']['custom_style']['secondary_color']
+      }
+      
       donateBtnInWidget.style.borderRadius =
         result['data']['custom_style']['button_radius'] + 'px'
       donateBtnInModal.style.background =
