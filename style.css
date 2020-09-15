@@ -3,6 +3,8 @@
 /* Add auto width */
 /* Fix styling issues */
 /* Responsive issue fix-media query */
+/* Responsiveness donation form */
+/* Remove fa class, responsive design */
 
 .widget {
   height: 215px;
@@ -476,10 +478,10 @@ button:focus {
   cursor: pointer;
 }
 
-.fa {
+/*.fa {
   margin-left: -12px;
   margin-right: 8px;
-}
+}*/
 
 .missing-error-msg {
   display: none;
@@ -622,7 +624,7 @@ button:focus {
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 400px) {
   .select-amount-div-boxes {
     justify-content: flex-start !important;
   }
@@ -630,6 +632,12 @@ button:focus {
 
 @media screen and (max-width: 600px) {
   .widget-with-form {
+    width: auto !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .donation-form {
     width: auto !important;
   }
 }
