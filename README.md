@@ -16,6 +16,6 @@ This is a simple script which will work on any website. I've made this script fo
 
 ## Samples
 
-Here is a [Link](https://whydonate.jouwweb.nl/) where you can check some sample of this plugin.
+Here is a [Link](https://whydonate.jouwweb.nl/) where you can check some samples of this plugin.
 
 **Cheers!🍺**
